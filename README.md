@@ -1,6 +1,6 @@
 # SosDoIt
 
-Author :
+Authors :
   - Benjamin Laschkar
   - Ennio Japerregued
   - Thomas Faget
