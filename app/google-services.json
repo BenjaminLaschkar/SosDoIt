@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "446741934259",
+    "firebase_url": "https://sosdoit-15b5f.firebaseio.com",
+    "project_id": "sosdoit-15b5f",
+    "storage_bucket": "sosdoit-15b5f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446741934259:android:46b1d8fd95bb4a54",
+        "android_client_info": {
+          "package_name": "ca.uqac.sosdoit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446741934259-tjr3qqi7fru7gg5gld1evc426969e1uk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQg62E1WmKx59OyM3yKH9NY-aSyeN1Ga8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
