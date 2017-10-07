@@ -8,6 +8,6 @@ public class SosDoIt extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sos_do_it);
+        //setContentView(R.layout.activity_sos_do_it);
     }
 }
