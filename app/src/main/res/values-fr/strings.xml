@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="username">Nom d\'utilisateur</string>
+    <string name="email">Adresse email</string>
+    <string name="password">Mot de passe</string>
+    <string name="first_name">Prénom</string>
+    <string name="last_name">Nom</string>
+
+    <string name="description_caller">Besoin d\'un service ? Poster une demande !</string>
+    <string name="description_worker">Gagnez de l\'argent en aidant les personnes autour de vous !</string>
+
+    <!-- Boutons -->
+    <string name="btn_login">Connexion</string>
+    <string name="btn_forgot_password">Mot de passe oublié ?</string>
+    <string name="btn_link_to_register">Pas encore membre ? Inscrivez-vous maintenant !</string>
+    <string name="btn_register">Inscription</string>
+</resources>
