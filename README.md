@@ -2,5 +2,5 @@
 
 Authors :
   - Benjamin Laschkar
-  - Ennio Japerregued
+  - Tudal Le Bot
   - Thomas Faget
