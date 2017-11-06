@@ -25,19 +25,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/title_activity_profile" />
 
         <activity
-            android:name=".SignupActivity"
+            android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/title_activity_login" />
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ResetPasswordActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/title_activity_reset_password" />
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/title_activity_profile" />
     </application>
 </manifest>

@@ -11,7 +11,13 @@
 
     <!-- Boutons -->
     <string name="btn_login">Connexion</string>
-    <string name="btn_forgot_password">Mot de passe oublié ?</string>
-    <string name="btn_link_to_register">Pas encore membre ? Inscrivez-vous maintenant !</string>
     <string name="btn_register">Inscription</string>
+
+    <string name="btn_link_to_register">Pas encore membre ? Inscrivez-vous maintenant !</string>
+    <string name="btn_register_link_to_login">Vous avez déjà un compte ? Connectez-vous !</string>
+    <string name="btn_reset_link_to_login">Vous vous en souvenez ? Connectez-vous !</string>
+
+    <string name="btn_forgot_password">Mot de passe oublié ?</string>
+    <string name="msg_forgot_password">Nous avons juste besoin de votre adresse email pour vous envoyer les instructions de réinitialisation de votre mot de passe."</string>
+    <string name="btn_reset_password">Réinitialiser mon mot de passe</string>
 </resources>

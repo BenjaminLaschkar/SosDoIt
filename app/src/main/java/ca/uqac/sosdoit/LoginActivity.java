@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        btnSignup = (Button) findViewById(R.id.btn_signup);
+        btnSignup = (Button) findViewById(R.id.btn_register);
         btnLogin = (Button) findViewById(R.id.btn_login);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
 
@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
 

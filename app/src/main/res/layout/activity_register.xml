@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="ca.uqac.sosdoit.ResetPasswordActivity">
+    tools:context="ca.uqac.sosdoit.RegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,45 +23,60 @@
             android:src="@mipmap/icon" />
 
         <TextView
+            android:id="@+id/caller"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/element_horizontal_margin_small"
-            android:text="@string/btn_forgot_password" />
+            android:text="@string/description_caller"
+            android:textSize="@dimen/small" />
 
         <TextView
+            android:id="@+id/worker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_vertical_margin_small"
-            android:text="@string/msg_forgot_password"
+            android:text="@string/description_worker"
             android:textSize="@dimen/small" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_vertical_margin_large">
+            android:layout_marginTop="@dimen/element_vertical_margin">
 
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_email"
+                android:hint="@string/hint_login"
                 android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/btn_reset_password"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_vertical_margin"
-            android:text="@string/btn_reset_password" />
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_password"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_vertical_margin_large"
+            android:text="@string/btn_register" />
 
         <Button
             android:id="@+id/btn_login"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/element_vertical_margin_small"
             android:background="@drawable/button_secondary"
-            android:text="@string/btn_reset_link_to_login" />
+            android:text="@string/btn_register_link_to_login" />
     </LinearLayout>
 
     <ProgressBar
