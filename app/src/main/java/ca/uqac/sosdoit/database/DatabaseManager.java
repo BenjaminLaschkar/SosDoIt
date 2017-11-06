@@ -170,7 +170,7 @@ public class DatabaseManager implements IDatabaseManager {
      */
     @Override
     public void addUser(String idAccount, String firstname, String lastname, String pseudo) {
-        User user = new User(idAccount, firstname, lastname, pseudo, null, null, false, null);
+        User user = new User(idAccount, firstname, lastname, pseudo, null, null, false);
         addUser(user);
     }
 
@@ -187,7 +187,8 @@ public class DatabaseManager implements IDatabaseManager {
      */
     @Override
     public void EditWorkerProfileUser(String idAccount, boolean isWorker, List<Qualification> qualifications) {
-
+        usersRef.child(idAccount).child("isWorker").setValue(true);
+        usersRef.child(idAccount).child("qualifications").setValue(true);
     }
 
     /**
@@ -199,7 +200,7 @@ public class DatabaseManager implements IDatabaseManager {
     }
 
 
-    /* Remove an user
+    /** Remove an user
      */
     @Override
     public void removeUser(String idAccount) {
