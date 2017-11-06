@@ -34,7 +34,7 @@ public interface IDatabaseManager {
 
     /** Edit the information of an advert
      */
-    void editAdvert(Advert advert);
+    void editAdvert(String oldIdAdvert, Advert advert);
 
     /** Remove an advert
      */
@@ -81,6 +81,21 @@ public interface IDatabaseManager {
     /** Get all the ratings of an user
      */
     List<Rating> getUserRatings(String userId);
+
+
+    /** Register an UserCallback
+     */
+    void addUserCallback(UserCallback callback);
+
+    /** Register an AdvertCallback
+     */
+    void addAdvertCallback(AdvertCallback callback);
+
+    /** Register an RatingCallback
+     */
+    void addRatingCallback(RatingCallback callback);
+
+
 
 
 
