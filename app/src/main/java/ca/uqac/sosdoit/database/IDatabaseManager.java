@@ -3,6 +3,7 @@ package ca.uqac.sosdoit.database;
 import java.util.List;
 
 import ca.uqac.sosdoit.data.Advert;
+import ca.uqac.sosdoit.data.Qualification;
 import ca.uqac.sosdoit.data.Rating;
 import ca.uqac.sosdoit.data.User;
 
@@ -16,6 +17,18 @@ public interface IDatabaseManager {
      */
     void addUser(User user);
 
+    /** Add an user with only his id, his firstname, his lastname and his pseudo
+     */
+    void addUser(String idAccount, String firstname, String lastname, String pseudo);
+
+    /** Edit the address of an user
+     */
+    void editAddressUser(String idAccount, String address);
+
+    /** Edit the worker profile of the User
+     */
+    void EditWorkerProfileUser(String idAccount, boolean isWorker, List<Qualification> qualifications);
+
     /** Edit the information of an user
      */
     void editUser(String oldIdAccount, User newUser);
@@ -26,7 +39,7 @@ public interface IDatabaseManager {
 
     /** Get an user
      */
-    User getUser(String isUser);
+    void getUser(String isUser,final UserResult result);
 
     /** Add an advert in the database
      */
@@ -42,23 +55,23 @@ public interface IDatabaseManager {
 
     /** Get an advert
      */
-    Advert getAdvert(String idAdvert);
+    void getAdvert(String idAdvert,final AdvertResult result);
 
     /** Get all the adverts published by an advertiser
      */
-    List<Advert> getAllAdvertsPublished(String idAdvertiser);
+    void getAllAdvertsPublished(String idAdvertiser,final AdvertListResult result);
 
     /** Get all the adverts published by an advertiser and chosen by a worker
      */
-    List<Advert> getAllAdvertsChosen(String idAdvertiser);
+    void getAllAdvertsChosen(String idAdvertiser,final AdvertListResult result);
 
     /** Get all the adverts accepted by a worker
      */
-    List<Advert> getAllAdvertsAccepted(String idWorker);
+    void getAllAdvertsAccepted(String idWorker,final AdvertListResult result);
 
     /** Get all the advertsFinished by a worker
      */
-    List<Advert> getAllAdvertsFinished(String idAdvertiser);
+    void getAllAdvertsFinished(String idAdvertiser,final AdvertListResult result);
 
 
     /** Add a rating
@@ -75,13 +88,11 @@ public interface IDatabaseManager {
 
     /** Get an advert
      */
-    Advert getRating(String idRating);
-
+    void getRating(String idRating,final RatingResult result);
 
     /** Get all the ratings of an user
      */
-    List<Rating> getUserRatings(String userId);
-
+    void getUserRatings(String userId,final RatingListResult result);
 
     /** Register an UserCallback
      */
@@ -94,6 +105,24 @@ public interface IDatabaseManager {
     /** Register an RatingCallback
      */
     void addRatingCallback(RatingCallback callback);
+
+
+    // Results to retrieve data
+    interface UserResult {
+        void call(User user);
+    }
+    interface AdvertResult {
+        void call(Advert advert);
+    }
+    interface AdvertListResult {
+        void call(List<Advert> advertList);
+    }
+    interface RatingResult {
+        void call(Rating rating);
+    }
+    interface RatingListResult {
+        void call(List<Rating> ratingList);
+    }
 
 
 
