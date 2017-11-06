@@ -6,12 +6,15 @@ package ca.uqac.sosdoit.data;
 
 public class Advert {
 
+    private String idAdvert;
     private String task;
     private String description;
     private String workAddress;
     private AdvertStatus status;
     private double price;
     private String idWorker;
+
+    public Advert(){}
 
     public Advert(String task, String description, String workAddress, AdvertStatus status, double price, String idWorker) {
         this.task = task;
@@ -20,6 +23,14 @@ public class Advert {
         this.status = status;
         this.price = price;
         this.idWorker = idWorker;
+    }
+
+    public String getIdAdvert() {
+        return idAdvert;
+    }
+
+    public void setIdAdvert(String idAdvert) {
+        this.idAdvert = idAdvert;
     }
 
     public String getTask() {
