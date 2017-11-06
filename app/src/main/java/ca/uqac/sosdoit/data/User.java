@@ -19,11 +19,10 @@ public class User {
     private String address;
     private List<Qualification> qualification;
     private boolean isWorker;
-    private List<Rating> ratings;
 
     public User(){}
 
-    public User(String idAccount, String firstname, String lastname, String pseudo, String address, List<Qualification> qualification, boolean isWorker, List<Rating> ratings) {
+    public User(String idAccount, String firstname, String lastname, String pseudo, String address, List<Qualification> qualification, boolean isWorker) {
         this.idAccount = idAccount;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -31,7 +30,6 @@ public class User {
         this.address = address;
         this.qualification = qualification;
         this.isWorker = isWorker;
-        this.ratings = ratings;
     }
 
     public String getIdAccount() {
@@ -88,13 +86,5 @@ public class User {
 
     public void setWorker(boolean worker) {
         isWorker = worker;
-    }
-
-    public List<Rating> getRatings() {
-        return ratings;
-    }
-
-    public void setRatings(List<Rating> ratings) {
-        this.ratings = ratings;
     }
 }
