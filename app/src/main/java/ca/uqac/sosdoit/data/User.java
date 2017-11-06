@@ -20,6 +20,8 @@ public class User {
     private boolean isWorker;
     private List<Rating> ratings;
 
+    public User(){}
+
     public User(String idAccount, String name, String lastname, String address, List<Qualification> qualification, boolean isWorker, List<Rating> ratings) {
         this.idAccount = idAccount;
         this.name = name;

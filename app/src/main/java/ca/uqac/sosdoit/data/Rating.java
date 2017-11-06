@@ -8,6 +8,7 @@ public class Rating {
 
     public static double MAX_RATE = 5.0;
 
+    private String idRating;
     private String idRated;
     private String idGiver;
     private double rate;
@@ -18,6 +19,14 @@ public class Rating {
         this.idGiver = idGiver;
         this.rate = rate;
         this.commentary = commentary;
+    }
+
+    public String getIdRating() {
+        return idRating;
+    }
+
+    public void setIdRating(String idRating) {
+        this.idRating = idRating;
     }
 
     public String getIdRated() {
