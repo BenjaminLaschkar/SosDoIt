@@ -19,7 +19,7 @@ import ca.uqac.sosdoit.database.DatabaseManager;
 
 public class RegisterNameActivity extends AppCompatActivity {
 
-    private EditText inputFirstName, inputLastName;
+    private EditText inputFirstName, inputLastName, inputUsername;
     private Button submitRegister;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
@@ -29,6 +29,7 @@ public class RegisterNameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register_name);
         inputFirstName = (EditText) findViewById(R.id.first_name);
         inputLastName = (EditText) findViewById(R.id.last_name);
+        inputUsername = (EditText) findViewById(R.id.username);
         submitRegister = (Button) findViewById(R.id.submit_register_name);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         submitRegister.setOnClickListener(new View.OnClickListener() {
@@ -36,6 +37,8 @@ public class RegisterNameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String firstName = inputFirstName.getText().toString().trim();
                 String lastName = inputLastName.getText().toString().trim();
+                String username = inputUsername.getText().toString().trim();
+
                 if (TextUtils.isEmpty(firstName)) {
                     Toast.makeText(getApplicationContext(), "Enter firstName !", Toast.LENGTH_SHORT).show();
                     return;
@@ -50,7 +53,7 @@ public class RegisterNameActivity extends AppCompatActivity {
 
                 final FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
                 String id = firebaseuser.getUid();
-                User user = new User(id,inputFirstName.getText().toString(),inputLastName.getText().toString(),null, null, false,null );
+                User user = new User(id,inputFirstName.getText().toString(),inputLastName.getText().toString(), inputUsername.getText().toString(), null, null, false,null );
                 DatabaseManager.getInstance().addUser(user);
             }
         });
