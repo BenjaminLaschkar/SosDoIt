@@ -37,6 +37,12 @@ public class DatabaseManager implements IDatabaseManager {
     private List<AdvertCallback> advertCallbacks;
     private List<RatingCallback> ratingCallbacks;
 
+    /** Get the instance of the database manager
+     */
+    public static DatabaseManager getInstance() {
+        return INSTANCE;
+    }
+
     private DatabaseManager() {
         database = FirebaseDatabase.getInstance().getReference();
         usersRef = database.child(USERS);
@@ -279,8 +285,6 @@ public class DatabaseManager implements IDatabaseManager {
 
     /**
      * Get an advert
-     *
-     * @param idRating
      */
     @Override
     public Advert getRating(String idRating) {
@@ -289,8 +293,6 @@ public class DatabaseManager implements IDatabaseManager {
 
     /**
      * Get all the ratings of an user
-     *
-     * @param userId
      */
     @Override
     public List<Rating> getUserRatings(String userId) {
@@ -313,13 +315,6 @@ public class DatabaseManager implements IDatabaseManager {
      */
     public void addRatingCallback(RatingCallback callback) {
         ratingCallbacks.add(callback);
-    }
-
-
-    /** Get the instance of the database manager
-     */
-    public static DatabaseManager getInstance() {
-        return INSTANCE;
     }
 
 }
