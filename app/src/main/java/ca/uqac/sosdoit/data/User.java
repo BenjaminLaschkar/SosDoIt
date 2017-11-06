@@ -13,21 +13,23 @@ public class User {
 
 
     private String idAccount;
-    private String name;
+    private String firstname;
     private String lastname;
-    private String Address;
-    private List<Qualification> Qualification;
+    private String pseudo;
+    private String address;
+    private List<Qualification> qualification;
     private boolean isWorker;
     private List<Rating> ratings;
 
     public User(){}
 
-    public User(String idAccount, String name, String lastname, String address, List<Qualification> qualification, boolean isWorker, List<Rating> ratings) {
+    public User(String idAccount, String firstname, String lastname, String pseudo, String address, List<Qualification> qualification, boolean isWorker, List<Rating> ratings) {
         this.idAccount = idAccount;
-        this.name = name;
+        this.firstname = firstname;
         this.lastname = lastname;
-        Address = address;
-        Qualification = qualification;
+        this.pseudo = pseudo;
+        this.address = address;
+        this.qualification = qualification;
         this.isWorker = isWorker;
         this.ratings = ratings;
     }
@@ -40,12 +42,12 @@ public class User {
         this.idAccount = idAccount;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public String getLastname() {
@@ -56,20 +58,28 @@ public class User {
         this.lastname = lastname;
     }
 
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
+    }
+
     public String getAddress() {
-        return Address;
+        return address;
     }
 
     public void setAddress(String address) {
-        Address = address;
+        address = address;
     }
 
     public List<Qualification> getQualification() {
-        return Qualification;
+        return qualification;
     }
 
     public void setQualification(List<Qualification> qualification) {
-        Qualification = qualification;
+        this.qualification = qualification;
     }
 
     public boolean isWorker() {
