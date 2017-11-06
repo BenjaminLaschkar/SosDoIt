@@ -64,9 +64,9 @@ public class RegisterAdressActivity extends AppCompatActivity {
                 final FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
                 String id = firebaseuser.getUid();
 
-                //User user = new User(id,null ,null, null, adressparse, null, false,null );
-                //DatabaseManager.getInstance().addUser(user);
-                //progressBar.setVisibility(View.VISIBLE);
+                String fullAdress = adress + " " + postalCode + " " + country;
+
+                DatabaseManager.getInstance().editAddressUser(id,fullAdress);
 
                 startActivity(new Intent(RegisterAdressActivity.this, MainActivity.class));
                 finish();

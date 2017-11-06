@@ -58,7 +58,7 @@ public class RegisterNameActivity extends AppCompatActivity {
 
                 final FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
                 String id = firebaseuser.getUid();
-                User user = new User(id,inputFirstName.getText().toString(),inputLastName.getText().toString(), inputUsername.getText().toString(), null, null, false,null );
+                User user = new User(id,inputFirstName.getText().toString(),inputLastName.getText().toString(), inputUsername.getText().toString(), null, null, false );
                 DatabaseManager.getInstance().addUser(user);
                 progressBar.setVisibility(View.VISIBLE);
 
