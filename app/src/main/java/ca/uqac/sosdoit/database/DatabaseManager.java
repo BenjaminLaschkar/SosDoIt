@@ -5,11 +5,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.uqac.sosdoit.data.Advert;
+import ca.uqac.sosdoit.data.Qualification;
 import ca.uqac.sosdoit.data.Rating;
 import ca.uqac.sosdoit.data.User;
 
@@ -163,6 +166,31 @@ public class DatabaseManager implements IDatabaseManager {
     }
 
     /**
+     * Add an user with only his id, his firstname, his lastname and his pseudo
+     */
+    @Override
+    public void addUser(String idAccount, String firstname, String lastname, String pseudo) {
+        User user = new User(idAccount, firstname, lastname, pseudo, null, null, false, null);
+        addUser(user);
+    }
+
+    /**
+     * Edit the address of an user
+     */
+    @Override
+    public void editAddressUser(String idAccount, String address) {
+        usersRef.child(idAccount).child("address").setValue(address);
+    }
+
+    /**
+     * Edit the worker profile of the User
+     */
+    @Override
+    public void EditWorkerProfileUser(String idAccount, boolean isWorker, List<Qualification> qualifications) {
+
+    }
+
+    /**
      * Edit the information of an user
      */
     @Override
@@ -175,14 +203,26 @@ public class DatabaseManager implements IDatabaseManager {
      */
     @Override
     public void removeUser(String idAccount) {
-        database.child(USERS).child(idAccount).removeValue();
+        usersRef.child(idAccount).removeValue();
     }
 
     /** Get an user from his idAccount
      */
-    public User getUser(String idAccount) {
-        //database.child(USERS).
-        return null;
+    @Override
+    public void getUser(String idAccount,final UserResult result) {
+        Query query = usersRef.equalTo(idAccount);
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                result.call(user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException();
+            }
+        });
     }
 
     /**
@@ -214,48 +254,38 @@ public class DatabaseManager implements IDatabaseManager {
      * Get an advert
      */
     @Override
-    public Advert getAdvert(String idAdvert) {
-        return null;
+    public void getAdvert(String idAdvert,final AdvertResult result) {
     }
 
     /**
      * Get all the adverts published by an advertiser
-     *
-     * @param idAdvertiser
      */
     @Override
-    public List<Advert> getAllAdvertsPublished(String idAdvertiser) {
-        return null;
+    public void getAllAdvertsPublished(String idAdvertiser,final AdvertListResult result) {
     }
 
     /**
      * Get all the adverts published by an advertiser and chosen by a worker
-     *
-     * @param idAdvertiser
      */
     @Override
-    public List<Advert> getAllAdvertsChosen(String idAdvertiser) {
-        return null;
+    public void getAllAdvertsChosen(String idAdvertiser,final AdvertListResult result) {
+
     }
 
     /**
      * Get all the adverts accepted by a worker
-     *
-     * @param idWorker
      */
     @Override
-    public List<Advert> getAllAdvertsAccepted(String idWorker) {
-        return null;
+    public void getAllAdvertsAccepted(String idWorker,final AdvertListResult result) {
+
     }
 
     /**
      * Get all the advertsFinished by a worker
-     *
-     * @param idAdvertiser
      */
     @Override
-    public List<Advert> getAllAdvertsFinished(String idAdvertiser) {
-        return null;
+    public void getAllAdvertsFinished(String idAdvertiser,final AdvertListResult result) {
+
     }
 
     /**
@@ -287,16 +317,16 @@ public class DatabaseManager implements IDatabaseManager {
      * Get an advert
      */
     @Override
-    public Advert getRating(String idRating) {
-        return null;
+    public void getRating(String idRating,final RatingResult result) {
+
     }
 
     /**
      * Get all the ratings of an user
      */
     @Override
-    public List<Rating> getUserRatings(String userId) {
-        return null;
+    public void getUserRatings(String userId,final RatingListResult result) {
+
     }
 
     /** Register an UserCallback
