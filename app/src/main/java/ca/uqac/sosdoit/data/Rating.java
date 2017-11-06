@@ -1,9 +1,12 @@
 package ca.uqac.sosdoit.data;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 /**
  * Data Structure for a rate
  */
 
+@IgnoreExtraProperties
 public class Rating {
 
     public static double MAX_RATE = 5.0;
