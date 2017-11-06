@@ -1,9 +1,12 @@
 package ca.uqac.sosdoit.data;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 /**
  * Data Structure for a Advert
  */
 
+@IgnoreExtraProperties
 public class Advert {
 
     private String idAdvert;
