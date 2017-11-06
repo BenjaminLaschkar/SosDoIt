@@ -31,8 +31,15 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".RegisterNameActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".RegisterAdressActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:screenOrientation="portrait" />

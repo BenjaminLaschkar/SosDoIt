@@ -22,35 +22,40 @@ import ca.uqac.sosdoit.data.User;
 import ca.uqac.sosdoit.database.DatabaseManager;
 
 
-public class RegisterNameActivity extends AppCompatActivity {
+public class RegisterAdressActivity extends AppCompatActivity {
 
-    private EditText inputFirstName, inputLastName, inputUsername;
+    private EditText inputAdress, inputPostalCode, inputCountry;
     private Button submitRegister;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_name);
-        inputFirstName = (EditText) findViewById(R.id.first_name);
-        inputLastName = (EditText) findViewById(R.id.last_name);
-        inputUsername = (EditText) findViewById(R.id.username);
-        submitRegister = (Button) findViewById(R.id.submit_register_name);
+        setContentView(R.layout.activity_register_adress);
+        inputAdress = (EditText) findViewById(R.id.adress);
+        inputPostalCode = (EditText) findViewById(R.id.postal_code);
+        inputCountry = (EditText) findViewById(R.id.country);
+        submitRegister = (Button) findViewById(R.id.submit_register_country);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         submitRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String firstName = inputFirstName.getText().toString().trim();
-                String lastName = inputLastName.getText().toString().trim();
-                String username = inputUsername.getText().toString().trim();
+                String adress = inputAdress.getText().toString().trim();
+                String postalCode = inputPostalCode.getText().toString().trim();
+                String country = inputCountry.getText().toString().trim();
 
-                if (TextUtils.isEmpty(firstName)) {
-                    Toast.makeText(getApplicationContext(), "Enter firstName !", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(adress)) {
+                    Toast.makeText(getApplicationContext(), "Enter adress !", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (TextUtils.isEmpty(lastName)) {
-                    Toast.makeText(getApplicationContext(), "Enter lastName !", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(postalCode)) {
+                    Toast.makeText(getApplicationContext(), "Enter postalCode !", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(country)) {
+                    Toast.makeText(getApplicationContext(), "Enter country !", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 progressBar.setVisibility(View.GONE);
@@ -58,11 +63,12 @@ public class RegisterNameActivity extends AppCompatActivity {
 
                 final FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
                 String id = firebaseuser.getUid();
-                User user = new User(id,inputFirstName.getText().toString(),inputLastName.getText().toString(), inputUsername.getText().toString(), null, null, false,null );
-                DatabaseManager.getInstance().addUser(user);
-                progressBar.setVisibility(View.VISIBLE);
 
-                startActivity(new Intent(RegisterNameActivity.this, RegisterAdressActivity.class));
+                //User user = new User(id,null ,null, null, adressparse, null, false,null );
+                //DatabaseManager.getInstance().addUser(user);
+                //progressBar.setVisibility(View.VISIBLE);
+
+                startActivity(new Intent(RegisterAdressActivity.this, MainActivity.class));
                 finish();
 
             }

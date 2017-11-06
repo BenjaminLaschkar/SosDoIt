@@ -17,11 +17,6 @@
         android:layout_height="45dp"
         android:text="Nous avons besoin des informations suivantes pour l'utilisation de notre service." />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <EditText
         android:id="@+id/first_name"
         android:layout_width="match_parent"
@@ -39,6 +34,7 @@
         android:inputType="textPersonName" />
 
     <EditText
+        android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -50,4 +46,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Encore juste une étape" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
