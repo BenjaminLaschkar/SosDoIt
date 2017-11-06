@@ -153,7 +153,6 @@ public class DatabaseManager implements IDatabaseManager {
     @Override
     public void addUser(User user) {
         String idUser = user.getIdAccount();
-        usersRef.setValue(idUser);
         usersRef.child(idUser).setValue(user);
     }
 
@@ -182,38 +181,31 @@ public class DatabaseManager implements IDatabaseManager {
 
     /**
      * Add an advert in the database
-     *
-     * @param advert
      */
     @Override
     public void addAdvert(Advert advert) {
-
+        String idAdvert = advert.getIdAdvert();
+        advertsRefs.child(idAdvert).setValue(advert);
     }
 
     /**
      * Edit the information of an advert
-     *
-     * @param advert
      */
     @Override
-    public void editAdvert(Advert advert) {
-
+    public void editAdvert(String oldIdAdvert, Advert advert) {
+        advertsRefs.child(oldIdAdvert).setValue(advert);
     }
 
     /**
      * Remove an advert
-     *
-     * @param idAdvert
      */
     @Override
     public void removeAdvert(String idAdvert) {
-
+        advertsRefs.child(idAdvert).removeValue();
     }
 
     /**
      * Get an advert
-     *
-     * @param idAdvert
      */
     @Override
     public Advert getAdvert(String idAdvert) {
@@ -262,33 +254,27 @@ public class DatabaseManager implements IDatabaseManager {
 
     /**
      * Add a rating
-     *
-     * @param rating
      */
     @Override
     public void addRating(Rating rating) {
-
+        String idRating = rating.getIdRating();
+        ratingsRefs.child(idRating).setValue(rating);
     }
 
     /**
      * Edit the information of a rating
-     *
-     * @param olsIdRating
-     * @param rating
      */
     @Override
-    public void editRating(String olsIdRating, Rating rating) {
-
+    public void editRating(String oldIdRating, Rating rating) {
+        ratingsRefs.child(oldIdRating).setValue(rating);
     }
 
     /**
      * Remove an advert
-     *
-     * @param idRating
      */
     @Override
     public void removeRating(String idRating) {
-
+        ratingsRefs.child(idRating).removeValue();
     }
 
     /**
@@ -309,6 +295,24 @@ public class DatabaseManager implements IDatabaseManager {
     @Override
     public List<Rating> getUserRatings(String userId) {
         return null;
+    }
+
+    /** Register an UserCallback
+     */
+    public void addUserCallback(UserCallback callback) {
+        userCallbacks.add(callback);
+    }
+
+    /** Register an AdvertCallback
+     */
+    public void addAdvertCallback(AdvertCallback callback) {
+        advertCallbacks.add(callback);
+    }
+
+    /** Register an RatingCallback
+     */
+    public void addRatingCallback(RatingCallback callback) {
+        ratingCallbacks.add(callback);
     }
 
 
