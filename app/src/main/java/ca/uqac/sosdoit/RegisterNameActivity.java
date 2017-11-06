@@ -1,6 +1,5 @@
 package ca.uqac.sosdoit;
 
-
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
@@ -63,9 +62,3 @@ public class RegisterNameActivity extends AppCompatActivity {
         super.onResume();
     }
 }
-
-
- //id= arecuperer
-  //       User user = new User(id,inputFirstName.getText(),inputLastName.getText(),null, null, false,null );
-
-    //     DatabaseManager.getInstance();
