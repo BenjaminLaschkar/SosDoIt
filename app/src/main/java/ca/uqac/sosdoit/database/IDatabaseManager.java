@@ -37,9 +37,11 @@ public interface IDatabaseManager {
      */
     void removeUser(String idAccount);
 
-    /** Get an user
+    /** Get an user with UserResult
+     * Return null if not found
      */
-    void getUser(String isUser,final UserResult result);
+    void getUser(String idUser, final UserResult result);
+
 
     /** Add an advert in the database
      */
@@ -55,23 +57,23 @@ public interface IDatabaseManager {
 
     /** Get an advert
      */
-    void getAdvert(String idAdvert,final AdvertResult result);
+    void getAdvert(String idAdvert, final AdvertResult result);
 
     /** Get all the adverts published by an advertiser
      */
-    void getAllAdvertsPublished(String idAdvertiser,final AdvertListResult result);
+    void getAllAdvertsPublished(String idAdvertiser, final AdvertListResult result);
 
     /** Get all the adverts published by an advertiser and chosen by a worker
      */
-    void getAllAdvertsChosen(String idAdvertiser,final AdvertListResult result);
+    void getAllAdvertsChosen(String idAdvertiser, final AdvertListResult result);
 
     /** Get all the adverts accepted by a worker
      */
-    void getAllAdvertsAccepted(String idWorker,final AdvertListResult result);
+    void getAllAdvertsAccepted(String idWorker, final AdvertListResult result);
 
     /** Get all the advertsFinished by a worker
      */
-    void getAllAdvertsFinished(String idAdvertiser,final AdvertListResult result);
+    void getAllAdvertsFinished(String idAdvertiser, final AdvertListResult result);
 
 
     /** Add a rating
@@ -88,11 +90,11 @@ public interface IDatabaseManager {
 
     /** Get an advert
      */
-    void getRating(String idRating,final RatingResult result);
+    void getRating(String idRating, final RatingResult result);
 
     /** Get all the ratings of an user
      */
-    void getUserRatings(String userId,final RatingListResult result);
+    void getUserRatings(String userId, final RatingListResult result);
 
     /** Register an UserCallback
      */

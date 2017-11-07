@@ -1,5 +1,7 @@
 package ca.uqac.sosdoit.database;
 
+import android.util.Log;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -208,14 +210,16 @@ public class DatabaseManager implements IDatabaseManager {
     }
 
     /** Get an user from his idAccount
+     * Return null if not found
      */
     @Override
-    public void getUser(String idAccount,final UserResult result) {
-        Query query = usersRef.equalTo(idAccount);
-        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    public void getUser(final String idUser, final UserResult result) {
+        Query query = usersRef.child(idUser);
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
+                Log.d("test", String.valueOf(user));
                 result.call(user);
             }
 
@@ -224,6 +228,18 @@ public class DatabaseManager implements IDatabaseManager {
                 throw databaseError.toException();
             }
         });
+    }
+
+    private class UserResultImp implements UserResult {
+        private User u;
+        @Override
+        public void call(User user) {
+            this.u = user;
+            this.notify();
+        }
+        public User getUser() {
+            return u;
+        }
     }
 
     /**
