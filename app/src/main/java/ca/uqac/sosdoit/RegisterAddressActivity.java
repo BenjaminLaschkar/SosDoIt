@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 import ca.uqac.sosdoit.database.DatabaseManager;
 
 
-public class RegisterAdressActivity extends AppCompatActivity {
+public class RegisterAddressActivity extends AppCompatActivity {
 
     private EditText inputAdress, inputPostalCode, inputCountry;
     private Button submitRegister;
@@ -62,7 +62,7 @@ public class RegisterAdressActivity extends AppCompatActivity {
 
                 DatabaseManager.getInstance().editAddressUser(id,fullAdress);
 
-                startActivity(new Intent(RegisterAdressActivity.this, MainActivity.class));
+                startActivity(new Intent(RegisterAddressActivity.this, EditProfileActivity.class));
                 finish();
 
             }

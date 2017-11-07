@@ -1,4 +1,24 @@
 <resources>
+    <style name="TextViewTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+    </style>
+
+    <style name="TextViewTheme.Description">
+        <item name="android:layout_marginTop">@dimen/element_vertical_margin</item>
+        <item name="android:textSize">@dimen/small</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="TextViewTheme.Description.First">
+        <item name="android:layout_marginTop">0dp</item>
+    </style>
+
+    <style name="TextViewTheme.Element">
+        <item name="android:layout_marginTop">@dimen/element_vertical_margin_small</item>
+    </style>
+
     <style name="ButtonTheme" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/button_primary</item>
     </style>
@@ -20,9 +40,7 @@
         <item name="android:buttonStyle">@style/ButtonTheme</item>
     </style>
 
-    <style name="AppTheme.Light" parent="Theme.AppCompat.Light">
-
-    </style>
+    <style name="AppTheme.Light" parent="Theme.AppCompat.Light" />
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

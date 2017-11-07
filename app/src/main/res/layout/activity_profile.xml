@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="ca.uqac.sosdoit.ProfileActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <!-- android:fillViewport="true" -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:paddingTop="@dimen/activity_padding"
+                android:paddingLeft="@dimen/activity_padding"
+                android:paddingRight="@dimen/activity_padding"
+                android:paddingBottom="@dimen/element_vertical_margin_small"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextViewTheme.Description.First"
+                    android:text="@string/username" />
+
+                <TextView
+                    android:id="@+id/username"
+                    style="@style/TextViewTheme.Element" />
+
+                <TextView
+                    style="@style/TextViewTheme.Description"
+                    android:text="@string/first_name" />
+
+                <TextView
+                    android:id="@+id/first_name"
+                    style="@style/TextViewTheme.Element" />
+
+                <TextView
+                    style="@style/TextViewTheme.Description"
+                    android:text="@string/last_name" />
+
+                <TextView
+                    android:id="@+id/last_name"
+                    style="@style/TextViewTheme.Element" />
+
+                <TextView
+                    style="@style/TextViewTheme.Description"
+                    android:text="@string/email" />
+
+                <TextView
+                    android:id="@+id/email"
+                    style="@style/TextViewTheme.Element"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    style="@style/TextViewTheme.Description"
+                    android:text="@string/address" />
+
+                <TextView
+                    android:id="@+id/address"
+                    style="@style/TextViewTheme.Element" />
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/element_vertical_margin_small"
+            android:paddingLeft="@dimen/activity_padding"
+            android:paddingRight="@dimen/activity_padding"
+            android:paddingBottom="@dimen/activity_padding"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_edit_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_edit_profile" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="@dimen/progress_bar_size"
+                android:layout_height="@dimen/progress_bar_size"
+                android:layout_marginTop="@dimen/element_vertical_margin"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

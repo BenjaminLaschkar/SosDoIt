@@ -57,7 +57,7 @@ public class RegisterNameActivity extends AppCompatActivity {
                 DatabaseManager.getInstance().addUser(user);
                 progressBar.setVisibility(View.VISIBLE);
 
-                startActivity(new Intent(RegisterNameActivity.this, RegisterAdressActivity.class));
+                startActivity(new Intent(RegisterNameActivity.this, RegisterAddressActivity.class));
                 finish();
 
             }
