@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:padding="@dimen/activity_padding">
+
+<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:adjustViewBounds="true"
+    android:maxHeight="160dp"
+    android:src="@mipmap/icon" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:text="Ces informations nous sont utiles, que vous soyez demandeurs ou travailleurs." />
+
+    <EditText
+        android:id="@+id/adress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Adresse"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/postal_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Code postal"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/country"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Pays"
+        android:inputType="textPersonName" />
+
+<Button
+    android:id="@+id/submit_register_country"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Finaliser" />
+
+<ProgressBar
+    android:id="@+id/progress_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+</LinearLayout>
