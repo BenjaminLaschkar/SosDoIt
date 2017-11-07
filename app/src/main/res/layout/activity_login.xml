@@ -103,10 +103,9 @@
                     android:text="@string/btn_link_to_register" />
 
                 <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center|bottom"
+                    android:id="@+id/progress_bar"
+                    android:layout_width="@dimen/progress_bar_size"
+                    android:layout_height="@dimen/progress_bar_size"
                     android:layout_marginTop="@dimen/element_vertical_margin"
                     android:visibility="gone" />
             </LinearLayout>

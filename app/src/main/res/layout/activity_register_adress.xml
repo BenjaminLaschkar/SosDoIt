@@ -48,7 +48,7 @@ android:padding="@dimen/activity_padding">
     android:text="Finaliser" />
 
 <ProgressBar
-    android:id="@+id/progressBar"
+    android:id="@+id/progress_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
 </LinearLayout>

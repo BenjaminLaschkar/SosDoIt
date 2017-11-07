@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         sendEmail.setVisibility(View.GONE);
         remove.setVisibility(View.GONE);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);

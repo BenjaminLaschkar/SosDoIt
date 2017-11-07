@@ -19,8 +19,8 @@
     <dimen name="element_vertical_margin_large">48dp</dimen>
 
     <!-- Width and height -->
-    <dimen name="logo_w_h">100dp</dimen>
+    <dimen name="progress_bar_size">56dp</dimen>
 
     <!-- Other -->
-    <dimen name="fab_margin">16dp</dimen>
+
 </resources>
