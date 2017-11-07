@@ -69,7 +69,7 @@ public class User {
     }
 
     public void setAddress(String address) {
-        address = address;
+        this.address = address;
     }
 
     public List<Qualification> getQualification() {
