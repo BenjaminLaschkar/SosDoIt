@@ -36,6 +36,8 @@
                     android:id="@+id/username"
                     style="@style/TextViewTheme.Element" />
 
+                <View style="@style/Line" />
+
                 <TextView
                     style="@style/TextViewTheme.Description"
                     android:text="@string/first_name" />
@@ -43,6 +45,8 @@
                 <TextView
                     android:id="@+id/first_name"
                     style="@style/TextViewTheme.Element" />
+
+                <View style="@style/Line" />
 
                 <TextView
                     style="@style/TextViewTheme.Description"
@@ -52,14 +56,17 @@
                     android:id="@+id/last_name"
                     style="@style/TextViewTheme.Element" />
 
+                <View style="@style/Line" />
+
                 <TextView
                     style="@style/TextViewTheme.Description"
                     android:text="@string/email" />
 
                 <TextView
                     android:id="@+id/email"
-                    style="@style/TextViewTheme.Element"
-                    android:layout_height="wrap_content" />
+                    style="@style/TextViewTheme.Element" />
+
+                <View style="@style/Line" />
 
                 <TextView
                     style="@style/TextViewTheme.Description"
@@ -68,6 +75,8 @@
                 <TextView
                     android:id="@+id/address"
                     style="@style/TextViewTheme.Element" />
+
+                <View style="@style/Line" />
             </LinearLayout>
         </ScrollView>
 

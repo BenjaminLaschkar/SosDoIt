@@ -19,6 +19,12 @@
         <item name="android:layout_marginTop">@dimen/element_vertical_margin_small</item>
     </style>
 
+    <style name="Line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">@color/grey</item>
+    </style>
+
     <style name="ButtonTheme" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/button_primary</item>
     </style>
