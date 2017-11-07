@@ -14,10 +14,12 @@ import ca.uqac.sosdoit.data.User;
 public interface IDatabaseManager {
 
     /** Add an user in the database
+     * Do nothing if the user is already in the database
      */
     void addUser(User user);
 
     /** Add an user with only his id, his firstname, his lastname and his pseudo
+     * Do nothing if the user is in the database
      */
     void addUser(String idAccount, String firstname, String lastname, String pseudo);
 
@@ -26,6 +28,7 @@ public interface IDatabaseManager {
     void editAddressUser(String idAccount, String address);
 
     /** Edit the worker profile of the User
+     * Add the user if not found in the database
      */
     void EditWorkerProfileUser(String idAccount, boolean isWorker, List<Qualification> qualifications);
 
@@ -34,11 +37,13 @@ public interface IDatabaseManager {
     void editUser(String oldIdAccount, User newUser);
 
     /** Remove an user
+     * Do nothing if the user is not in the database
      */
     void removeUser(String idAccount);
 
     /** Get an user with UserResult
-     * Return null if not found
+     * This method search the user in the database and call the UserResult when the user is found
+     * If the user is not found, the method call UserResult with null ( call(null) )
      */
     void getUser(String idUser, final UserResult result);
 
