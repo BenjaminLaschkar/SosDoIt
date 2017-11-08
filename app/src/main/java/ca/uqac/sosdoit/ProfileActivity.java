@@ -53,6 +53,6 @@ public class ProfileActivity extends AppCompatActivity implements IDatabaseManag
         firstName.setText(user.getFirstname());
         lastName.setText(user.getLastname());
         email.setText(auth.getCurrentUser().getEmail());
-        address.setText(user.getAddress());
+        address.setText(user.getAddress().toString());
     }
 }
