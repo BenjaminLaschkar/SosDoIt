@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.data.Advert;
 import ca.uqac.sosdoit.data.Qualification;
 import ca.uqac.sosdoit.data.Rating;
@@ -64,27 +65,42 @@ public class DatabaseManager implements IDatabaseManager {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                User user = dataSnapshot.getValue(User.class);
-                for (UserCallback callback: userCallbacks) {
-                    callback.onUserAdded(user);
+                if ( !userCallbacks.isEmpty() ) {
+                    User user = dataSnapshot.getValue(User.class);
+                    if (user != null) {
+                        user.setIdAccount(dataSnapshot.getKey());
+                    }
+                    for (UserCallback callback : userCallbacks) {
+                        callback.onUserAdded(user);
+                    }
                 }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                User user = dataSnapshot.getValue(User.class);
-                for (UserCallback callback: userCallbacks) {
-                    callback.onUserChanged(user);
+                if ( !userCallbacks.isEmpty() ) {
+                    User user = dataSnapshot.getValue(User.class);
+                    if (user != null) {
+                        user.setIdAccount(dataSnapshot.getKey());
+                    }
+                    for (UserCallback callback : userCallbacks) {
+                        callback.onUserChanged(user);
+                    }
                 }
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                User user = dataSnapshot.getValue(User.class);
-                for (UserCallback callback: userCallbacks) {
-                    callback.onUserRemoved(user);
+                if ( !userCallbacks.isEmpty() ) {
+                    User user = dataSnapshot.getValue(User.class);
+                    if (user != null) {
+                        user.setIdAccount(dataSnapshot.getKey());
+                    }
+                    for (UserCallback callback : userCallbacks) {
+                        callback.onUserRemoved(user);
+                    }
                 }
             }
 
@@ -97,27 +113,33 @@ public class DatabaseManager implements IDatabaseManager {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                Advert advert = dataSnapshot.getValue(Advert.class);
-                for (AdvertCallback callback: advertCallbacks) {
-                    callback.onAdvertAdded(advert);
+                if ( !advertCallbacks.isEmpty() ) {
+                    Advert advert = dataSnapshot.getValue(Advert.class);
+                    for (AdvertCallback callback : advertCallbacks) {
+                        callback.onAdvertAdded(advert);
+                    }
                 }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                Advert advert = dataSnapshot.getValue(Advert.class);
-                for (AdvertCallback callback: advertCallbacks) {
-                    callback.onAdvertChanged(advert);
+                if ( !advertCallbacks.isEmpty() ) {
+                    Advert advert = dataSnapshot.getValue(Advert.class);
+                    for (AdvertCallback callback : advertCallbacks) {
+                        callback.onAdvertChanged(advert);
+                    }
                 }
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                Advert advert = dataSnapshot.getValue(Advert.class);
-                for (AdvertCallback callback: advertCallbacks) {
-                    callback.onAdvertRemoved(advert);
+                if ( !advertCallbacks.isEmpty() ) {
+                    Advert advert = dataSnapshot.getValue(Advert.class);
+                    for (AdvertCallback callback : advertCallbacks) {
+                        callback.onAdvertRemoved(advert);
+                    }
                 }
             }
 
@@ -130,27 +152,33 @@ public class DatabaseManager implements IDatabaseManager {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                Rating rating = dataSnapshot.getValue(Rating.class);
-                for (RatingCallback callback: ratingCallbacks) {
-                    callback.onRatingAdded(rating);
+                if ( !ratingCallbacks.isEmpty() ) {
+                    Rating rating = dataSnapshot.getValue(Rating.class);
+                    for (RatingCallback callback : ratingCallbacks) {
+                        callback.onRatingAdded(rating);
+                    }
                 }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                Rating rating = dataSnapshot.getValue(Rating.class);
-                for (RatingCallback callback: ratingCallbacks) {
-                    callback.onRatingChanged(rating);
+                if ( !ratingCallbacks.isEmpty() ) {
+                    Rating rating = dataSnapshot.getValue(Rating.class);
+                    for (RatingCallback callback : ratingCallbacks) {
+                        callback.onRatingChanged(rating);
+                    }
                 }
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                Rating rating = dataSnapshot.getValue(Rating.class);
-                for (RatingCallback callback: ratingCallbacks) {
-                    callback.onRatingRemoved(rating);
+                if ( !ratingCallbacks.isEmpty() ) {
+                    Rating rating = dataSnapshot.getValue(Rating.class);
+                    for (RatingCallback callback : ratingCallbacks) {
+                        callback.onRatingRemoved(rating);
+                    }
                 }
             }
 
@@ -178,7 +206,7 @@ public class DatabaseManager implements IDatabaseManager {
      * Edit the address of an user
      */
     @Override
-    public void editAddressUser(String idAccount, String address) {
+    public void editAddressUser(String idAccount, Address address) {
         usersRef.child(idAccount).child("address").setValue(address);
     }
 
@@ -217,7 +245,9 @@ public class DatabaseManager implements IDatabaseManager {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                Log.d("test", String.valueOf(user));
+                if (user != null) {
+                    user.setIdAccount(idUser);
+                }
                 result.call(user);
             }
 
@@ -226,18 +256,6 @@ public class DatabaseManager implements IDatabaseManager {
                 throw databaseError.toException();
             }
         });
-    }
-
-    private class UserResultImp implements UserResult {
-        private User u;
-        @Override
-        public void call(User user) {
-            this.u = user;
-            this.notify();
-        }
-        public User getUser() {
-            return u;
-        }
     }
 
     /**
@@ -344,6 +362,14 @@ public class DatabaseManager implements IDatabaseManager {
 
     }
 
+    /**
+     * Get all the ratings given by a user
+     */
+    @Override
+    public void getGivenUserRating(String idUser, RatingListResult result) {
+
+    }
+
     /** Register an UserCallback
      */
     public void addUserCallback(UserCallback callback) {
@@ -361,5 +387,6 @@ public class DatabaseManager implements IDatabaseManager {
     public void addRatingCallback(RatingCallback callback) {
         ratingCallbacks.add(callback);
     }
+
 
 }

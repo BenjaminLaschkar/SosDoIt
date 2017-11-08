@@ -2,6 +2,7 @@ package ca.uqac.sosdoit.database;
 
 import java.util.List;
 
+import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.data.Advert;
 import ca.uqac.sosdoit.data.Qualification;
 import ca.uqac.sosdoit.data.Rating;
@@ -18,14 +19,14 @@ public interface IDatabaseManager {
      */
     void addUser(User user);
 
-    /** Add an user with only his id, his firstname, his lastname and his pseudo
+    /** Add an user only with his id, his firstname, his lastname and his pseudo
      * Do nothing if the user is in the database
      */
     void addUser(String idAccount, String firstname, String lastname, String pseudo);
 
     /** Edit the address of an user
      */
-    void editAddressUser(String idAccount, String address);
+    void editAddressUser(String idAccount, Address address);
 
     /** Edit the worker profile of the User
      * Add the user if not found in the database
@@ -46,7 +47,6 @@ public interface IDatabaseManager {
      * If the user is not found, the method call UserResult with null ( call(null) )
      */
     void getUser(String idUser, final UserResult result);
-
 
     /** Add an advert in the database
      */
@@ -99,17 +99,24 @@ public interface IDatabaseManager {
 
     /** Get all the ratings of an user
      */
-    void getUserRatings(String userId, final RatingListResult result);
+    void getUserRatings(String idUser, final RatingListResult result);
+
+    /** Get all the ratings given by a user
+     */
+    void getGivenUserRating(String idUser, final  RatingListResult result);
 
     /** Register an UserCallback
+     * The callback will be noticed when a user is respectively added, modified or removed
      */
     void addUserCallback(UserCallback callback);
 
     /** Register an AdvertCallback
+     * The callback will be noticed when a advert is respectively added, modified or removed
      */
     void addAdvertCallback(AdvertCallback callback);
 
     /** Register an RatingCallback
+     * The callback will be noticed when a rating is respectively added, modified or removed
      */
     void addRatingCallback(RatingCallback callback);
 
@@ -130,6 +137,7 @@ public interface IDatabaseManager {
     interface RatingListResult {
         void call(List<Rating> ratingList);
     }
+
 
 
 
