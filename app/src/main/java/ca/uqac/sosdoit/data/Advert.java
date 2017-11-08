@@ -3,8 +3,10 @@ package ca.uqac.sosdoit.data;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.Date;
+
 /**
- * Data Structure for a Advert
+ * Data Structure for an Advert
  */
 
 @IgnoreExtraProperties
@@ -14,6 +16,7 @@ public class Advert {
     private String idAdvert;
     private Task task;
     private String description;
+    private Date creationDate;
     private Address workAddress;
     private AdvertStatus status;
     private double price;
@@ -22,9 +25,10 @@ public class Advert {
 
     public Advert(){}
 
-    public Advert(Task task, String description, Address workAddress, AdvertStatus status, double price, String idAdvertiser, String idWorker) {
+    public Advert(Task task, String description, Date creationDate, Address workAddress, AdvertStatus status, double price, String idAdvertiser, String idWorker) {
         this.task = task;
         this.description = description;
+        this.creationDate = creationDate;
         this.workAddress = workAddress;
         this.status = status;
         this.price = price;
@@ -55,6 +59,14 @@ public class Advert {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
     public Address getWorkAddress() {
