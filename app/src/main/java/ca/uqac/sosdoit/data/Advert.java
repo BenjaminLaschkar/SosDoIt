@@ -1,5 +1,6 @@
 package ca.uqac.sosdoit.data;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
@@ -9,25 +10,29 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class Advert {
 
+    @Exclude
     private String idAdvert;
-    private String task;
+    private Task task;
     private String description;
-    private String workAddress;
+    private Address workAddress;
     private AdvertStatus status;
     private double price;
+    private String idAdvertiser;
     private String idWorker;
 
     public Advert(){}
 
-    public Advert(String task, String description, String workAddress, AdvertStatus status, double price, String idWorker) {
+    public Advert(Task task, String description, Address workAddress, AdvertStatus status, double price, String idAdvertiser, String idWorker) {
         this.task = task;
         this.description = description;
         this.workAddress = workAddress;
         this.status = status;
         this.price = price;
+        this.idAdvertiser = idAdvertiser;
         this.idWorker = idWorker;
     }
 
+    @Exclude
     public String getIdAdvert() {
         return idAdvert;
     }
@@ -36,11 +41,11 @@ public class Advert {
         this.idAdvert = idAdvert;
     }
 
-    public String getTask() {
+    public Task getTask() {
         return task;
     }
 
-    public void setTask(String task) {
+    public void setTask(Task task) {
         this.task = task;
     }
 
@@ -52,11 +57,11 @@ public class Advert {
         this.description = description;
     }
 
-    public String getWorkAddress() {
+    public Address getWorkAddress() {
         return workAddress;
     }
 
-    public void setWorkAddress(String workAddress) {
+    public void setWorkAddress(Address workAddress) {
         this.workAddress = workAddress;
     }
 
@@ -74,6 +79,14 @@ public class Advert {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getIdAdvertiser() {
+        return idAdvertiser;
+    }
+
+    public void setIdAdvertiser(String idAdvertiser) {
+        this.idAdvertiser = idAdvertiser;
     }
 
     public String getIdWorker() {
