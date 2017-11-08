@@ -65,6 +65,6 @@ public class Address {
 
     @Override
     public String toString() {
-        return (houseNumber != null ? houseNumber + " " : "") + street + ", " + city + (zip != null ? "," + zip : "") + " " + country;
+        return (houseNumber != null ? houseNumber + " " : "") + street + ", " + city + (zip != null ? ", " + zip : "") + " " + country;
     }
 }
