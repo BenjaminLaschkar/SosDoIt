@@ -30,7 +30,7 @@ public class RegisterNameActivity extends AppCompatActivity {
         inputFirstName = (EditText) findViewById(R.id.first_name);
         inputLastName = (EditText) findViewById(R.id.last_name);
         inputUsername = (EditText) findViewById(R.id.username);
-        submitRegister = (Button) findViewById(R.id.submit_register_name);
+        submitRegister = (Button) findViewById(R.id.btn_register_name);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         submitRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +38,11 @@ public class RegisterNameActivity extends AppCompatActivity {
                 String firstName = inputFirstName.getText().toString().trim();
                 String lastName = inputLastName.getText().toString().trim();
                 String username = inputUsername.getText().toString().trim();
+
+                if (TextUtils.isEmpty(username)) {
+                    Toast.makeText(getApplicationContext(), "Enter username !", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 if (TextUtils.isEmpty(firstName)) {
                     Toast.makeText(getApplicationContext(), "Enter firstName !", Toast.LENGTH_SHORT).show();
@@ -58,8 +63,6 @@ public class RegisterNameActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
 
                 startActivity(new Intent(RegisterNameActivity.this, RegisterAddressActivity.class));
-                finish();
-
             }
         });
     }

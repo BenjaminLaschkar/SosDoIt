@@ -36,7 +36,7 @@ public class RegisterActivity extends AppCompatActivity
 
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
-        btnRegister = (Button) findViewById(R.id.btn_register);
+        btnRegister = (Button) findViewById(R.id.btn_register_name);
         btnLogIn = (Button) findViewById(R.id.btn_login);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 

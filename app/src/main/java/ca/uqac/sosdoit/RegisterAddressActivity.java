@@ -26,10 +26,10 @@ public class RegisterAddressActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_adress);
-        inputAdress = (EditText) findViewById(R.id.adress);
+        inputAdress = (EditText) findViewById(R.id.address);
         inputPostalCode = (EditText) findViewById(R.id.postal_code);
         inputCountry = (EditText) findViewById(R.id.country);
-        submitRegister = (Button) findViewById(R.id.submit_register_country);
+        submitRegister = (Button) findViewById(R.id.btn_register_address);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         submitRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +62,7 @@ public class RegisterAddressActivity extends AppCompatActivity {
 
                 DatabaseManager.getInstance().editAddressUser(id,fullAdress);
 
-                startActivity(new Intent(RegisterAddressActivity.this, EditProfileActivity.class));
+                startActivity(new Intent(RegisterAddressActivity.this, ProfileActivity.class));
                 finish();
 
             }
