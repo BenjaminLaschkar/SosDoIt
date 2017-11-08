@@ -1,5 +1,6 @@
 package ca.uqac.sosdoit.data;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.List;
@@ -11,18 +12,18 @@ import java.util.List;
 @IgnoreExtraProperties
 public class User {
 
-
+    @Exclude
     private String idAccount;
     private String firstname;
     private String lastname;
     private String pseudo;
-    private String address;
+    private Address address;
     private List<Qualification> qualification;
     private boolean isWorker;
 
     public User(){}
 
-    public User(String idAccount, String firstname, String lastname, String pseudo, String address, List<Qualification> qualification, boolean isWorker) {
+    public User(String idAccount, String firstname, String lastname, String pseudo, Address address, List<Qualification> qualification, boolean isWorker) {
         this.idAccount = idAccount;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -32,6 +33,7 @@ public class User {
         this.isWorker = isWorker;
     }
 
+    @Exclude
     public String getIdAccount() {
         return idAccount;
     }
@@ -64,11 +66,11 @@ public class User {
         this.pseudo = pseudo;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
