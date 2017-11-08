@@ -6,6 +6,8 @@ package ca.uqac.sosdoit.data;
 
 public enum Task {
 
-    TEST
+    TEST,
+    BABYSITTING,
+    MATH_COURSE
     // TODO
 }
