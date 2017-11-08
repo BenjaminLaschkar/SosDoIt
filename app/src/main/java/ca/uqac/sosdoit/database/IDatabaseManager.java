@@ -15,12 +15,14 @@ import ca.uqac.sosdoit.data.User;
 public interface IDatabaseManager {
 
     /** Add an user in the database
-     * Do nothing if the user is already in the database
+     * Update the information of the user if he is already in the database.
+     * WARNING ! In the case of update, onUserChanged is called instead of onUserAdded
      */
     void addUser(User user);
 
     /** Add an user only with his id, his firstname, his lastname and his pseudo
-     * Do nothing if the user is in the database
+     * Update the information of the user if he is already in the database.
+     * WARNING ! In the case of update, onUserChanged is called instead of onUserAdded
      */
     void addUser(String idAccount, String firstname, String lastname, String pseudo);
 
@@ -33,30 +35,38 @@ public interface IDatabaseManager {
      */
     void EditWorkerProfileUser(String idAccount, boolean isWorker, List<Qualification> qualifications);
 
-    /** Edit the information of an user
+    /** Edit the address of an user
+     * Add an user if he is not in the database.
+     * WARNING ! In the case of add, onUserAdded is called instead of onUserChanged
      */
     void editUser(String oldIdAccount, User newUser);
 
     /** Remove an user
-     * Do nothing if the user is not in the database
+     * Do nothing if the user is not in the database (in this case, onUserRemoved is not called)
      */
     void removeUser(String idAccount);
 
     /** Get an user with UserResult
      * This method search the user in the database and call the UserResult when the user is found
-     * If the user is not found, the method call UserResult with null ( call(null) )
+     * WARNING ! If the user is not found, the method call UserResult with null ( call(null) )
      */
     void getUser(String idUser, final UserResult result);
 
     /** Add an advert in the database
-     */
+     * Create a new unique ID when added, as key in the database.
+     * Update the information of the advert if he is already in the database.
+     * WARNING ! In the case of update, onAdvertChanged is called instead of onAdvertAdded
+V     */
     void addAdvert(Advert advert);
 
     /** Edit the information of an advert
+     * Add an advert if he is not in the database.
+     * WARNING ! In the case of add, onAdvertAdded is called instead of onAdvertChanged
      */
     void editAdvert(String oldIdAdvert, Advert advert);
 
     /** Remove an advert
+     * Do nothing if the advert is not in the database (in this case, onAdvertRemoved is not called)
      */
     void removeAdvert(String idAdvert);
 

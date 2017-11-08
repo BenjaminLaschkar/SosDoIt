@@ -260,11 +260,12 @@ public class DatabaseManager implements IDatabaseManager {
 
     /**
      * Add an advert in the database
+     * Create an new ID when added
+     *
      */
     @Override
     public void addAdvert(Advert advert) {
-        String idAdvert = advert.getIdAdvert();
-        advertsRefs.child(idAdvert).setValue(advert);
+        advertsRefs.push().setValue(advert);
     }
 
     /**
