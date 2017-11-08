@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.database.DatabaseManager;
 
 
@@ -58,9 +59,9 @@ public class RegisterAddressActivity extends AppCompatActivity {
                 final FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
                 String id = firebaseuser.getUid();
 
-                String fullAdress = adress + " " + postalCode + " " + country;
+                Address fullAdress = new Address("",adress, postalCode,"", country);
 
-                DatabaseManager.getInstance().editAddressUser(id,fullAdress);
+                DatabaseManager.getInstance().editAddressUser(id, fullAdress);
 
                 startActivity(new Intent(RegisterAddressActivity.this, ProfileActivity.class));
                 finish();
