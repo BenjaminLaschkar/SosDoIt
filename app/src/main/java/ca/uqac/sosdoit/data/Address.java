@@ -6,20 +6,20 @@ package ca.uqac.sosdoit.data;
 
 public class Address {
 
-    private static String SEP = "@@";
-
     private String houseNumber;
     private String street;
     private String city;
     private String zip;
-    private String state;
+    private String country;
 
-    public Address(String houseNumber, String street, String city, String zip, String state) {
+    public Address() {}
+
+    public Address(String houseNumber, String street, String city, String zip, String country) {
         this.houseNumber = houseNumber;
         this.street = street;
         this.city = city;
         this.zip = zip;
-        this.state = state;
+        this.country = country;
     }
 
     public String getHouseNumber() {
@@ -54,31 +54,17 @@ public class Address {
         this.zip = zip;
     }
 
-    public String getState() {
-        return state;
+    public String getCountry() {
+        return country;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
 
     @Override
     public String toString() {
-        return houseNumber + SEP + street + SEP + city + SEP + zip + SEP + state;
-    }
-
-    /** Create an address from a parsed String
-     *
-     */
-    public static Address createAdressFromString(String address) {
-        String[] addressAtt = address.split(SEP);
-        return new Address(
-                addressAtt[0],
-                addressAtt[1],
-                addressAtt[2],
-                addressAtt[3],
-                addressAtt[4]
-        );
+        return (houseNumber != null ? houseNumber + " " : "") + street + ", " + city + (zip != null ? "," + zip : "") + " " + country;
     }
 }
