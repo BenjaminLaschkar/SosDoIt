@@ -270,8 +270,6 @@ public class DatabaseManager implements IDatabaseManager {
 
     /** Add an advert in the database
      * Create a new unique ID when added, as key in the database.
-     * Update the information of the advert if he is already in the database.
-     * WARNING ! In the case of update, onAdvertChanged is called instead of onAdvertAdded
      */
     @Override
     public void addAdvert(Advert advert) {
@@ -417,8 +415,6 @@ public class DatabaseManager implements IDatabaseManager {
 
     /** Add an rating in the database
      * Create a new unique ID when added, as key in the database.
-     * Update the information of the rating if he is already in the database.
-     * WARNING ! In the case of update, onRatingChanged is called instead of onRatingAdded
      */
     @Override
     public void addRating(Rating rating) {
