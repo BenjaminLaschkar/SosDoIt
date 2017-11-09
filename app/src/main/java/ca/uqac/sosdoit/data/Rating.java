@@ -22,6 +22,8 @@ public class Rating {
     private String commentary;
     private Date date;
 
+    public Rating(){}
+
     public Rating(String idUserRated, String idGiver, double rate, String commentary) {
         this.idUserRated = idUserRated;
         this.idGiver = idGiver;
@@ -46,11 +48,11 @@ public class Rating {
         this.idUserRated = idUserRated;
     }
 
-    public String getidGiver() {
+    public String getIdGiver() {
         return idGiver;
     }
 
-    public void setidGiver(String idGiver) {
+    public void setIdGiver(String idGiver) {
         this.idGiver = idGiver;
     }
 
