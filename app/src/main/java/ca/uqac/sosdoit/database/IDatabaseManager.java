@@ -70,9 +70,16 @@ V     */
      */
     void removeAdvert(String idAdvert);
 
-    /** Get an advert
+    /** Get an Advert with AdvertResult
+     * This method search the advert in the database and call the AdvertResult when the advert is found
+     * WARNING ! If the advert is not found, the method call UserResult with null ( call(null) )
      */
     void getAdvert(String idAdvert, final AdvertResult result);
+
+    /** Get all the adverts in the database
+     * WARNING ! May produce lag and surcharge memory
+     */
+    void getAllAdverts(AdvertListResult result);
 
     /** Get all the adverts published by an advertiser
      */

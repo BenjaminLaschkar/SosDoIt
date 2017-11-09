@@ -288,21 +288,43 @@ public class DatabaseManager implements IDatabaseManager {
      * Get an advert
      */
     @Override
-    public void getAdvert(String idAdvert,final AdvertResult result) {
+    public void getAdvert(final String idAdvert, final AdvertResult result) {
+        Query query = advertsRefs.child(idAdvert);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Advert advert = dataSnapshot.getValue(Advert.class);
+                if (advert != null) {
+                    advert.setIdAdvert(idAdvert);
+                }
+                result.call(advert);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException();
+            }
+        });
+    }
+
+    @Override
+    public void getAllAdverts(final AdvertListResult result) {
+        Query query = advertsRefs;
+        getAdvertsWithQuery(query, result);
     }
 
     /**
      * Get all the adverts published by an advertiser
      */
     @Override
-    public void getAllAdvertsPublished(String idAdvertiser,final AdvertListResult result) {
+    public void getAllAdvertsPublished(String idAdvertiser, final AdvertListResult result) {
     }
 
     /**
      * Get all the adverts published by an advertiser and chosen by a worker
      */
     @Override
-    public void getAllAdvertsChosen(String idAdvertiser,final AdvertListResult result) {
+    public void getAllAdvertsChosen(String idAdvertiser, final AdvertListResult result) {
 
     }
 
@@ -310,7 +332,7 @@ public class DatabaseManager implements IDatabaseManager {
      * Get all the adverts accepted by a worker
      */
     @Override
-    public void getAllAdvertsAccepted(String idWorker,final AdvertListResult result) {
+    public void getAllAdvertsAccepted(String idWorker, final AdvertListResult result) {
 
     }
 
@@ -318,8 +340,34 @@ public class DatabaseManager implements IDatabaseManager {
      * Get all the advertsFinished by a worker
      */
     @Override
-    public void getAllAdvertsFinished(String idAdvertiser,final AdvertListResult result) {
+    public void getAllAdvertsFinished(String idAdvertiser, final AdvertListResult result) {
 
+    }
+
+    /** Private method to filter the adverts
+     */
+    private void getAdvertsWithQuery(Query query, final AdvertListResult result) {
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                ArrayList<Advert> adverts = new ArrayList<>();
+
+                for (DataSnapshot data: dataSnapshot.getChildren()) {
+                    Advert advert = data.getValue(Advert.class);
+                    if (advert != null) {
+                        advert.setIdAdvert(data.getKey());
+                        adverts.add(advert);
+                    }
+                }
+                result.call(adverts);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw  databaseError.toException();
+            }
+        });
     }
 
     /**
