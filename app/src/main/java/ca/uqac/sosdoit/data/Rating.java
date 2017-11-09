@@ -6,7 +6,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.Date;
 
 /**
- * Data Structure for a rate
+ * Data Structure for a rating
  */
 
 @IgnoreExtraProperties

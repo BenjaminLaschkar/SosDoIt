@@ -1,7 +1,5 @@
 package ca.uqac.sosdoit.database;
 
-import android.util.Log;
-
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,20 +25,20 @@ import ca.uqac.sosdoit.data.User;
 
 public class DatabaseManager implements IDatabaseManager {
 
+    // Paths of sections in the database :
     private static String USERS = "users";
     private static String ADVERTS = "adverts";
     private static String RATINGS = "ratings";
 
     // References:
-    private DatabaseReference database;
     private DatabaseReference usersRef;
     private DatabaseReference advertsRefs;
     private DatabaseReference ratingsRefs;
 
-    // DatabaseManager instance
+    // DatabaseManager instance :
     private static DatabaseManager INSTANCE = new DatabaseManager();
 
-    // Callbacks
+    // Callbacks :
     private List<UserCallback> userCallbacks;
     private List<AdvertCallback> advertCallbacks;
     private List<RatingCallback> ratingCallbacks;
@@ -52,7 +50,7 @@ public class DatabaseManager implements IDatabaseManager {
     }
 
     private DatabaseManager() {
-        database = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         usersRef = database.child(USERS);
         advertsRefs = database.child(ADVERTS);
         ratingsRefs = database.child(RATINGS);
@@ -190,6 +188,8 @@ public class DatabaseManager implements IDatabaseManager {
     }
 
     /** Add an user in the database
+     * Update the information of the user if he is already in the database.
+     * WARNING ! In the case of update, onUserChanged is called instead of onUserAdded
      */
     @Override
     public void addUser(User user) {
@@ -197,7 +197,10 @@ public class DatabaseManager implements IDatabaseManager {
         usersRef.child(idUser).setValue(user);
     }
 
-
+    /** Add an user only with his id, his firstname, his lastname and his pseudo
+     * Update the information of the user if he is already in the database.
+     * WARNING ! In the case of update, onUserChanged is called instead of onUserAdded
+     */
     @Override
     public void addUser(String idAccount, String firstname, String lastname, String pseudo) {
         User user = new User(idAccount, firstname, lastname, pseudo, null, null, false);
@@ -212,8 +215,8 @@ public class DatabaseManager implements IDatabaseManager {
         usersRef.child(idAccount).child("address").setValue(address);
     }
 
-    /**
-     * Edit the worker profile of the User
+    /** Edit the worker profile of the User
+     * Add the user if not found in the database
      */
     @Override
     public void EditWorkerProfileUser(String idAccount, boolean isWorker, List<Qualification> qualifications) {
@@ -221,8 +224,9 @@ public class DatabaseManager implements IDatabaseManager {
         usersRef.child(idAccount).child("qualifications").setValue(qualifications);
     }
 
-    /**
-     * Edit the information of an user
+    /** Edit the address of an user
+     * Add an user if he is not in the database.
+     * WARNING ! In the case of add, onUserAdded is called instead of onUserChanged
      */
     @Override
     public void editUser(String oldIdAccount, User newUser) {
@@ -231,14 +235,16 @@ public class DatabaseManager implements IDatabaseManager {
 
 
     /** Remove an user
+     * Do nothing if the user is not in the database (in this case, onUserRemoved is not called)
      */
     @Override
     public void removeUser(String idAccount) {
         usersRef.child(idAccount).removeValue();
     }
 
-    /** Get an user from his idAccount
-     * Return null if not found
+    /** Get an user with UserResult
+     * This method search the user in the database and call the UserResult when the user is found
+     * WARNING ! If the user is not found, the method call UserResult with null ( call(null) )
      */
     @Override
     public void getUser(final String idUser, final UserResult result) {
@@ -260,10 +266,10 @@ public class DatabaseManager implements IDatabaseManager {
         });
     }
 
-    /**
-     * Add an advert in the database
-     * Create an new ID when added
-     *
+    /** Add an advert in the database
+     * Create a new unique ID when added, as key in the database.
+     * Update the information of the advert if he is already in the database.
+     * WARNING ! In the case of update, onAdvertChanged is called instead of onAdvertAdded
      */
     @Override
     public void addAdvert(Advert advert) {
@@ -274,8 +280,9 @@ public class DatabaseManager implements IDatabaseManager {
         advertsRefs.push().setValue(advert);
     }
 
-    /**
-     * Edit the information of an advert
+    /** Edit the information of an advert
+     * Add an advert if he is not in the database.
+     * WARNING ! In the case of add, onAdvertAdded is called instead of onAdvertChanged
      */
     @Override
     public void editAdvert(String oldIdAdvert, Advert advert) {
@@ -286,16 +293,17 @@ public class DatabaseManager implements IDatabaseManager {
         advertsRefs.child(oldIdAdvert).setValue(advert);
     }
 
-    /**
-     * Remove an advert
+    /** Remove an advert
+     * Do nothing if the advert is not in the database (in this case, onAdvertRemoved is not called)
      */
     @Override
     public void removeAdvert(String idAdvert) {
         advertsRefs.child(idAdvert).removeValue();
     }
 
-    /**
-     * Get an advert
+    /** Get an Advert with AdvertResult
+     * This method search the advert in the database and call the AdvertResult when the advert is found
+     * WARNING ! If the advert is not found, the method call UserResult with null ( call(null) )
      */
     @Override
     public void getAdvert(final String idAdvert, final AdvertResult result) {
@@ -317,6 +325,9 @@ public class DatabaseManager implements IDatabaseManager {
         });
     }
 
+    /** Get all the adverts in the database
+     * WARNING ! May produce lag and surcharge memory
+     */
     @Override
     public void getAllAdverts(final AdvertListResult result) {
         Query query = advertsRefs;
@@ -331,8 +342,8 @@ public class DatabaseManager implements IDatabaseManager {
         this.getAdvertsWithQuery(query, result, false, null);
     }
 
-    /**
-     * Get all the adverts published by an advertiser
+    /** Get all the adverts published by an advertiser
+     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
     @Override
     public void getAllAdvertsPublished(String idAdvertiser, final AdvertListResult result) {
@@ -340,38 +351,40 @@ public class DatabaseManager implements IDatabaseManager {
         this.getAdvertsWithQuery(query, result, false, null);
     }
 
-    /**
-     * Get all the adverts available by an advertiser, i.e. not chose or finished by a worker
+    /** Get all the adverts available published by an advertiser, i.e. not chose or finished by a worker
      * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
     @Override
     public void getAllAdvertsPublishedAvailable(String idAdvertiser, AdvertListResult result) {
         Query query = advertsRefs.orderByChild("idAdvertiser").equalTo(idAdvertiser);
-        this.getAdvertsWithQuery(query, result, true, AdvertStatus.CHOSEN);
+        this.getAdvertsWithQuery(query, result, true, AdvertStatus.AVAILABLE);
     }
 
-    /**
-     * Get all the adverts published by an advertiser and chosen by a worker
+    /** Get all the adverts available published by an advertiser, i.e. not chose or finished by a worker
+     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
     @Override
     public void getAllAdvertsChosen(String idAdvertiser, final AdvertListResult result) {
-
+        Query query = advertsRefs.orderByChild("idAdvertiser").equalTo(idAdvertiser);
+        this.getAdvertsWithQuery(query, result, true, AdvertStatus.CHOSEN);
     }
 
-    /**
-     * Get all the adverts accepted by a worker
+    /** Get all the adverts accepted by a worker, accepted and not finished yet
+     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
     @Override
     public void getAllAdvertsAccepted(String idWorker, final AdvertListResult result) {
-
+        Query query = advertsRefs.orderByChild("idWorker").equalTo(idWorker);
+        this.getAdvertsWithQuery(query, result, true, AdvertStatus.ACCEPTED);
     }
 
-    /**
-     * Get all the advertsFinished by a worker
+    /** Get all the advertsFinished by a worker
+     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
     @Override
     public void getAllAdvertsFinished(String idAdvertiser, final AdvertListResult result) {
-
+        Query query = advertsRefs.orderByChild("idAdvertiser").equalTo(idAdvertiser);
+        this.getAdvertsWithQuery(query, result, true, AdvertStatus.FINISHED);
     }
 
     /** Private method to filter the adverts
@@ -400,68 +413,138 @@ public class DatabaseManager implements IDatabaseManager {
         });
     }
 
-    /**
-     * Add a rating
+    /** Add an rating in the database
+     * Create a new unique ID when added, as key in the database.
+     * Update the information of the rating if he is already in the database.
+     * WARNING ! In the case of update, onRatingChanged is called instead of onRatingAdded
      */
     @Override
     public void addRating(Rating rating) {
-        String idRating = rating.getIdRating();
-        ratingsRefs.child(idRating).setValue(rating);
+        // Date the rating, if not did before
+        if (rating.getDate() == null) {
+            rating.setDate(new Date());
+        }
+        ratingsRefs.push().setValue(rating);
     }
 
-    /**
-     * Edit the information of a rating
+    /** Edit the information of an rating
+     * Add an rating if he is not in the database.
+     * WARNING ! In the case of add, onRatingAdded is called instead of onRatingChanged
      */
     @Override
     public void editRating(String oldIdRating, Rating rating) {
+        if (rating.getDate() == null) {
+            rating.setDate(new Date());
+        }
         ratingsRefs.child(oldIdRating).setValue(rating);
     }
 
-    /**
-     * Remove an advert
+    /** Remove an rating
+     * Do nothing if the rating is not in the database (in this case, onRatingRemoved is not called)
      */
     @Override
     public void removeRating(String idRating) {
         ratingsRefs.child(idRating).removeValue();
     }
 
-    /**
-     * Get an advert
+    /** Get an Rating with AdvertResult
+     * This method search the rating in the database and call the RatingResult when the rating is found
+     * WARNING ! If the rating is not found, the method call RatingResult with null ( call(null) )
      */
     @Override
-    public void getRating(String idRating,final RatingResult result) {
+    public void getRating(final String idRating, final RatingResult result) {
+        Query query = ratingsRefs.child(idRating);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Rating rating = dataSnapshot.getValue(Rating.class);
+                if (rating != null) {
+                    rating.setIdRating(idRating);
+                }
+                result.call(rating);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException();
+            }
+        });
     }
 
-    /**
-     * Get all the ratings of an user
+    /** Get all the ratings of an user, i.e. all the rating given to an user
+     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
     @Override
-    public void getUserRatings(String userId,final RatingListResult result) {
+    public void getUserRatings(String idUserRated,final RatingListResult result) {
+        Query query = ratingsRefs.orderByChild("idUserRated").equalTo(idUserRated);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                ArrayList<Rating> ratings = new ArrayList<>();
+
+                for (DataSnapshot data: dataSnapshot.getChildren()) {
+                    Rating rating = data.getValue(Rating.class);
+                    if (rating != null) {
+                        rating.setIdRating(data.getKey());
+                        ratings.add(rating);
+                    }
+                }
+                result.call(ratings);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw  databaseError.toException();
+            }
+        });
     }
 
-    /**
-     * Get all the ratings given by a user
+    /** Get all the ratings given by a user
+     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
     @Override
-    public void getGivenUserRating(String idUser, RatingListResult result) {
+    public void getGivenUserRating(String idGiver, final RatingListResult result) {
+        Query query = ratingsRefs.orderByChild("idGiver").equalTo(idGiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                ArrayList<Rating> ratings = new ArrayList<>();
+
+                for (DataSnapshot data: dataSnapshot.getChildren()) {
+                    Rating rating = data.getValue(Rating.class);
+                    if (rating != null) {
+                        rating.setIdRating(data.getKey());
+                        ratings.add(rating);
+                    }
+                }
+                result.call(ratings);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw  databaseError.toException();
+            }
+        });
     }
 
     /** Register an UserCallback
-     */
+     * The callback will be noticed when a user is respectively added, modified or removed
+     * */
     public void addUserCallback(UserCallback callback) {
         userCallbacks.add(callback);
     }
 
     /** Register an AdvertCallback
+     * The callback will be noticed when a advert is respectively added, modified or removed
      */
     public void addAdvertCallback(AdvertCallback callback) {
         advertCallbacks.add(callback);
     }
 
     /** Register an RatingCallback
+     * The callback will be noticed when a rating is respectively added, modified or removed
      */
     public void addRatingCallback(RatingCallback callback) {
         ratingCallbacks.add(callback);
