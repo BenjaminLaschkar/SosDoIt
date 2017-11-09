@@ -1,6 +1,9 @@
 package ca.uqac.sosdoit.data;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.Date;
 
 /**
  * Data Structure for a rate
@@ -11,19 +14,22 @@ public class Rating {
 
     public static double MAX_RATE = 5.0;
 
+    @Exclude
     private String idRating;
-    private String idRated;
+    private String idUserRated;
     private String idGiver;
     private double rate;
     private String commentary;
+    private Date date;
 
-    public Rating(String idRated, String idGiver, double rate, String commentary) {
-        this.idRated = idRated;
+    public Rating(String idUserRated, String idGiver, double rate, String commentary) {
+        this.idUserRated = idUserRated;
         this.idGiver = idGiver;
         this.rate = rate;
         this.commentary = commentary;
     }
 
+    @Exclude
     public String getIdRating() {
         return idRating;
     }
@@ -32,12 +38,12 @@ public class Rating {
         this.idRating = idRating;
     }
 
-    public String getIdRated() {
-        return idRated;
+    public String getIdUserRated() {
+        return idUserRated;
     }
 
-    public void setIdRated(String idRated) {
-        this.idRated = idRated;
+    public void setIdUserRated(String idUserRated) {
+        this.idUserRated = idUserRated;
     }
 
     public String getidGiver() {
@@ -62,5 +68,13 @@ public class Rating {
 
     public void setCommentary(String commentary) {
         this.commentary = commentary;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
