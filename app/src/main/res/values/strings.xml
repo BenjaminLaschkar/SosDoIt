@@ -17,8 +17,12 @@
     <string name="msg_forgot_password">We just need your registered email address to send you password reset instructions.</string>
     <string name="msg_auth_failed">Authentication failed, check your email and password or register.</string>
     <string name="msg_register_failed">Registration failed</string>
+    <string name="msg_unknown_error">An unknown error occured.</string>
     <string name="msg_invalid_email">Invalid email address!</string>
     <string name="msg_email_already_used">Email address already used.</string>
+    <string name="msg_empty_username">Enter your username!</string>
+    <string name="msg_empty_first_name">Enter your first name!</string>
+    <string name="msg_empty_last_name">Enter your last name!</string>
 
     <!-- Hints -->
     <string name="hint_login">@string/email</string>

@@ -5,10 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -24,19 +21,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import ca.uqac.sosdoit.util.Util;
 
 public class RegisterActivity extends AppCompatActivity
 {
     private EditText inputEmail, inputPassword;
-    private Button btnLogIn, btnRegister;
+    private Button btnRegister, btnLogIn;
     private TextInputLayout passwordContainer;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
 
-    private AdvancedTextWatcher textWatcher;
+    private Util.AdvancedTextWatcher textWatcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -51,7 +47,7 @@ public class RegisterActivity extends AppCompatActivity
         btnLogIn = (Button) findViewById(R.id.btn_login);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
-        textWatcher = new AdvancedTextWatcher(inputPassword);
+        textWatcher = new Util.AdvancedTextWatcher(inputPassword, passwordContainer);
 
         auth = FirebaseAuth.getInstance();
 
@@ -104,12 +100,10 @@ public class RegisterActivity extends AppCompatActivity
             passwordContainer.setPasswordVisibilityToggleEnabled(false);
 
             if (TextUtils.isEmpty(password)) {
-                inputPassword.setError(getString(R.string.msg_empty_password));
+                textWatcher.setErrorAndListener(getString(R.string.msg_empty_password));
             } else {
-                inputPassword.setError(getString(R.string.msg_minimum_password));
+                textWatcher.setErrorAndListener(getString(R.string.msg_minimum_password));
             }
-
-            textWatcher.addListener();
 
             if (!exit) {
                 inputPassword.requestFocus();
@@ -135,58 +129,24 @@ public class RegisterActivity extends AppCompatActivity
 
                 if (!task.isSuccessful()) {
                     try {
-                        throw task.getException();
-                    } catch(FirebaseAuthInvalidCredentialsException e) {
+                        if (task.getException() != null) {
+                            throw task.getException();
+                        } else {
+                            Toast.makeText(RegisterActivity.this, getString(R.string.msg_register_failed) + ": " + getString(R.string.msg_unknown_error), Toast.LENGTH_LONG).show();
+                        }
+                    } catch (FirebaseAuthInvalidCredentialsException e) {
                         inputEmail.setError(getString(R.string.msg_invalid_email));
-                    } catch(FirebaseAuthUserCollisionException e) {
+                    } catch (FirebaseAuthUserCollisionException e) {
                         inputEmail.setError(getString(R.string.msg_email_already_used));
-                    } catch(Exception e) {
+                    } catch (Exception e) {
                         Toast.makeText(RegisterActivity.this, getString(R.string.msg_register_failed) + ": " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
                     Util.showKeyboard(RegisterActivity.this, inputEmail);
                 } else {
-                    startActivity(new Intent(RegisterActivity.this, RegisterNameActivity.class));
+                    startActivity(new Intent(RegisterActivity.this, RegisterNameActivity.class).addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT));
                     finish();
                 }
             }
         });
-    }
-
-    private class AdvancedTextWatcher implements TextWatcher
-    {
-        private boolean added;
-        EditText e;
-
-        public AdvancedTextWatcher(EditText e) {
-            added = false;
-            this.e = e;
-        }
-
-        public void addListener() {
-            if (!added) {
-                e.addTextChangedListener(this);
-                added = true;
-            }
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after)
-        {
-            passwordContainer.setPasswordVisibilityToggleEnabled(true);
-            e.removeTextChangedListener(this);
-            added = false;
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count)
-        {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s)
-        {
-
-        }
     }
 }

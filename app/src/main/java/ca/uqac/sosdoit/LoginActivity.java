@@ -34,7 +34,6 @@ public class LoginActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         auth = FirebaseAuth.getInstance();
-
         if (auth.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
             finish();
@@ -63,7 +62,8 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                startActivityForResult(new Intent(LoginActivity.this, RegisterActivity.class), Util.REGISTRATION_COMPLETE_REQUEST);
+                //startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
 
@@ -88,6 +88,14 @@ public class LoginActivity extends AppCompatActivity
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode == Util.REGISTRATION_COMPLETE_REQUEST && resultCode == RESULT_OK) {
+            finish();
+        }
     }
 
     private void login(View v)
