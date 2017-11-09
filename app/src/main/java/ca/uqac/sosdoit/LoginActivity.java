@@ -105,6 +105,11 @@ public class LoginActivity extends AppCompatActivity
 
         if (TextUtils.isEmpty(password)) {
             inputPassword.setError(getString(R.string.msg_empty_password));
+
+            if (!exit) {
+                inputPassword.requestFocus();
+            }
+
             return;
         }
 
@@ -124,7 +129,6 @@ public class LoginActivity extends AppCompatActivity
                 progressBar.setVisibility(View.GONE);
 
                 if (!task.isSuccessful()) {
-                    inputEmail.requestFocus();
                     Util.showKeyboard(LoginActivity.this, inputEmail);
                     Toast.makeText(LoginActivity.this, getString(R.string.msg_auth_failed), Toast.LENGTH_LONG).show();
                 } else {
