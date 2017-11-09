@@ -1,5 +1,7 @@
 package ca.uqac.sosdoit.database;
 
+import android.util.Log;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -433,6 +435,7 @@ public class DatabaseManager implements IDatabaseManager {
      */
     @Override
     public void editRating(String oldIdRating, Rating rating) {
+        // Date the rating, if not did before
         if (rating.getDate() == null) {
             rating.setDate(new Date());
         }
