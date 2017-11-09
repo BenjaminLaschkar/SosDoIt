@@ -25,10 +25,9 @@ public class Advert {
 
     public Advert(){}
 
-    public Advert(Task task, String description, Date creationDate, Address workAddress, AdvertStatus status, double price, String idAdvertiser, String idWorker) {
+    public Advert(Task task, String description, Address workAddress, AdvertStatus status, double price, String idAdvertiser, String idWorker) {
         this.task = task;
         this.description = description;
-        this.creationDate = creationDate;
         this.workAddress = workAddress;
         this.status = status;
         this.price = price;

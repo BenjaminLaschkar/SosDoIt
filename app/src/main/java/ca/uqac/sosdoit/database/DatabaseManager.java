@@ -11,6 +11,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ca.uqac.sosdoit.data.Address;
@@ -266,6 +267,10 @@ public class DatabaseManager implements IDatabaseManager {
      */
     @Override
     public void addAdvert(Advert advert) {
+        // Date the advert, if not did before
+        if (advert.getCreationDate() == null) {
+            advert.setCreationDate(new Date());
+        }
         advertsRefs.push().setValue(advert);
     }
 
@@ -274,6 +279,10 @@ public class DatabaseManager implements IDatabaseManager {
      */
     @Override
     public void editAdvert(String oldIdAdvert, Advert advert) {
+        // Date the advert, if not did before
+        if (advert.getCreationDate() == null) {
+            advert.setCreationDate(new Date());
+        }
         advertsRefs.child(oldIdAdvert).setValue(advert);
     }
 
