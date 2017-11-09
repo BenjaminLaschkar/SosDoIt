@@ -53,7 +53,9 @@ public class RegisterAddressActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Enter country !", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 progressBar.setVisibility(View.GONE);
+
                 auth = FirebaseAuth.getInstance();
 
                 final FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
@@ -65,7 +67,6 @@ public class RegisterAddressActivity extends AppCompatActivity {
 
                 startActivity(new Intent(RegisterAddressActivity.this, ProfileActivity.class));
                 finish();
-
             }
         });
     }

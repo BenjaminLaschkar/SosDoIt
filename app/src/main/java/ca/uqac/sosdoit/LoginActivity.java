@@ -1,6 +1,5 @@
 package ca.uqac.sosdoit;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,7 +8,6 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -20,6 +18,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
+import ca.uqac.sosdoit.util.Util;
 
 public class LoginActivity extends AppCompatActivity
 {
@@ -41,9 +41,6 @@ public class LoginActivity extends AppCompatActivity
         }
 
         setContentView(R.layout.activity_login);
-
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
@@ -95,21 +92,32 @@ public class LoginActivity extends AppCompatActivity
 
     private void login(View v)
     {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+        final String email = inputEmail.getText().toString().trim();
+        final String password = inputPassword.getText().toString().trim();
 
-        String email = inputEmail.getText().toString();
-        final String password = inputPassword.getText().toString();
+        boolean exit = false;
 
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(getApplicationContext(), getString(R.string.msg_empty_email), Toast.LENGTH_SHORT).show();
-            return;
+            inputEmail.setError(getString(R.string.msg_empty_email));
+            inputEmail.requestFocus();
+            exit = true;
         }
 
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(getApplicationContext(), getString(R.string.msg_empty_password), Toast.LENGTH_SHORT).show();
+            inputPassword.setError(getString(R.string.msg_empty_password));
+
+            if (!exit) {
+                inputPassword.requestFocus();
+            }
+
             return;
         }
+
+        if (exit) {
+            return;
+        }
+
+        Util.hideKeyboard(LoginActivity.this, v);
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -121,11 +129,8 @@ public class LoginActivity extends AppCompatActivity
                 progressBar.setVisibility(View.GONE);
 
                 if (!task.isSuccessful()) {
-                    if (password.length() < 6) {
-                        inputPassword.setError(getString(R.string.msg_minimum_password));
-                    } else {
-                        Toast.makeText(LoginActivity.this, getString(R.string.msg_auth_failed), Toast.LENGTH_LONG).show();
-                    }
+                    Util.showKeyboard(LoginActivity.this, inputEmail);
+                    Toast.makeText(LoginActivity.this, getString(R.string.msg_auth_failed), Toast.LENGTH_LONG).show();
                 } else {
                     startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
                     finish();
