@@ -15,6 +15,7 @@ import java.util.List;
 
 import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.data.Advert;
+import ca.uqac.sosdoit.data.AdvertStatus;
 import ca.uqac.sosdoit.data.Qualification;
 import ca.uqac.sosdoit.data.Rating;
 import ca.uqac.sosdoit.data.User;
@@ -310,7 +311,15 @@ public class DatabaseManager implements IDatabaseManager {
     @Override
     public void getAllAdverts(final AdvertListResult result) {
         Query query = advertsRefs;
-        getAdvertsWithQuery(query, result);
+        this.getAdvertsWithQuery(query, result, false, null);
+    }
+
+    /** Get all the adverts available, i.e. not chose or finished by a worker
+     * WARNING ! May produce lag and surcharge memory
+     */
+    public void getAllAdvertsAvailable(AdvertListResult result) {
+        Query query = advertsRefs.orderByChild("status").equalTo(AdvertStatus.AVAILABLE.name());
+        this.getAdvertsWithQuery(query, result, false, null);
     }
 
     /**
@@ -318,6 +327,18 @@ public class DatabaseManager implements IDatabaseManager {
      */
     @Override
     public void getAllAdvertsPublished(String idAdvertiser, final AdvertListResult result) {
+        Query query = advertsRefs.orderByChild("idAdvertiser").equalTo(idAdvertiser);
+        this.getAdvertsWithQuery(query, result, false, null);
+    }
+
+    /**
+     * Get all the adverts available by an advertiser, i.e. not chose or finished by a worker
+     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
+     */
+    @Override
+    public void getAllAdvertsPublishedAvailable(String idAdvertiser, AdvertListResult result) {
+        Query query = advertsRefs.orderByChild("idAdvertiser").equalTo(idAdvertiser);
+        this.getAdvertsWithQuery(query, result, true, AdvertStatus.CHOSEN);
     }
 
     /**
@@ -346,7 +367,7 @@ public class DatabaseManager implements IDatabaseManager {
 
     /** Private method to filter the adverts
      */
-    private void getAdvertsWithQuery(Query query, final AdvertListResult result) {
+    private void getAdvertsWithQuery(Query query, final AdvertListResult result, final boolean filterStatus, final AdvertStatus status) {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -355,7 +376,7 @@ public class DatabaseManager implements IDatabaseManager {
 
                 for (DataSnapshot data: dataSnapshot.getChildren()) {
                     Advert advert = data.getValue(Advert.class);
-                    if (advert != null) {
+                    if (advert != null && (!filterStatus ||advert.getStatus().equals(status))) {
                         advert.setIdAdvert(data.getKey());
                         adverts.add(advert);
                     }

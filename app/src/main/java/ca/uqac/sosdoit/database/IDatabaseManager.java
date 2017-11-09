@@ -81,9 +81,20 @@ V     */
      */
     void getAllAdverts(AdvertListResult result);
 
+    /** Get all the adverts available, i.e. not chose or finished by a worker
+     * WARNING ! May produce lag and surcharge memory
+     */
+    void getAllAdvertsAvailable(AdvertListResult result);
+
     /** Get all the adverts published by an advertiser
+     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
     void getAllAdvertsPublished(String idAdvertiser, final AdvertListResult result);
+
+    /** Get all the adverts available published by an advertiser, i.e. not chose or finished by a worker
+     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
+     */
+    void getAllAdvertsPublishedAvailable(String idAdvertiser, final AdvertListResult result);
 
     /** Get all the adverts published by an advertiser and chosen by a worker
      */
