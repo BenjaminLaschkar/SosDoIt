@@ -1,5 +1,13 @@
 package ca.uqac.sosdoit.data;
 
+
+import android.content.Context;
+import android.location.Geocoder;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.List;
+
 /**
  * Data structure for an address
  */
@@ -11,10 +19,12 @@ public class Address {
     private String city;
     private String zip;
     private String country;
+    private LatLng latLng;
 
     public Address() {}
 
     public Address(String houseNumber, String street, String city, String zip, String country) {
+
         this.houseNumber = houseNumber;
         this.street = street;
         this.city = city;
@@ -62,6 +72,34 @@ public class Address {
         this.country = country;
     }
 
+    public LatLng getLatLng() {
+        return latLng;
+    }
+
+    public void setLatLng(LatLng latLng) {
+        this.latLng = latLng;
+    }
+
+    /** Set the latitude and longitude information from the address.
+     * Return true if the location was found, false otherwise
+     */
+    public boolean setLatitudeLongitude(Context context) {
+        Geocoder coder = new Geocoder(context);
+        List<android.location.Address> address;
+
+        try {
+            address = coder.getFromLocationName(this.toString(),5);
+            if (address == null) {
+                return false;
+            }
+            android.location.Address location=address.get(0);
+            latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            return true;
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     @Override
     public String toString() {
