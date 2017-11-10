@@ -100,7 +100,7 @@ public final class Util
     public static float distanceBetweenTowLocation(LatLng location1, LatLng location2) {
         float[] results = new float[1];
         Location.distanceBetween(location1.latitude, location1.longitude, location2.latitude, location2.longitude, results);
-        return results[0];
+        return results[0]/1000.0f;
     }
 
 }
