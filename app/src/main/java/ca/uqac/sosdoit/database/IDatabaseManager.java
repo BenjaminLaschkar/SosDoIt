@@ -85,7 +85,7 @@ public interface IDatabaseManager {
     /** Get adverts available in the database, with filtering parameters.
      * It use the current location of the user, if this information is unavailable, use null as currentLocation
      */
-    void getAdvertsAvailableWithFilters(final AdvertListResult result, AdvertFilter filter, LatLng currentLocation);
+    void getAdvertsAvailableWithFilter(final AdvertListResult result, AdvertFilter filter, LatLng currentLocation);
 
     /** Get all the adverts available, i.e. not chose or finished by a worker
      * WARNING ! May produce lag and surcharge memory

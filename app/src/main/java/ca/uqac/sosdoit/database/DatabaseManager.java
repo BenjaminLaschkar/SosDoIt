@@ -339,7 +339,7 @@ public class DatabaseManager implements IDatabaseManager {
      * It use the current location of the user, if this information is unavailable, use null as currentLocation
      */
     @Override
-    public void getAdvertsAvailableWithFilters(final AdvertListResult result, final AdvertFilter filter, final LatLng currentLocation) {
+    public void getAdvertsAvailableWithFilter(final AdvertListResult result, final AdvertFilter filter, final LatLng currentLocation) {
         Query query = advertsRefs.orderByChild("status").equalTo(AdvertStatus.AVAILABLE.name());
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -376,7 +376,7 @@ public class DatabaseManager implements IDatabaseManager {
             return  false;
         }
         // Filter distance
-        return filter.getDistanceMax() == -1 || Util.distanceBetweenTowLocation(currentLocation, advert.getWorkAddress().getLatLng()) <= filter.getDistanceMax();
+        return currentLocation == null || advert.getWorkAddress().getLatLng() == null || filter.getDistanceMax() == -1 || Util.distanceBetweenTowLocation(currentLocation, advert.getWorkAddress().getLatLng()) <= filter.getDistanceMax();
 
     }
 
