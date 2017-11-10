@@ -6,28 +6,40 @@
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="address">Address</string>
-
-    <string name="description_caller">Need help? Post a request!</string>
-    <string name="description_worker">Win money by helping people around you!</string>
+    <string name="house_number">Number</string>
+    <string name="street">Street</string>
+    <string name="city">City</string>
+    <string name="postal_code">Postal Code</string>
+    <string name="country">Country</string>
 
     <!-- Messages -->
     <string name="msg_empty_email">Enter your email address!</string>
     <string name="msg_empty_password">Enter your password!</string>
-    <string name="msg_minimum_password">Password is too short, enter at least 6 characters!</string>
-    <string name="msg_forgot_password">We just need your registered email address to send you password reset instructions.</string>
-    <string name="msg_auth_failed">Authentication failed, check your email and password or register.</string>
-    <string name="msg_register_failed">Registration failed</string>
-    <string name="msg_unknown_error">An unknown error occured.</string>
-    <string name="msg_invalid_email">Invalid email address!</string>
-    <string name="msg_email_already_used">Email address already used.</string>
     <string name="msg_empty_username">Enter your username!</string>
     <string name="msg_empty_first_name">Enter your first name!</string>
     <string name="msg_empty_last_name">Enter your last name!</string>
+    <string name="msg_empty_house_number">Enter your house number!</string>
+    <string name="msg_empty_street">Enter your street!</string>
+    <string name="msg_empty_city">Enter your city!</string>
+    <string name="msg_empty_postal_code">Enter your postal code!</string>
+    <string name="msg_empty_country">Enter your country!</string>
+
+    <string name="msg_minimum_password">Password is too short, enter at least 6 characters!</string>
+    <string name="msg_forgot_password">We just need your registered email address to send you password reset instructions.</string>
+
+    <string name="msg_auth_failed">Authentication failed, check your email and password or register.</string>
+    <string name="msg_register_failed">Registration failed</string>
+    <string name="msg_unknown_error">An unknown error occurred.</string>
+    <string name="msg_invalid_email">Invalid email address!</string>
+    <string name="msg_email_already_used">Email address already used.</string>
+
+    <string name="msg_description_caller">Need help? Post a request!</string>
+    <string name="msg_description_worker">Get money by helping people around you!</string>
+
+    <string name="msg_fill_profile">Please fill out your profile information below first.</string>
+    <string name="msg_fill_profile_last_step">Only one more step and you\'re done.</string>
 
     <!-- Hints -->
-    <string name="hint_login">@string/email</string>
-    <string name="hint_password">@string/password</string>
-    <string name="hint_email">@string/email</string>
 
     <!-- Buttons -->
     <string name="btn_login">Log in</string>
@@ -39,7 +51,10 @@
 
     <string name="btn_forgot_password">Forgot your password?</string>
     <string name="btn_reset_password">Reset password</string>
-    
+
+    <string name="btn_next">Next</string>
+    <string name="btn_done">Done</string>
+
     <string name="btn_edit_profile">Edit</string>
 
     <!-- Strings used by the demo : -->

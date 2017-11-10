@@ -39,7 +39,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ces informations nous sont utiles, que vous soyez demandeurs ou travailleurs." />
+                    android:text="@string/msg_fill_profile_last_step" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -47,11 +47,38 @@
                     android:layout_marginTop="@dimen/element_vertical_margin">
 
                     <EditText
-                        android:id="@+id/address"
+                        android:id="@+id/house_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/username"
-                        android:inputType="textPersonName" />
+                        android:hint="@string/house_number"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPostalAddress" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/street"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/street"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPostalAddress" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/city"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPostalAddress" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -62,8 +89,9 @@
                         android:id="@+id/postal_code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Postal code"
-                        android:inputType="textPersonName" />
+                        android:hint="@string/postal_code"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPostalAddress" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -74,8 +102,9 @@
                         android:id="@+id/country"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Country"
-                        android:inputType="textPersonName" />
+                        android:hint="@string/country"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPostalAddress" />
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
@@ -83,7 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/element_vertical_margin"
-                    android:text="Validate" />
+                    android:text="@string/btn_done" />
             </LinearLayout>
         </ScrollView>
 

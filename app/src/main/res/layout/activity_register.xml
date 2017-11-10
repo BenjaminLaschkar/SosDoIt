@@ -40,13 +40,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/description_caller"
+                    android:text="@string/msg_description_caller"
                     android:textSize="@dimen/small" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/description_worker"
+                    android:text="@string/msg_description_worker"
                     android:textSize="@dimen/small" />
 
                 <android.support.design.widget.TextInputLayout
@@ -58,7 +58,7 @@
                         android:id="@+id/email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/hint_login"
+                        android:hint="@string/email"
                         android:imeOptions="actionNext"
                         android:inputType="textEmailAddress" />
                 </android.support.design.widget.TextInputLayout>
@@ -73,7 +73,7 @@
                         android:id="@+id/password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/hint_password"
+                        android:hint="@string/password"
                         android:imeOptions="actionDone"
                         android:inputType="textPassword" />
                 </android.support.design.widget.TextInputLayout>
@@ -82,7 +82,7 @@
                     android:id="@+id/btn_register_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/element_vertical_margin_large"
+                    android:layout_marginTop="@dimen/element_vertical_margin"
                     android:text="@string/btn_register" />
 
                 <Button
