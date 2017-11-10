@@ -54,7 +54,8 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                login(v);
+                TestForDatabase.testAdvert();
+                //login(v);
             }
         });
 

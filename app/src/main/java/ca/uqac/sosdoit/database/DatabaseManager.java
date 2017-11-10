@@ -1,7 +1,6 @@
 package ca.uqac.sosdoit.database;
 
-import android.util.Log;
-
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,10 +15,12 @@ import java.util.List;
 
 import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.data.Advert;
+import ca.uqac.sosdoit.data.AdvertFilter;
 import ca.uqac.sosdoit.data.AdvertStatus;
 import ca.uqac.sosdoit.data.Qualification;
 import ca.uqac.sosdoit.data.Rating;
 import ca.uqac.sosdoit.data.User;
+import ca.uqac.sosdoit.util.Util;
 
 /**
  * The databaseManager can interact with the data in the database : add, modify, retrieve or remove data.
@@ -332,6 +333,51 @@ public class DatabaseManager implements IDatabaseManager {
     public void getAllAdverts(final AdvertListResult result) {
         Query query = advertsRefs;
         this.getAdvertsWithQuery(query, result, false, null);
+    }
+
+    /** Get adverts available in the database, with filtering parameters.
+     * It use the current location of the user, if this information is unavailable, use null as currentLocation
+     */
+    @Override
+    public void getAdvertsAvailableWithFilters(final AdvertListResult result, final AdvertFilter filter, final LatLng currentLocation) {
+        Query query = advertsRefs.orderByChild("status").equalTo(AdvertStatus.AVAILABLE.name());
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                ArrayList<Advert> adverts = new ArrayList<>();
+
+                for (DataSnapshot data: dataSnapshot.getChildren()) {
+                    Advert advert = data.getValue(Advert.class);
+                    if (advert != null && isAdvertCompatibleWithFilter(advert, filter, currentLocation)) {
+                        advert.setIdAdvert(data.getKey());
+                        adverts.add(advert);
+                    }
+                }
+                result.call(adverts);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw  databaseError.toException();
+            }
+        });
+    }
+
+    /** Determine if an advert is compatible with the filter
+     */
+    private boolean isAdvertCompatibleWithFilter(Advert advert, AdvertFilter filter, LatLng currentLocation) {
+        // First filter tasks
+        if (filter.getTasks() != null && !filter.getTasks().contains(advert.getTask())) {
+            return false;
+        }
+        // Filter price
+        if ((filter.getMinPrice() != -1 && filter.getMinPrice() > advert.getPrice()) || (filter.getMaxPrice() != -1 && filter.getMaxPrice() < advert.getPrice())) {
+            return  false;
+        }
+        // Filter distance
+        return filter.getDistanceMax() == -1 || Util.distanceBetweenTowLocation(currentLocation, advert.getWorkAddress().getLatLng()) <= filter.getDistanceMax();
+
     }
 
     /** Get all the adverts available, i.e. not chose or finished by a worker
