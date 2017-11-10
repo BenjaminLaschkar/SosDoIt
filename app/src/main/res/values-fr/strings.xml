@@ -25,4 +25,10 @@
     <string name="msg_minimum_password">Mot de passe trop court, il doit contenir au moins 6 caractères !</string>
     <string name="msg_auth_failed">L\'authentification a échouée, vérifiez votre email et votre mot de passe, ou inscrivez-vous.</string>
     <string name="msg_register_failed">"L'inscription a échoué "</string>
+
+    <!-- Task Label -->
+    <string name="task_text">Test</string>
+    <string name="task_babysitting">Babysitting</string>
+    <string name="task_math_course">Cours de math</string>
+
 </resources>

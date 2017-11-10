@@ -56,4 +56,9 @@
     <string name="lbl_forgot_password">Forgot password?</string>
     <string name="prompt_password">coucou</string>
 
+    <!-- Task Label -->
+    <string name="task_test">Test</string>
+    <string name="task_babysitting">Babysitting</string>
+    <string name="task_math_course">Math course</string>
+
 </resources>
