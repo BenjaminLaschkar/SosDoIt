@@ -16,18 +16,18 @@ public class User {
     private String idAccount;
     private String firstname;
     private String lastname;
-    private String pseudo;
+    private String username;
     private Address address;
     private List<Qualification> qualification;
     private boolean isWorker;
 
     public User(){}
 
-    public User(String idAccount, String firstname, String lastname, String pseudo, Address address, List<Qualification> qualification, boolean isWorker) {
+    public User(String idAccount, String firstname, String lastname, String username, Address address, List<Qualification> qualification, boolean isWorker) {
         this.idAccount = idAccount;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.pseudo = pseudo;
+        this.username = username;
         this.address = address;
         this.qualification = qualification;
         this.isWorker = isWorker;
@@ -58,12 +58,12 @@ public class User {
         this.lastname = lastname;
     }
 
-    public String getPseudo() {
-        return pseudo;
+    public String getUsername() {
+        return username;
     }
 
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Address getAddress() {
