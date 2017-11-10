@@ -9,9 +9,9 @@ import java.util.OptionalDouble;
 public class AdvertFilter {
 
     private List<Task> tasks;
-    private Double distanceMax;
-    private Double minPrice;
-    private Double maxPrice;
+    private Double distanceMax = -1.0; // in kilometers !
+    private Double minPrice = -1.0;
+    private Double maxPrice = -1.0;
 
 
     public AdvertFilter(List<Task> tasks, Double distanceMax, Double minPrice, Double maxPrice) {
