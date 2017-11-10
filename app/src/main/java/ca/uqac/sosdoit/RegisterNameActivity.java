@@ -4,71 +4,132 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import ca.uqac.sosdoit.data.User;
 import ca.uqac.sosdoit.database.DatabaseManager;
+import ca.uqac.sosdoit.util.Util;
 
-
-public class RegisterNameActivity extends AppCompatActivity {
-
-    private EditText inputFirstName, inputLastName, inputUsername;
-    private Button submitRegister;
+public class RegisterNameActivity extends AppCompatActivity
+{
+    private EditText inputUsername, inputFirstName, inputLastName;
+    private Button btnRegister;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+    private DatabaseManager db;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_name);
+
+        inputUsername = (EditText) findViewById(R.id.username);
         inputFirstName = (EditText) findViewById(R.id.first_name);
         inputLastName = (EditText) findViewById(R.id.last_name);
-        inputUsername = (EditText) findViewById(R.id.username);
-        submitRegister = (Button) findViewById(R.id.btn_register_name);
+        btnRegister = (Button) findViewById(R.id.btn_register_name);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        submitRegister.setOnClickListener(new View.OnClickListener() {
+
+        auth = FirebaseAuth.getInstance();
+        db = DatabaseManager.getInstance();
+
+        btnRegister.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                String firstName = inputFirstName.getText().toString().trim();
-                String lastName = inputLastName.getText().toString().trim();
-                String username = inputUsername.getText().toString().trim();
+            public void onClick(View v)
+            {
+                registerName(v);
+            }
+        });
 
-                if (TextUtils.isEmpty(username)) {
-                    Toast.makeText(getApplicationContext(), "Enter username !", Toast.LENGTH_SHORT).show();
-                    return;
+        inputLastName.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+            {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    registerName(v);
+                    return true;
                 }
-
-                if (TextUtils.isEmpty(firstName)) {
-                    Toast.makeText(getApplicationContext(), "Enter firstName !", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (TextUtils.isEmpty(lastName)) {
-                    Toast.makeText(getApplicationContext(), "Enter lastName !", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                progressBar.setVisibility(View.GONE);
-                auth = FirebaseAuth.getInstance();
-
-                final FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
-                String id = firebaseuser.getUid();
-                User user = new User(id,inputFirstName.getText().toString(),inputLastName.getText().toString(), inputUsername.getText().toString(), null, null, false );
-                DatabaseManager.getInstance().addUser(user);
-                progressBar.setVisibility(View.VISIBLE);
-
-                startActivity(new Intent(RegisterNameActivity.this, RegisterAddressActivity.class));
+                return false;
             }
         });
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == Util.REGISTRATION_COMPLETE_REQUEST && resultCode == RESULT_OK) {
+            setResult(RESULT_OK);
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        setResult(RESULT_CANCELED);
+    }
+
+    private void registerName(View v)
+    {
+        final String username = inputUsername.getText().toString().trim();
+        final String firstName = inputFirstName.getText().toString().trim();
+        final String lastName = inputLastName.getText().toString().trim();
+
+        boolean exit = false;
+
+        if (TextUtils.isEmpty(username)) {
+            inputUsername.setError(getString(R.string.msg_empty_username));
+            inputUsername.requestFocus();
+            exit = true;
+        }
+
+        if (TextUtils.isEmpty(firstName)) {
+            inputFirstName.setError(getString(R.string.msg_empty_first_name));
+
+            if (!exit) {
+                inputFirstName.requestFocus();
+            }
+
+            exit = true;
+        }
+
+        if (TextUtils.isEmpty(lastName)) {
+            inputLastName.setError(getString(R.string.msg_empty_last_name));
+
+            if (!exit) {
+                inputLastName.requestFocus();
+            }
+
+            return;
+        }
+
+        if (exit) {
+            return;
+        }
+
+        Util.hideKeyboard(RegisterNameActivity.this, v);
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        FirebaseUser user = auth.getCurrentUser();
+        if (user != null) {
+            db.addUser(user.getUid(), firstName, lastName, username);
+            progressBar.setVisibility(View.GONE);
+            startActivityForResult(new Intent(RegisterNameActivity.this, RegisterAddressActivity.class), Util.REGISTRATION_COMPLETE_REQUEST);
+        } else {
+            setResult(RESULT_CANCELED);
+            finish();
+        }
     }
 }

@@ -6,8 +6,8 @@
     <string name="first_name">Prénom</string>
     <string name="last_name">Nom</string>
 
-    <string name="description_caller">Besoin d\'un service ? Poster une demande !</string>
-    <string name="description_worker">Gagnez de l\'argent en aidant les personnes autour de vous !</string>
+    <string name="msg_description_caller">Besoin d\'un service ? Poster une demande !</string>
+    <string name="msg_description_worker">Gagnez de l\'argent en aidant les personnes autour de vous !</string>
 
     <!-- Boutons -->
     <string name="btn_login">Connexion</string>

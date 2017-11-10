@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -34,7 +35,6 @@ public class LoginActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         auth = FirebaseAuth.getInstance();
-
         if (auth.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
             finish();
@@ -63,7 +63,8 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                startActivityForResult(new Intent(LoginActivity.this, RegisterActivity.class), Util.REGISTRATION_COMPLETE_REQUEST);
+                //startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
 
@@ -88,6 +89,14 @@ public class LoginActivity extends AppCompatActivity
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == Util.REGISTRATION_COMPLETE_REQUEST && resultCode == RESULT_OK) {
+            finish();
+        }
     }
 
     private void login(View v)

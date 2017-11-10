@@ -30,7 +30,7 @@ public class ProfileActivity extends AppCompatActivity implements IDatabaseManag
         firstName = (TextView) findViewById(R.id.first_name);
         lastName = (TextView) findViewById(R.id.last_name);
         email = (TextView) findViewById(R.id.email);
-        address = (TextView) findViewById(R.id.address);
+        address = (TextView) findViewById(R.id.city);
         editProfile = (Button) findViewById(R.id.btn_edit_profile);
 
         db.getUser(auth.getUid(), this);

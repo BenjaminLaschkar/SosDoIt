@@ -39,7 +39,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Nous avons besoin des informations suivantes pour l'utilisation de notre service." />
+                    android:text="@string/msg_fill_profile" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -51,6 +51,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/username"
+                        android:imeOptions="actionNext"
                         android:inputType="textPersonName" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -63,6 +64,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/first_name"
+                        android:imeOptions="actionNext"
                         android:inputType="textPersonName" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -75,6 +77,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/last_name"
+                        android:imeOptions="actionDone"
                         android:inputType="textPersonName" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -83,7 +86,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/element_vertical_margin"
-                    android:text="Next" />
+                    android:text="@string/btn_next" />
             </LinearLayout>
         </ScrollView>
 
