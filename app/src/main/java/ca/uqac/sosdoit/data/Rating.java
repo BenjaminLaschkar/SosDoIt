@@ -18,15 +18,17 @@ public class Rating {
     private String idRating;
     private String idUserRated;
     private String idGiver;
+    private String idAdvert;
     private double rate;
     private String commentary;
     private Date date;
 
     public Rating(){}
 
-    public Rating(String idUserRated, String idGiver, double rate, String commentary) {
+    public Rating(String idUserRated, String idGiver, String idAdvert, double rate, String commentary) {
         this.idUserRated = idUserRated;
         this.idGiver = idGiver;
+        this.idAdvert = idAdvert;
         this.rate = rate;
         this.commentary = commentary;
     }
@@ -78,5 +80,13 @@ public class Rating {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getIdAdvert() {
+        return idAdvert;
+    }
+
+    public void setIdAdvert(String idAdvert) {
+        this.idAdvert = idAdvert;
     }
 }
