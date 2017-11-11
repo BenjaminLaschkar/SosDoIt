@@ -3,90 +3,170 @@ package ca.uqac.sosdoit.data;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
- * Data structure for an user
+ * Data structure for a user
  */
-
 @IgnoreExtraProperties
-public class User {
-
+public class User
+{
     @Exclude
-    private String idAccount;
-    private String firstname;
-    private String lastname;
+    private String uid;
+
     private String username;
+    private String firstName;
+    private String lastName;
     private Address address;
-    private List<Qualification> qualification;
-    private boolean isWorker;
+    private Set<Skill> skills;
 
-    public User(){}
+    public User() {}
 
-    public User(String idAccount, String firstname, String lastname, String username, Address address, List<Qualification> qualification, boolean isWorker) {
-        this.idAccount = idAccount;
-        this.firstname = firstname;
-        this.lastname = lastname;
+    public User(String uid, String username, String firstName, String lastName)
+    {
+        this.uid = uid;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
-        this.address = address;
-        this.qualification = qualification;
-        this.isWorker = isWorker;
     }
+
+    public User(String uid, String username, String firstName, String lastName, Address address)
+    {
+        this(uid, username, firstName, lastName);
+        this.address = address;
+    }
+
+    public boolean hasUsername()
+    {
+        return username != null;
+    }
+
+    public boolean hasFirstName()
+    {
+        return firstName != null;
+    }
+
+    public boolean hasLastName()
+    {
+        return lastName != null;
+    }
+
+    public boolean hasAddress()
+    {
+        return address != null;
+    }
+
+    public boolean hasSkills()
+    {
+        return skills != null;
+    }
+
+    public User addSkill(Skill skill)
+    {
+        if (!hasSkills()) {
+            skills = new TreeSet<Skill>();
+        }
+        skills.add(skill);
+        return this;
+    }
+
+    public User addSkills(Collection<Skill> skills)
+    {
+        if (!hasSkills()) {
+            skills = new TreeSet<Skill>();
+        }
+        for (Skill skill : skills) {
+            skills.add(skill);
+        }
+        return this;
+    }
+
+    public User removeSkill(Skill skill)
+    {
+        if (hasSkills()) {
+            skills.remove(skill);
+        }
+        return this;
+    }
+
+    public User removeSkills(Collection<Skill> skill)
+    {
+        if (hasSkills()) {
+            skills.removeAll(skill);
+        }
+        return this;
+    }
+
+    // ----- GETTER ----- //
 
     @Exclude
-    public String getIdAccount() {
-        return idAccount;
+    public String getUid()
+    {
+        return uid;
     }
 
-    public void setIdAccount(String idAccount) {
-        this.idAccount = idAccount;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getUsername() {
+    public String getUsername()
+    {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getFirstName()
+    {
+        return firstName;
     }
 
-    public Address getAddress() {
+    public String getLastName()
+    {
+        return lastName;
+    }
+
+    public Address getAddress()
+    {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public Set<Skill> getSkills()
+    {
+        return skills;
+    }
+
+    // ----- SETTER ----- //
+
+    public User setUid(String uid)
+    {
+        this.uid = uid;
+        return this;
+    }
+
+    public User setUsername(String username)
+    {
+        this.username = username;
+        return this;
+    }
+
+    public User setFirstName(String firstName)
+    {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public User setLastName(String lastName)
+    {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public User setAddress(Address address)
+    {
         this.address = address;
+        return this;
     }
 
-    public List<Qualification> getQualification() {
-        return qualification;
-    }
-
-    public void setQualification(List<Qualification> qualification) {
-        this.qualification = qualification;
-    }
-
-    public boolean isWorker() {
-        return isWorker;
-    }
-
-    public void setWorker(boolean worker) {
-        isWorker = worker;
+    public User setSkills(Set<Skill> skills)
+    {
+        this.skills = skills;
+        return this;
     }
 }
