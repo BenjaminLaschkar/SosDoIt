@@ -1,24 +1,41 @@
-package ca.uqac.sosdoit.data;
+package ca.uqac.sosdoit.database;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.OptionalDouble;
+
+import ca.uqac.sosdoit.data.Task;
 
 /** A filter with the parameters which are used to filter the adverts
  */
 public class AdvertFilter {
 
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
     private Double distanceMax = -1.0; // in kilometers !
     private Double minPrice = -1.0;
     private Double maxPrice = -1.0;
 
 
-    public AdvertFilter(List<Task> tasks, Double distanceMax, Double minPrice, Double maxPrice) {
-        this.tasks = tasks;
-        this.distanceMax = distanceMax;
-        this.minPrice = minPrice;
-        this.maxPrice = maxPrice;
+    public AdvertFilter() {}
+
+    public boolean hasFilterOnTasks() {
+        return !tasks.isEmpty();
+    }
+    public boolean hasFilterOnDistanceMax() {
+        return distanceMax != -1;
+    }
+    public boolean hasFilterOnMinPrice() {
+        return minPrice != -1;
+    }
+    public boolean hasFilterOnMaxPrice() {
+        return maxPrice != -1;
+    }
+
+    public void addTask(Task task) {
+        tasks.add(task);
+    }
+
+    public void removeTask(Task task) {
+        tasks.remove(task);
     }
 
     public List<Task> getTasks() {

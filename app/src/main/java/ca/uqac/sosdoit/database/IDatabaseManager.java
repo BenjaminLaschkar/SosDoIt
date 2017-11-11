@@ -6,7 +6,6 @@ import java.util.List;
 
 import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.data.Advert;
-import ca.uqac.sosdoit.data.AdvertFilter;
 import ca.uqac.sosdoit.data.Skill;
 import ca.uqac.sosdoit.data.Rating;
 import ca.uqac.sosdoit.data.User;

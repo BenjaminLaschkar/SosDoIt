@@ -15,7 +15,6 @@ import java.util.List;
 
 import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.data.Advert;
-import ca.uqac.sosdoit.data.AdvertFilter;
 import ca.uqac.sosdoit.data.AdvertStatus;
 import ca.uqac.sosdoit.data.Skill;
 import ca.uqac.sosdoit.data.Rating;
@@ -368,16 +367,15 @@ public class DatabaseManager implements IDatabaseManager {
      */
     private boolean isAdvertCompatibleWithFilter(Advert advert, AdvertFilter filter, LatLng currentLocation) {
         // First filter tasks
-        if (filter.getTasks() != null && !filter.getTasks().contains(advert.getTask())) {
+        if (filter.hasFilterOnTasks() && !filter.getTasks().contains(advert.getTask())) {
             return false;
         }
         // Filter price
-        if ((filter.getMinPrice() != -1 && filter.getMinPrice() > advert.getPrice()) || (filter.getMaxPrice() != -1 && filter.getMaxPrice() < advert.getPrice())) {
+        if ((filter.hasFilterOnMinPrice() && filter.getMinPrice() > advert.getPrice()) || (filter.hasFilterOnMaxPrice() && filter.getMaxPrice() < advert.getPrice())) {
             return  false;
         }
         // Filter distance
-        return currentLocation == null || advert.getWorkAddress().getLatLng() == null || filter.getDistanceMax() == -1 || Util.distanceBetweenTowLocation(currentLocation, advert.getWorkAddress().getLatLng()) <= filter.getDistanceMax();
-
+        return currentLocation == null || advert.getWorkAddress().getLatLng() == null || !filter.hasFilterOnDistanceMax() || Util.distanceBetweenTowLocation(currentLocation, advert.getWorkAddress().getLatLng()) <= filter.getDistanceMax();
     }
 
     /** Get all the adverts available, i.e. not chose or finished by a worker
