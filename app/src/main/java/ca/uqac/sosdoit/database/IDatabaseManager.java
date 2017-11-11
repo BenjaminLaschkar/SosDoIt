@@ -7,7 +7,7 @@ import java.util.List;
 import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.data.Advert;
 import ca.uqac.sosdoit.data.AdvertFilter;
-import ca.uqac.sosdoit.data.Qualification;
+import ca.uqac.sosdoit.data.Skill;
 import ca.uqac.sosdoit.data.Rating;
 import ca.uqac.sosdoit.data.User;
 
@@ -36,7 +36,7 @@ public interface IDatabaseManager {
     /** Edit the worker profile of the User
      * Add the user if not found in the database
      */
-    void EditWorkerProfileUser(String idAccount, boolean isWorker, List<Qualification> qualifications);
+    void EditWorkerProfileUser(String idAccount, boolean isWorker, List<Skill> skills);
 
     /** Edit the address of an user
      * Add an user if he is not in the database.

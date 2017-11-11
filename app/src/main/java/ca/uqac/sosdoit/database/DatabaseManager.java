@@ -17,7 +17,7 @@ import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.data.Advert;
 import ca.uqac.sosdoit.data.AdvertFilter;
 import ca.uqac.sosdoit.data.AdvertStatus;
-import ca.uqac.sosdoit.data.Qualification;
+import ca.uqac.sosdoit.data.Skill;
 import ca.uqac.sosdoit.data.Rating;
 import ca.uqac.sosdoit.data.User;
 import ca.uqac.sosdoit.util.Util;
@@ -71,7 +71,7 @@ public class DatabaseManager implements IDatabaseManager {
                 if ( !userCallbacks.isEmpty() ) {
                     User user = dataSnapshot.getValue(User.class);
                     if (user != null) {
-                        user.setIdAccount(dataSnapshot.getKey());
+                        user.setUid(dataSnapshot.getKey());
                     }
                     for (UserCallback callback : userCallbacks) {
                         callback.onUserAdded(user);
@@ -85,7 +85,7 @@ public class DatabaseManager implements IDatabaseManager {
                 if ( !userCallbacks.isEmpty() ) {
                     User user = dataSnapshot.getValue(User.class);
                     if (user != null) {
-                        user.setIdAccount(dataSnapshot.getKey());
+                        user.setUid(dataSnapshot.getKey());
                     }
                     for (UserCallback callback : userCallbacks) {
                         callback.onUserChanged(user);
@@ -99,7 +99,7 @@ public class DatabaseManager implements IDatabaseManager {
                 if ( !userCallbacks.isEmpty() ) {
                     User user = dataSnapshot.getValue(User.class);
                     if (user != null) {
-                        user.setIdAccount(dataSnapshot.getKey());
+                        user.setUid(dataSnapshot.getKey());
                     }
                     for (UserCallback callback : userCallbacks) {
                         callback.onUserRemoved(user);
@@ -196,7 +196,7 @@ public class DatabaseManager implements IDatabaseManager {
      */
     @Override
     public void addUser(User user) {
-        String idUser = user.getIdAccount();
+        String idUser = user.getUid();
         usersRef.child(idUser).setValue(user);
     }
 
@@ -205,8 +205,8 @@ public class DatabaseManager implements IDatabaseManager {
      * WARNING ! In the case of update, onUserChanged is called instead of onUserAdded
      */
     @Override
-    public void addUser(String idAccount, String firstname, String lastname, String pseudo) {
-        User user = new User(idAccount, firstname, lastname, pseudo, null, null, false);
+    public void addUser(String uid, String username, String firstname, String lastname) {
+        User user = new User(uid, username, firstname, lastname);
         addUser(user);
     }
 
@@ -222,9 +222,9 @@ public class DatabaseManager implements IDatabaseManager {
      * Add the user if not found in the database
      */
     @Override
-    public void EditWorkerProfileUser(String idAccount, boolean isWorker, List<Qualification> qualifications) {
+    public void EditWorkerProfileUser(String idAccount, boolean isWorker, List<Skill> skills) {
         usersRef.child(idAccount).child("isWorker").setValue(true);
-        usersRef.child(idAccount).child("qualifications").setValue(qualifications);
+        usersRef.child(idAccount).child("skills").setValue(skills);
     }
 
     /** Edit the address of an user
@@ -257,7 +257,7 @@ public class DatabaseManager implements IDatabaseManager {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 if (user != null) {
-                    user.setIdAccount(idUser);
+                    user.setUid(idUser);
                 }
                 result.call(user);
             }

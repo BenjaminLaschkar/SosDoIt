@@ -46,10 +46,10 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    // user auth state is changed - user is null
-                    // launch login activity
-                    startActivity(new Intent(EditProfileActivity.this, LoginActivity.class));
-                    finish();
+                        // user auth state is changed - user is null
+                        // launch login activity
+                        startActivity(new Intent(EditProfileActivity.this, LoginActivity.class));
+                        finish();
                 }
             }
         };

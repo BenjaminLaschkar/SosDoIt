@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -38,24 +37,24 @@ public class LoginActivity extends AppCompatActivity
         if (auth.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
             finish();
+            return;
         }
 
         setContentView(R.layout.activity_login);
 
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        btnLogIn = (Button) findViewById(R.id.btn_login);
-        btnRegister = (Button) findViewById(R.id.btn_register_name);
-        btnResetPassword = (Button) findViewById(R.id.btn_reset_password);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        inputEmail = findViewById(R.id.email);
+        inputPassword = findViewById(R.id.password);
+        btnLogIn = findViewById(R.id.btn_login);
+        btnRegister = findViewById(R.id.btn_register_name);
+        btnResetPassword = findViewById(R.id.btn_reset_password);
+        progressBar = findViewById(R.id.progress_bar);
 
         btnLogIn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                TestForDatabase.testAdvert();
-                //login(v);
+                login(v);
             }
         });
 
@@ -65,7 +64,6 @@ public class LoginActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 startActivityForResult(new Intent(LoginActivity.this, RegisterActivity.class), Util.REGISTRATION_COMPLETE_REQUEST);
-                //startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
 

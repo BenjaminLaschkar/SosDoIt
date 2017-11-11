@@ -32,11 +32,11 @@ public class RegisterNameActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_name);
 
-        inputUsername = (EditText) findViewById(R.id.username);
-        inputFirstName = (EditText) findViewById(R.id.first_name);
-        inputLastName = (EditText) findViewById(R.id.last_name);
-        btnRegister = (Button) findViewById(R.id.btn_register_name);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        inputUsername = findViewById(R.id.username);
+        inputFirstName = findViewById(R.id.first_name);
+        inputLastName = findViewById(R.id.last_name);
+        btnRegister = findViewById(R.id.btn_register_name);
+        progressBar = findViewById(R.id.progress_bar);
 
         auth = FirebaseAuth.getInstance();
         db = DatabaseManager.getInstance();

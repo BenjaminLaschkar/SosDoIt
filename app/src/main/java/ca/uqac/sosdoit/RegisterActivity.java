@@ -40,12 +40,12 @@ public class RegisterActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        passwordContainer = (TextInputLayout) findViewById(R.id.password_container);
-        btnRegister = (Button) findViewById(R.id.btn_register_name);
-        btnLogIn = (Button) findViewById(R.id.btn_login);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        inputEmail = findViewById(R.id.email);
+        inputPassword = findViewById(R.id.password);
+        passwordContainer = findViewById(R.id.password_container);
+        btnRegister = findViewById(R.id.btn_register_name);
+        btnLogIn = findViewById(R.id.btn_login);
+        progressBar = findViewById(R.id.progress_bar);
 
         textWatcher = new Util.AdvancedTextWatcher(inputPassword, passwordContainer);
 

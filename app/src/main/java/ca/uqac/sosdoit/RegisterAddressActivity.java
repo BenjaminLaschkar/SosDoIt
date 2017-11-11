@@ -33,13 +33,13 @@ public class RegisterAddressActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_address);
 
-        inputHouseNumber = (EditText) findViewById(R.id.house_number);
-        inputStreet = (EditText) findViewById(R.id.street);
-        inputCity = (EditText) findViewById(R.id.city);
-        inputPostalCode = (EditText) findViewById(R.id.postal_code);
-        inputCountry = (EditText) findViewById(R.id.country);
-        btnRegister = (Button) findViewById(R.id.btn_register_address);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        inputHouseNumber = findViewById(R.id.house_number);
+        inputStreet = findViewById(R.id.street);
+        inputCity = findViewById(R.id.city);
+        inputPostalCode = findViewById(R.id.postal_code);
+        inputCountry = findViewById(R.id.country);
+        btnRegister = findViewById(R.id.btn_register_address);
+        progressBar = findViewById(R.id.progress_bar);
 
         auth = FirebaseAuth.getInstance();
         db = DatabaseManager.getInstance();
@@ -81,6 +81,8 @@ public class RegisterAddressActivity extends AppCompatActivity
         final String city = inputCity.getText().toString().trim();
         final String postalCode = inputPostalCode.getText().toString().trim();
         final String country = inputCountry.getText().toString().trim();
+
+
 
         boolean exit = false;
 

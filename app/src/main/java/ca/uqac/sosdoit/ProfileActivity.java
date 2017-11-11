@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import ca.uqac.sosdoit.data.User;
 import ca.uqac.sosdoit.database.DatabaseManager;
@@ -17,8 +18,8 @@ public class ProfileActivity extends AppCompatActivity implements IDatabaseManag
 {
     TextView username, firstName, lastName, email, address;
     Button editProfile;
-    DatabaseManager db = DatabaseManager.getInstance();
-    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseAuth auth;
+    DatabaseManager db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -26,12 +27,20 @@ public class ProfileActivity extends AppCompatActivity implements IDatabaseManag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        username = (TextView) findViewById(R.id.username);
-        firstName = (TextView) findViewById(R.id.first_name);
-        lastName = (TextView) findViewById(R.id.last_name);
-        email = (TextView) findViewById(R.id.email);
-        address = (TextView) findViewById(R.id.city);
-        editProfile = (Button) findViewById(R.id.btn_edit_profile);
+        username = findViewById(R.id.username);
+        firstName = findViewById(R.id.first_name);
+        lastName = findViewById(R.id.last_name);
+        email = findViewById(R.id.email);
+        address = findViewById(R.id.city);
+        editProfile = findViewById(R.id.btn_edit_profile);
+
+        auth = FirebaseAuth.getInstance();
+        db = DatabaseManager.getInstance();
+
+        FirebaseUser user = auth.getCurrentUser();
+        if (user != null) {
+            email.setText(user.getEmail());
+        }
 
         db.getUser(auth.getUid(), this);
 
@@ -48,10 +57,17 @@ public class ProfileActivity extends AppCompatActivity implements IDatabaseManag
     @Override
     public void call(User user)
     {
-        username.setText(user.getUsername());
-        firstName.setText(user.getFirstname());
-        lastName.setText(user.getLastname());
-        email.setText(auth.getCurrentUser().getEmail());
-        address.setText(user.getAddress().toString());
+        if (user.hasUsername()) {
+            username.setText(user.getUsername());
+        }
+        if (user.hasFirstName()) {
+            firstName.setText(user.getFirstName());
+        }
+        if (user.hasLastName()) {
+            lastName.setText(user.getLastName());
+        }
+        if (user.hasAddress()) {
+            address.setText(user.getAddress().toString());
+        }
     }
 }
