@@ -13,39 +13,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:padding="@dimen/activity_padding"
-                android:layout_gravity="right">
-
-                <ImageButton
-                    android:id="@+id/btn_profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/icon_account_circle_light_grey_24dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"/>
-
-                <ImageButton
-                    android:id="@+id/btn_settings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/activity_padding"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/icon_settings_light_grey_24dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"/>
-            </LinearLayout>
-        </android.support.v7.widget.Toolbar>
+        <include layout="@layout/element_advanced_toolbar" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,8 +58,8 @@
                 app:autoSizeMinTextSize="12sp"
                 app:autoSizeMaxTextSize="100sp"
                 app:autoSizeStepGranularity="2sp" />
-        </LinearLayout>
 
-        <include layout="@layout/progress_bar" />
+            <include layout="@layout/element_progress_bar" />
+        </LinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

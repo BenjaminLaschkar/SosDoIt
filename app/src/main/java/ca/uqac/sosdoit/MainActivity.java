@@ -79,7 +79,34 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
             @Override
             public void onClick(View view)
             {
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            }
+        });
 
+        btnMyAdverts.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(new Intent(MainActivity.this, MyAdvertsActivity.class));
+            }
+        });
+
+        btnFindJob.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(new Intent(MainActivity.this, FindJobActivity.class));
+            }
+        });
+
+        btnMyJobs.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(new Intent(MainActivity.this, MyJobsActivity.class));
             }
         });
     }
@@ -134,6 +161,6 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
             }
         }
 
-        progressBar.setVisibility(View.GONE);
+        //progressBar.setVisibility(View.GONE);
     }
 }

@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">SOS Do It</string>
+    <string name="activity_settings">Settings</string>
+    <string name="activity_profile">Profile</string>
+
     <string name="username">Username</string>
     <string name="email">Email address</string>
     <string name="password">Password</string>
@@ -62,8 +65,6 @@
     <string name="btn_my_adverts">My adverts</string>
     <string name="btn_find_job">Find a job</string>
     <string name="btn_my_jobs">My jobs</string>
-    <string name="btn_profile">Profile</string>
-    <string name="btn_settings">Settings</string>
     <string name="btn_logout">Log out</string>
 
     <string name="btn_edit_profile">Edit</string>
