@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
     private FirebaseUser user;
     private DatabaseManager db;
 
-    private boolean paused;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -116,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
     {
         super.onResume();
         auth.addAuthStateListener(authListener);
-        paused = false;
     }
 
     @Override
@@ -124,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
     {
         super.onPause();
         auth.removeAuthStateListener(authListener);
-        paused = true;
     }
 
     @Override
@@ -153,12 +149,10 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
     @Override
     public void call(User user)
     {
-        if (!paused) {
-            if (user == null || !user.hasUsername()) {
-                startActivity(new Intent(MainActivity.this, RegisterNameActivity.class));
-            } else if (!user.hasAddress()) {
-                startActivity(new Intent(MainActivity.this, RegisterAddressActivity.class));
-            }
+        if (user == null || !user.hasUsername()) {
+            startActivity(new Intent(MainActivity.this, RegisterNameActivity.class));
+        } else if (!user.hasAddress()) {
+            startActivity(new Intent(MainActivity.this, RegisterAddressActivity.class));
         }
 
         //progressBar.setVisibility(View.GONE);
