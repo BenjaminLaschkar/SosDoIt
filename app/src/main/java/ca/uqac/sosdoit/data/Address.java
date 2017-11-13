@@ -4,8 +4,6 @@ import android.content.Context;
 import android.location.Geocoder;
 import android.text.TextUtils;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.List;
 
 /**
@@ -20,7 +18,7 @@ public class Address
     private String postalCode;
     private String country;
 
-    private LatLng latLng;
+    private LatitudeLongitude latitudeLongitude;
 
     public Address() {}
 
@@ -50,7 +48,7 @@ public class Address
 
     public boolean hasGeographicalCoordinates()
     {
-        return latLng != null;
+        return latitudeLongitude != null;
     }
 
     /** Set the latitude and longitude information from the address.
@@ -67,7 +65,7 @@ public class Address
                 return false;
             }
             android.location.Address location = address.get(0);
-            latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            latitudeLongitude = new LatitudeLongitude(location.getLatitude(), location.getLongitude());
             return true;
 
         } catch (Exception e) {
@@ -107,8 +105,8 @@ public class Address
         return country;
     }
 
-    public LatLng getLatLng() {
-        return latLng;
+    public LatitudeLongitude getLatitudeLongitude() {
+        return latitudeLongitude;
     }
 
     // ----- SETTER ----- //
@@ -157,8 +155,8 @@ public class Address
         return this;
     }
 
-    public void setLatLng(LatLng latLng) {
-        this.latLng = latLng;
+    public void setLatitudeLongitude(LatitudeLongitude latitudeLongitude) {
+        this.latitudeLongitude = latitudeLongitude;
     }
 
     @Override

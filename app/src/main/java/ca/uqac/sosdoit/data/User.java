@@ -66,7 +66,7 @@ public class User
     public User addSkill(Skill skill)
     {
         if (!hasSkills()) {
-            skills = new TreeSet<Skill>();
+            skills = new TreeSet<>();
         }
         skills.add(skill);
         return this;
@@ -75,7 +75,7 @@ public class User
     public User addSkills(Collection<Skill> skills)
     {
         if (!hasSkills()) {
-            skills = new TreeSet<Skill>();
+            skills = new TreeSet<>();
         }
         for (Skill skill : skills) {
             skills.add(skill);
