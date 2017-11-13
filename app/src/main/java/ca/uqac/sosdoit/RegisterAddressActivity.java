@@ -1,6 +1,5 @@
 package ca.uqac.sosdoit;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -21,7 +20,7 @@ import ca.uqac.sosdoit.util.Util;
 
 public class RegisterAddressActivity extends AppCompatActivity
 {
-    private EditText inputHouseNumber, inputStreet, inputCity, inputPostalCode, inputCountry;
+    private EditText inputHouseNumber, inputStreet, inputAdditionalAddress, inputCity, inputPostalCode, inputCountry;
     private Button btnRegister;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
@@ -35,6 +34,7 @@ public class RegisterAddressActivity extends AppCompatActivity
 
         inputHouseNumber = findViewById(R.id.house_number);
         inputStreet = findViewById(R.id.street);
+        inputAdditionalAddress = findViewById(R.id.additional_address);
         inputCity = findViewById(R.id.city);
         inputPostalCode = findViewById(R.id.postal_code);
         inputCountry = findViewById(R.id.country);
@@ -67,38 +67,20 @@ public class RegisterAddressActivity extends AppCompatActivity
         });
     }
 
-    @Override
-    public void onBackPressed()
-    {
-        super.onBackPressed();
-        setResult(RESULT_CANCELED);
-    }
-
     private void registerAddress(View v)
     {
         final String houseNumber = inputHouseNumber.getText().toString().trim();
         final String street = inputStreet.getText().toString().trim();
+        final String additionalAddress = inputAdditionalAddress.getText().toString().trim();
         final String city = inputCity.getText().toString().trim();
         final String postalCode = inputPostalCode.getText().toString().trim();
         final String country = inputCountry.getText().toString().trim();
 
-
-
         boolean exit = false;
-
-        if (TextUtils.isEmpty(houseNumber)) {
-            inputHouseNumber.setError(getString(R.string.msg_empty_house_number));
-            inputHouseNumber.requestFocus();
-            exit = true;
-        }
 
         if (TextUtils.isEmpty(street)) {
             inputStreet.setError(getString(R.string.msg_empty_street));
-
-            if (!exit) {
-                inputStreet.requestFocus();
-            }
-
+            inputStreet.requestFocus();
             exit = true;
         }
 
@@ -142,12 +124,9 @@ public class RegisterAddressActivity extends AppCompatActivity
 
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
-            db.editAddressUser(user.getUid(), new Address(houseNumber, street, city, postalCode, country));
+            db.editAddressUser(user.getUid(), new Address(houseNumber, street, city, postalCode, country).setAdditionalAddressWithCheck(additionalAddress));
             progressBar.setVisibility(View.GONE);
-            startActivity(new Intent(RegisterAddressActivity.this, ProfileActivity.class));
             setResult(RESULT_OK);
-        } else {
-            setResult(RESULT_CANCELED);
         }
 
         finish();

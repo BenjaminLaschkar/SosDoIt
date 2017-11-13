@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Font size -->
-    <dimen name="xsmall">8sp</dimen>
-    <dimen name="small">16sp</dimen>
-    <dimen name="medium">24sp</dimen>
-    <dimen name="large">32sp</dimen>
-    <dimen name="xlarge">40sp</dimen>
+    <dimen name="text_xsmall">8sp</dimen>
+    <dimen name="text_small">16sp</dimen>
+    <dimen name="text_medium">24sp</dimen>
+    <dimen name="text_large">32sp</dimen>
+    <dimen name="text_xlarge">40sp</dimen>
 
     <!-- Margin and padding -->
     <dimen name="activity_padding">16dp</dimen>
 
-    <dimen name="element_horizontal_margin_small">16dp</dimen>
-    <dimen name="element_horizontal_margin">32dp</dimen>
-    <dimen name="element_horizontal_margin_large">48dp</dimen>
-
-    <dimen name="element_vertical_margin_small">16dp</dimen>
-    <dimen name="element_vertical_margin">32dp</dimen>
-    <dimen name="element_vertical_margin_large">48dp</dimen>
-
     <dimen name="text_margin">8dp</dimen>
+
+    <dimen name="element_margin_xsmall">8dp</dimen>
+    <dimen name="element_margin_small">16dp</dimen>
+    <dimen name="element_margin">24dp</dimen>
+    <dimen name="element_margin_large">32dp</dimen>
+    <dimen name="element_margin_xlarge">40dp</dimen>
 
     <!-- Width and height -->
     <dimen name="progress_bar_size">56dp</dimen>

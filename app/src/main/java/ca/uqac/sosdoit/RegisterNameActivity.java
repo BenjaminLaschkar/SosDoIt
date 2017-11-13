@@ -67,17 +67,9 @@ public class RegisterNameActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if (requestCode == Util.REGISTRATION_COMPLETE_REQUEST && resultCode == RESULT_OK) {
-            setResult(RESULT_OK);
+        if (resultCode == RESULT_OK && requestCode == Util.REGISTRATION_REQUEST) {
             finish();
         }
-    }
-
-    @Override
-    public void onBackPressed()
-    {
-        super.onBackPressed();
-        setResult(RESULT_CANCELED);
     }
 
     private void registerName(View v)
@@ -126,9 +118,8 @@ public class RegisterNameActivity extends AppCompatActivity
         if (user != null) {
             db.addUser(user.getUid(), firstName, lastName, username);
             progressBar.setVisibility(View.GONE);
-            startActivityForResult(new Intent(RegisterNameActivity.this, RegisterAddressActivity.class), Util.REGISTRATION_COMPLETE_REQUEST);
+            startActivityForResult(new Intent(RegisterNameActivity.this, RegisterAddressActivity.class), Util.REGISTRATION_REQUEST);
         } else {
-            setResult(RESULT_CANCELED);
             finish();
         }
     }

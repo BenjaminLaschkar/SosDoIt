@@ -1,7 +1,9 @@
 package ca.uqac.sosdoit;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -27,6 +29,7 @@ public class LoginActivity extends AppCompatActivity
     private Button btnLogIn, btnRegister, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+    private SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,7 +38,7 @@ public class LoginActivity extends AppCompatActivity
 
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
             return;
         }
@@ -48,6 +51,14 @@ public class LoginActivity extends AppCompatActivity
         btnRegister = findViewById(R.id.btn_register_name);
         btnResetPassword = findViewById(R.id.btn_reset_password);
         progressBar = findViewById(R.id.progress_bar);
+
+        pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        final String email = pref.getString(getString(R.string.pref_email), "");
+        if (!TextUtils.isEmpty(email)) {
+            inputPassword.requestFocus();
+            inputEmail.setText(email);
+        }
 
         btnLogIn.setOnClickListener(new View.OnClickListener()
         {
@@ -63,7 +74,7 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                startActivityForResult(new Intent(LoginActivity.this, RegisterActivity.class), Util.REGISTRATION_COMPLETE_REQUEST);
+                startActivityForResult(new Intent(LoginActivity.this, RegisterActivity.class), Util.REGISTRATION_REQUEST);
             }
         });
 
@@ -72,7 +83,7 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+                startActivityForResult(new Intent(LoginActivity.this, ResetPasswordActivity.class), Util.RESET_PASSWORD_REQUEST);
             }
         });
 
@@ -93,15 +104,26 @@ public class LoginActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if (requestCode == Util.REGISTRATION_COMPLETE_REQUEST && resultCode == RESULT_OK) {
-            finish();
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case Util.REGISTRATION_REQUEST:
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+                    break;
+                case Util.RESET_PASSWORD_REQUEST:
+                    inputEmail.setText(pref.getString(getString(R.string.pref_email), ""));
+                    Toast.makeText(LoginActivity.this, getString(R.string.msg_login_after_reset_password), Toast.LENGTH_LONG).show();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
     private void login(View v)
     {
         final String email = inputEmail.getText().toString().trim();
-        final String password = inputPassword.getText().toString().trim();
+        final String password = inputPassword.getText().toString();
 
         boolean exit = false;
 
@@ -134,13 +156,13 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onComplete(@NonNull Task<AuthResult> task)
             {
-                progressBar.setVisibility(View.GONE);
-
                 if (!task.isSuccessful()) {
+                    progressBar.setVisibility(View.GONE);
                     Util.showKeyboard(LoginActivity.this, inputEmail);
                     Toast.makeText(LoginActivity.this, getString(R.string.msg_auth_failed), Toast.LENGTH_LONG).show();
                 } else {
-                    startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                    pref.edit().putString(getString(R.string.pref_email), email).apply();
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
                 }
             }

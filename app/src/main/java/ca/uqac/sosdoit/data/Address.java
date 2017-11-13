@@ -2,6 +2,7 @@ package ca.uqac.sosdoit.data;
 
 import android.content.Context;
 import android.location.Geocoder;
+import android.text.TextUtils;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -10,11 +11,11 @@ import java.util.List;
 /**
  * Data structure for user address
  */
-
 public class Address
 {
     private String houseNumber;
     private String street;
+    private String additionalAddress;
     private String city;
     private String postalCode;
     private String country;
@@ -40,6 +41,11 @@ public class Address
     public boolean hasHouseNumber()
     {
         return houseNumber != null;
+    }
+
+    public boolean hasAdditionalAddress()
+    {
+        return additionalAddress != null;
     }
 
     public boolean hasGeographicalCoordinates()
@@ -81,6 +87,11 @@ public class Address
         return street;
     }
 
+    public String getAdditionalAddress()
+    {
+        return additionalAddress;
+    }
+
     public String getCity()
     {
         return city;
@@ -114,6 +125,20 @@ public class Address
         return this;
     }
 
+    public Address setAdditionalAddress(String additionalAddress)
+    {
+        this.additionalAddress = additionalAddress;
+        return this;
+    }
+
+    public Address setAdditionalAddressWithCheck(String additionalAddress)
+    {
+        if (!TextUtils.isEmpty(additionalAddress)) {
+            this.additionalAddress = additionalAddress;
+        }
+        return this;
+    }
+
     public Address setCity(String city)
     {
         this.city = city;
@@ -138,6 +163,6 @@ public class Address
 
     @Override
     public String toString() {
-        return (hasHouseNumber() ? houseNumber + " " : "") + street + ", " + city + ", " + postalCode + " " + country;
+        return (hasHouseNumber() ? houseNumber + " " : "") + street + ", " + (hasAdditionalAddress() ? additionalAddress + ", " : "") + city + ", " + postalCode + " " + country;
     }
 }

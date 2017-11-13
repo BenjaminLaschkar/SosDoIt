@@ -1,8 +1,11 @@
 package ca.uqac.sosdoit;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,6 +19,7 @@ import ca.uqac.sosdoit.database.IDatabaseManager;
 
 public class ProfileActivity extends AppCompatActivity implements IDatabaseManager.UserResult
 {
+    private Toolbar toolbar;
     TextView username, firstName, lastName, email, address;
     Button editProfile;
     FirebaseAuth auth;
@@ -33,6 +37,16 @@ public class ProfileActivity extends AppCompatActivity implements IDatabaseManag
         email = findViewById(R.id.email);
         address = findViewById(R.id.city);
         editProfile = findViewById(R.id.btn_edit_profile);
+        toolbar = findViewById(R.id.toolbar);
+
+        toolbar.setTitle(R.string.btn_profile);
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         auth = FirebaseAuth.getInstance();
         db = DatabaseManager.getInstance();
@@ -44,6 +58,8 @@ public class ProfileActivity extends AppCompatActivity implements IDatabaseManag
 
         db.getUser(auth.getUid(), this);
 
+
+
         editProfile.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -52,6 +68,15 @@ public class ProfileActivity extends AppCompatActivity implements IDatabaseManag
                 startActivity(new Intent(ProfileActivity.this, EditProfileActivity.class));
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

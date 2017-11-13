@@ -18,7 +18,8 @@ import ca.uqac.sosdoit.data.Rating;
 
 public final class Util
 {
-    public static final int REGISTRATION_COMPLETE_REQUEST = 1;
+    public static final int REGISTRATION_REQUEST = 1;
+    public static final int RESET_PASSWORD_REQUEST = 2;
 
     private Util() {}
 
@@ -62,7 +63,10 @@ public final class Util
         }
 
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after)
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count)
         {
             c.setPasswordVisibilityToggleEnabled(true);
             e.removeTextChangedListener(this);
@@ -70,12 +74,8 @@ public final class Util
         }
 
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-        @Override
         public void afterTextChanged(Editable s) {}
     }
-
 
     /** Get the mean value from a list of Rating
      *
@@ -102,5 +102,4 @@ public final class Util
         Location.distanceBetween(location1.latitude, location1.longitude, location2.latitude, location2.longitude, results);
         return results[0]/1000.0f;
     }
-
 }

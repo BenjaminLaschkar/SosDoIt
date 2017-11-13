@@ -12,15 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_padding"
-            android:layout_marginLeft="@dimen/activity_padding"
-            android:layout_marginRight="@dimen/activity_padding"
-            android:layout_marginBottom="@dimen/element_vertical_margin_small"
-            android:adjustViewBounds="true"
-            android:src="@drawable/logo" />
+        <include layout="@layout/logo" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -30,69 +22,96 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/element_vertical_margin_small"
                 android:paddingLeft="@dimen/activity_padding"
                 android:paddingRight="@dimen/activity_padding"
-                android:paddingBottom="@dimen/activity_padding"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/element_margin_small"
                     android:text="@string/msg_fill_profile_last_step" />
 
-                <android.support.design.widget.TextInputLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/element_vertical_margin">
+                    android:layout_marginTop="@dimen/element_margin_large"
+                    android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/house_number"
-                        android:layout_width="match_parent"
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/house_number"
-                        android:imeOptions="actionNext"
-                        android:inputType="textPostalAddress" />
-                </android.support.design.widget.TextInputLayout>
+                        android:layout_weight="1">
+
+                        <EditText
+                            android:id="@+id/house_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/house_number"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPostalAddress" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3">
+
+                        <EditText
+                            android:id="@+id/street"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/street"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPostalAddress" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/street"
+                        android:id="@+id/additional_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/street"
+                        android:hint="@string/additional_address"
                         android:imeOptions="actionNext"
                         android:inputType="textPostalAddress" />
                 </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/city"
-                        android:layout_width="match_parent"
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/city"
-                        android:imeOptions="actionNext"
-                        android:inputType="textPostalAddress" />
-                </android.support.design.widget.TextInputLayout>
+                        android:layout_weight="2">
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/city"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/city"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPostalAddress" />
+                    </android.support.design.widget.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/postal_code"
-                        android:layout_width="match_parent"
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/postal_code"
-                        android:imeOptions="actionNext"
-                        android:inputType="textPostalAddress|textCapCharacters" />
-                </android.support.design.widget.TextInputLayout>
+                        android:layout_weight="1">
+
+                        <EditText
+                            android:id="@+id/postal_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/postal_code"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPostalAddress|textCapCharacters" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -111,17 +130,12 @@
                     android:id="@+id/btn_register_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/element_vertical_margin"
+                    android:layout_marginTop="@dimen/element_margin_large"
+                    android:layout_marginBottom="@dimen/element_margin_small"
                     android:text="@string/btn_done" />
             </LinearLayout>
         </ScrollView>
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="@dimen/progress_bar_size"
-            android:layout_height="@dimen/progress_bar_size"
-            android:layout_marginTop="@dimen/element_vertical_margin"
-            android:layout_marginBottom="@dimen/element_vertical_margin"
-            android:visibility="gone" />
+        <include layout="@layout/progress_bar" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

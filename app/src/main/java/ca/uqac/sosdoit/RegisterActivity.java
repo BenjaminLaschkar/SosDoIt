@@ -1,7 +1,8 @@
 package ca.uqac.sosdoit;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity
     private TextInputLayout passwordContainer;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+    private SharedPreferences pref;
 
     private Util.AdvancedTextWatcher textWatcher;
 
@@ -46,6 +48,8 @@ public class RegisterActivity extends AppCompatActivity
         btnRegister = findViewById(R.id.btn_register_name);
         btnLogIn = findViewById(R.id.btn_login);
         progressBar = findViewById(R.id.progress_bar);
+
+        pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         textWatcher = new Util.AdvancedTextWatcher(inputPassword, passwordContainer);
 
@@ -125,9 +129,8 @@ public class RegisterActivity extends AppCompatActivity
             @Override
             public void onComplete(@NonNull Task<AuthResult> task)
             {
-                progressBar.setVisibility(View.GONE);
-
                 if (!task.isSuccessful()) {
+                    progressBar.setVisibility(View.GONE);
                     try {
                         if (task.getException() != null) {
                             throw task.getException();
@@ -143,7 +146,8 @@ public class RegisterActivity extends AppCompatActivity
                     }
                     Util.showKeyboard(RegisterActivity.this, inputEmail);
                 } else {
-                    startActivity(new Intent(RegisterActivity.this, RegisterNameActivity.class).addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT));
+                    pref.edit().putString(getString(R.string.pref_email), email).apply();
+                    setResult(RESULT_OK);
                     finish();
                 }
             }

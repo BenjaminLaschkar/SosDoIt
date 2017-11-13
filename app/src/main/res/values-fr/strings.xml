@@ -21,10 +21,10 @@
     <string name="msg_forgot_password">Nous avons juste besoin de votre adresse email pour vous envoyer les instructions de réinitialisation de votre mot de passe."</string>
     <string name="btn_reset_password">Réinitialiser mon mot de passe</string>
     <string name="msg_empty_email">Entrez une adresse email !</string>
-    <string name="msg_empty_password">Entrez un mot de passe !</string>
+    <string name="msg_empty_password">Entrez votre mot de passe !</string>
     <string name="msg_minimum_password">Mot de passe trop court, il doit contenir au moins 6 caractères !</string>
     <string name="msg_auth_failed">L\'authentification a échouée, vérifiez votre email et votre mot de passe, ou inscrivez-vous.</string>
-    <string name="msg_register_failed">"L'inscription a échoué "</string>
+    <string name="msg_register_failed">"L'inscription a échouée "</string>
 
     <!-- Task Label -->
     <string name="task_text">Test</string>

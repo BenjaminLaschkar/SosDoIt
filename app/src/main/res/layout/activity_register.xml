@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,15 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_padding"
-            android:layout_marginLeft="@dimen/activity_padding"
-            android:layout_marginRight="@dimen/activity_padding"
-            android:layout_marginBottom="@dimen/element_vertical_margin_small"
-            android:adjustViewBounds="true"
-            android:src="@drawable/logo" />
+        <include layout="@layout/logo" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -31,76 +22,32 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/element_vertical_margin_small"
                 android:paddingLeft="@dimen/activity_padding"
                 android:paddingRight="@dimen/activity_padding"
-                android:paddingBottom="@dimen/activity_padding"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/msg_description_caller"
-                    android:textSize="@dimen/small" />
+                <include layout="@layout/app_description" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/msg_description_worker"
-                    android:textSize="@dimen/small" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/element_vertical_margin">
-
-                    <EditText
-                        android:id="@+id/email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/email"
-                        android:imeOptions="actionNext"
-                        android:inputType="textEmailAddress" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/password_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:passwordToggleEnabled="true">
-
-                    <EditText
-                        android:id="@+id/password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/password"
-                        android:imeOptions="actionDone"
-                        android:inputType="textPassword" />
-                </android.support.design.widget.TextInputLayout>
+                <include layout="@layout/input_email_password" />
 
                 <Button
                     android:id="@+id/btn_register_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/element_vertical_margin"
+                    android:layout_marginTop="@dimen/element_margin_large"
+                    android:layout_marginBottom="@dimen/element_margin_small"
                     android:text="@string/btn_register" />
 
                 <Button
                     android:id="@+id/btn_login"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/element_vertical_margin_small"
+                    android:layout_marginBottom="@dimen/element_margin_small"
                     android:background="@drawable/button_secondary"
                     android:text="@string/btn_register_link_to_login" />
             </LinearLayout>
         </ScrollView>
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="@dimen/progress_bar_size"
-            android:layout_height="@dimen/progress_bar_size"
-            android:layout_marginTop="@dimen/element_vertical_margin"
-            android:layout_marginBottom="@dimen/element_vertical_margin"
-            android:visibility="gone" />
+        <include layout="@layout/progress_bar" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
