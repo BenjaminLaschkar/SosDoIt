@@ -204,8 +204,8 @@ public class DatabaseManager implements IDatabaseManager {
      * WARNING ! In the case of update, onUserChanged is called instead of onUserAdded
      */
     @Override
-    public void addUser(String uid, String username, String firstname, String lastname) {
-        User user = new User(uid, username, firstname, lastname);
+    public void addUser(String uid, String username, String firstName, String lastName) {
+        User user = new User(uid, username, firstName, lastName);
         addUser(user);
     }
 

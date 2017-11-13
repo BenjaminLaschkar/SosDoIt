@@ -116,7 +116,7 @@ public class RegisterNameActivity extends AppCompatActivity
 
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
-            db.addUser(user.getUid(), firstName, lastName, username);
+            db.addUser(user.getUid(), username, firstName, lastName);
             progressBar.setVisibility(View.GONE);
             startActivityForResult(new Intent(RegisterNameActivity.this, RegisterAddressActivity.class), Util.REGISTRATION_REQUEST);
         } else {
