@@ -1,6 +1,5 @@
 package ca.uqac.sosdoit.database;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,6 +15,7 @@ import java.util.List;
 import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.data.Advert;
 import ca.uqac.sosdoit.data.AdvertStatus;
+import ca.uqac.sosdoit.data.LatitudeLongitude;
 import ca.uqac.sosdoit.data.Skill;
 import ca.uqac.sosdoit.data.Rating;
 import ca.uqac.sosdoit.data.User;
@@ -261,7 +261,6 @@ public class DatabaseManager implements IDatabaseManager {
                 }
                 result.call(user);
             }
-
         });
     }
 
@@ -305,19 +304,15 @@ public class DatabaseManager implements IDatabaseManager {
     @Override
     public void getAdvert(final String idAdvert, final AdvertResult result) {
         Query query = advertsRefs.child(idAdvert);
-        query.addValueEventListener(new ValueEventListener() {
+        query.addValueEventListener(new AutoRemovedValueEventListener(query) {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                super.onDataChange(dataSnapshot);
                 Advert advert = dataSnapshot.getValue(Advert.class);
                 if (advert != null) {
                     advert.setIdAdvert(idAdvert);
                 }
                 result.call(advert);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                throw databaseError.toException();
             }
         });
     }
@@ -335,11 +330,12 @@ public class DatabaseManager implements IDatabaseManager {
      * It use the current location of the user, if this information is unavailable, use null as currentLocation
      */
     @Override
-    public void getAdvertsAvailableWithFilter(final AdvertListResult result, final AdvertFilter filter, final LatLng currentLocation) {
+    public void getAdvertsAvailableWithFilter(final AdvertFilter filter, final LatitudeLongitude currentLocation, final AdvertListResult result) {
         Query query = advertsRefs.orderByChild("status").equalTo(AdvertStatus.AVAILABLE.name());
-        query.addValueEventListener(new ValueEventListener() {
+        query.addValueEventListener(new AutoRemovedValueEventListener(query) {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                super.onDataChange(dataSnapshot);
                 ArrayList<Advert> adverts = new ArrayList<>();
 
                 for (DataSnapshot data: dataSnapshot.getChildren()) {
@@ -351,17 +347,12 @@ public class DatabaseManager implements IDatabaseManager {
                 }
                 result.call(adverts);
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                throw  databaseError.toException();
-            }
         });
     }
 
     /** Determine if an advert is compatible with the filter
      */
-    private boolean isAdvertCompatibleWithFilter(Advert advert, AdvertFilter filter, LatLng currentLocation) {
+    private boolean isAdvertCompatibleWithFilter(Advert advert, AdvertFilter filter, LatitudeLongitude currentLocation) {
         // First filter tasks
         if (filter.hasFilterOnTasks() && !filter.getTasks().contains(advert.getTask())) {
             return false;
@@ -371,7 +362,7 @@ public class DatabaseManager implements IDatabaseManager {
             return  false;
         }
         // Filter distance
-        return currentLocation == null || advert.getWorkAddress().getLatLng() == null || !filter.hasFilterOnDistanceMax() || Util.distanceBetweenTowLocation(currentLocation, advert.getWorkAddress().getLatLng()) <= filter.getDistanceMax();
+        return currentLocation == null || advert.getWorkAddress().getLatitudeLongitude() == null || !filter.hasFilterOnDistanceMax() || Util.distanceBetweenTwoLocation(currentLocation, advert.getWorkAddress().getLatitudeLongitude()) <= filter.getDistanceMax();
     }
 
     /** Get all the adverts available, i.e. not chose or finished by a worker
@@ -430,9 +421,10 @@ public class DatabaseManager implements IDatabaseManager {
     /** Private method to filter the adverts
      */
     private void getAdvertsWithQuery(Query query, final AdvertListResult result, final boolean filterStatus, final AdvertStatus status) {
-        query.addValueEventListener(new ValueEventListener() {
+        query.addValueEventListener(new AutoRemovedValueEventListener(query) {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                super.onDataChange(dataSnapshot);
 
                 ArrayList<Advert> adverts = new ArrayList<>();
 
@@ -444,11 +436,6 @@ public class DatabaseManager implements IDatabaseManager {
                     }
                 }
                 result.call(adverts);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                throw  databaseError.toException();
             }
         });
     }
@@ -493,19 +480,16 @@ public class DatabaseManager implements IDatabaseManager {
     @Override
     public void getRating(final String idRating, final RatingResult result) {
         Query query = ratingsRefs.child(idRating);
-        query.addValueEventListener(new ValueEventListener() {
+        query.addValueEventListener(new AutoRemovedValueEventListener(query) {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                super.onDataChange(dataSnapshot);
+
                 Rating rating = dataSnapshot.getValue(Rating.class);
                 if (rating != null) {
                     rating.setIdRating(idRating);
                 }
                 result.call(rating);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                throw databaseError.toException();
             }
         });
     }
@@ -516,9 +500,10 @@ public class DatabaseManager implements IDatabaseManager {
     @Override
     public void getUserRatings(String idUserRated,final RatingListResult result) {
         Query query = ratingsRefs.orderByChild("idUserRated").equalTo(idUserRated);
-        query.addValueEventListener(new ValueEventListener() {
+        query.addValueEventListener(new AutoRemovedValueEventListener(query) {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                super.onDataChange(dataSnapshot);
 
                 ArrayList<Rating> ratings = new ArrayList<>();
 
@@ -530,11 +515,6 @@ public class DatabaseManager implements IDatabaseManager {
                     }
                 }
                 result.call(ratings);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                throw  databaseError.toException();
             }
         });
     }
@@ -545,9 +525,10 @@ public class DatabaseManager implements IDatabaseManager {
     @Override
     public void getGivenUserRating(String idGiver, final RatingListResult result) {
         Query query = ratingsRefs.orderByChild("idGiver").equalTo(idGiver);
-        query.addValueEventListener(new ValueEventListener() {
+        query.addValueEventListener(new AutoRemovedValueEventListener(query) {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                super.onDataChange(dataSnapshot);
 
                 ArrayList<Rating> ratings = new ArrayList<>();
 
@@ -559,11 +540,6 @@ public class DatabaseManager implements IDatabaseManager {
                     }
                 }
                 result.call(ratings);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                throw  databaseError.toException();
             }
         });
     }
@@ -590,11 +566,9 @@ public class DatabaseManager implements IDatabaseManager {
     }
 
 
-
-
     /** A private class to auto remove the listener ValueEventListener when the method onDataChange is called
      */
-    private class AutoRemovedValueEventListener implements ValueEventListener {
+    private abstract class AutoRemovedValueEventListener implements ValueEventListener {
 
         private Query query;
 
@@ -615,6 +589,5 @@ public class DatabaseManager implements IDatabaseManager {
             throw databaseError.toException();
         }
     }
-
 
 }

@@ -1,11 +1,10 @@
 package ca.uqac.sosdoit.database;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.List;
 
 import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.data.Advert;
+import ca.uqac.sosdoit.data.LatitudeLongitude;
 import ca.uqac.sosdoit.data.Skill;
 import ca.uqac.sosdoit.data.Rating;
 import ca.uqac.sosdoit.data.User;
@@ -84,7 +83,7 @@ public interface IDatabaseManager {
     /** Get adverts available in the database, with filtering parameters.
      * It use the current location of the user, if this information is unavailable, use null as currentLocation
      */
-    void getAdvertsAvailableWithFilter(final AdvertListResult result, AdvertFilter filter, LatLng currentLocation);
+    void getAdvertsAvailableWithFilter(AdvertFilter filter, LatitudeLongitude currentLocation, final AdvertListResult result);
 
     /** Get all the adverts available, i.e. not chose or finished by a worker
      * WARNING ! May produce lag and surcharge memory
