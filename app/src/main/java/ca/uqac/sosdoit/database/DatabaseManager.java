@@ -251,9 +251,10 @@ public class DatabaseManager implements IDatabaseManager {
     @Override
     public void getUser(final String idUser, final UserResult result) {
         Query query = usersRef.child(idUser);
-        query.addValueEventListener(new ValueEventListener() {
+        query.addValueEventListener(new AutoRemovedValueEventListener(query) {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                super.onDataChange(dataSnapshot);
                 User user = dataSnapshot.getValue(User.class);
                 if (user != null) {
                     user.setUid(idUser);
@@ -261,10 +262,6 @@ public class DatabaseManager implements IDatabaseManager {
                 result.call(user);
             }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                throw databaseError.toException();
-            }
         });
     }
 
@@ -343,7 +340,6 @@ public class DatabaseManager implements IDatabaseManager {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 ArrayList<Advert> adverts = new ArrayList<>();
 
                 for (DataSnapshot data: dataSnapshot.getChildren()) {
@@ -591,6 +587,33 @@ public class DatabaseManager implements IDatabaseManager {
      */
     public void addRatingCallback(RatingCallback callback) {
         ratingCallbacks.add(callback);
+    }
+
+
+
+
+    /** A private class to auto remove the listener ValueEventListener when the method onDataChange is called
+     */
+    private class AutoRemovedValueEventListener implements ValueEventListener {
+
+        private Query query;
+
+        AutoRemovedValueEventListener(Query query) {
+            this.query = query;
+        }
+
+        /** Remove the listener from the query
+         */
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            query.removeEventListener(this);
+            query = null;
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            throw databaseError.toException();
+        }
     }
 
 
