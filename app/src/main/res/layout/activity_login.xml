@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/logo" />
+        <include layout="@layout/element_logo" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -26,9 +26,9 @@
                 android:paddingRight="@dimen/activity_padding"
                 android:orientation="vertical">
 
-                <include layout="@layout/app_description" />
+                <include layout="@layout/element_app_description" />
 
-                <include layout="@layout/input_email_password" />
+                <include layout="@layout/element_input_email_password" />
 
                 <Button
                     android:id="@+id/btn_reset_password"
@@ -60,6 +60,6 @@
             </LinearLayout>
         </ScrollView>
 
-        <include layout="@layout/progress_bar" />
+        <include layout="@layout/element_progress_bar" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

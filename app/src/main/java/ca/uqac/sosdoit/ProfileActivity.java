@@ -39,7 +39,7 @@ public class ProfileActivity extends AppCompatActivity implements IDatabaseManag
         editProfile = findViewById(R.id.btn_edit_profile);
         toolbar = findViewById(R.id.toolbar);
 
-        toolbar.setTitle(R.string.btn_profile);
+        toolbar.setTitle(R.string.activity_profile);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -57,8 +57,6 @@ public class ProfileActivity extends AppCompatActivity implements IDatabaseManag
         }
 
         db.getUser(auth.getUid(), this);
-
-
 
         editProfile.setOnClickListener(new View.OnClickListener()
         {
