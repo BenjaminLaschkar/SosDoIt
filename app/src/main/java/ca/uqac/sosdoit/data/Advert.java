@@ -3,108 +3,248 @@ package ca.uqac.sosdoit.data;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Data Structure for an Advert
+ * Data structure for an Advert
  */
-
 @IgnoreExtraProperties
-public class Advert {
+public class Advert
+{
+    public enum Status
+    {
+        AVAILABLE,
+        ACCEPTED,
+        COMPLETED,
+        RATED,
+        CANCELED,
+        DELETED
+    }
 
     @Exclude
-    private String idAdvert;
-    private Task task;
+    private String aid;
+
+    private Status status;
+
+    private String advertiserUid;
+    private String workerUid;
+
+    private String title;
     private String description;
-    private Date creationDate;
-    private Address workAddress;
-    private AdvertStatus status;
-    private double price;
-    private String idAdvertiser;
-    private String idWorker;
-
-    public Advert(){}
-
-    public Advert(Task task, String description, Address workAddress, AdvertStatus status, double price, String idAdvertiser, String idWorker) {
-        this.task = task;
-        this.description = description;
-        this.workAddress = workAddress;
-        this.status = status;
-        this.price = price;
-        this.idAdvertiser = idAdvertiser;
-        this.idWorker = idWorker;
-    }
+    private double budget;
+    private Tag tag;
 
     @Exclude
-    public String getIdAdvert() {
-        return idAdvert;
+    private Address address;
+
+    private Date postingDate;
+    private Date completionDate;
+
+    private ArrayList<Bidder> bidders;
+
+    public Advert()
+    {
+        this.status = Status.AVAILABLE;
+        this.budget = -1.0;
+        this.bidders = new ArrayList<Bidder>();
     }
 
-    public void setIdAdvert(String idAdvert) {
-        this.idAdvert = idAdvert;
+    public Advert(String aid, String idAdvertiser, String title)
+    {
+        this();
+        this.aid = aid;
+        this.advertiserUid = idAdvertiser;
+        this.title = title;
     }
 
-    public Task getTask() {
-        return task;
+    public boolean hasWorkerUid()
+    {
+        return workerUid != null;
     }
 
-    public void setTask(Task task) {
-        this.task = task;
+    public boolean hasDescription()
+    {
+        return description != null;
     }
 
-    public String getDescription() {
-        return description;
+    public boolean hasBudget()
+    {
+        return budget > 0.0;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public boolean hasTag()
+    {
+        return tag != null;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    public boolean hasAddress()
+    {
+        return address != null;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+    public boolean hasPostingDate()
+    {
+        return postingDate != null;
     }
 
-    public Address getWorkAddress() {
-        return workAddress;
+    public boolean hasCompletionDate()
+    {
+        return completionDate != null;
     }
 
-    public void setWorkAddress(Address workAddress) {
-        this.workAddress = workAddress;
+    // ----- GETTER ----- //
+
+    @Exclude
+    public String getAid()
+    {
+        return aid;
     }
 
-    public AdvertStatus getStatus() {
+    public Status getStatus()
+    {
         return status;
     }
 
-    public void setStatus(AdvertStatus status) {
+    public String getAdvertiserUid()
+    {
+        return advertiserUid;
+    }
+
+    public String getWorkerUid()
+    {
+        return workerUid;
+    }
+
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public double getBudget()
+    {
+        return budget;
+    }
+
+    public Tag getTag()
+    {
+        return tag;
+    }
+
+    @Exclude
+    public Address getAddress()
+    {
+        return address;
+    }
+
+    public Date getPostingDate()
+    {
+        return postingDate;
+    }
+
+    public Date getCompletionDate()
+    {
+        return completionDate;
+    }
+
+    public ArrayList<Bidder> getBidders()
+    {
+        return bidders;
+    }
+
+    // ----- SETTER ----- //
+
+    public Advert setAid(String aid)
+    {
+        this.aid = aid;
+        return this;
+    }
+
+    public Advert setStatus(Status status)
+    {
         this.status = status;
+        return this;
     }
 
-    public double getPrice() {
-        return price;
+    public Advert setAdvertiserUid(String advertiserUid)
+    {
+        this.advertiserUid = advertiserUid;
+        return this;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public Advert setWorkerUid(String workerUid)
+    {
+        this.workerUid = workerUid;
+        return this;
     }
 
-    public String getIdAdvertiser() {
-        return idAdvertiser;
+    public Advert setTitle(String title)
+    {
+        this.title = title;
+        return this;
     }
 
-    public void setIdAdvertiser(String idAdvertiser) {
-        this.idAdvertiser = idAdvertiser;
+    public Advert setDescription(String description)
+    {
+        this.description = description;
+        return this;
     }
 
-    public String getIdWorker() {
-        return idWorker;
+    public Advert setBudget(double budget)
+    {
+        this.budget = budget;
+        return this;
     }
 
-    public void setIdWorker(String idWorker) {
-        this.idWorker = idWorker;
+    public Advert setTag(Tag tag)
+    {
+        this.tag = tag;
+        return this;
+    }
+
+    public Advert setAddress(Address workAddress)
+    {
+        this.address = address;
+        return this;
+    }
+
+    public Advert setPostingDate()
+    {
+        if (!hasPostingDate())
+        {
+            postingDate = new Date();
+        }
+        return this;
+    }
+
+    public Advert setPostingDate(Date postingDate)
+    {
+        this.postingDate = postingDate;
+        return this;
+    }
+
+    public Advert setCompletionDate()
+    {
+        if (!hasCompletionDate()) {
+            this.completionDate = new Date();
+        }
+        return this;
+    }
+
+    public Advert setCompletionDate(Date completionDate)
+    {
+        this.completionDate = completionDate;
+        return this;
+    }
+
+    public Advert setBidders(ArrayList<Bidder> bidders)
+    {
+        this.bidders = bidders;
+        return this;
     }
 }

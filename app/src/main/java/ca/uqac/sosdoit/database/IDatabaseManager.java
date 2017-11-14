@@ -101,11 +101,6 @@ public interface IDatabaseManager {
      */
     void getAllAdvertsPublishedAvailable(String idAdvertiser, final AdvertListResult result);
 
-    /** Get all the adverts published by an advertiser and chosen by a worker, but not accepted yet
-     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
-     */
-    void getAllAdvertsChosen(String idAdvertiser, final AdvertListResult result);
-
     /** Get all the adverts accepted by a worker, accepted and not finished yet
      * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
@@ -114,7 +109,7 @@ public interface IDatabaseManager {
     /** Get all the advertsFinished by a worker
      * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
-    void getAllAdvertsFinished(String idAdvertiser, final AdvertListResult result);
+    void getAllAdvertsCompleted(String idAdvertiser, final AdvertListResult result);
 
 
     /** Add an rating in the database

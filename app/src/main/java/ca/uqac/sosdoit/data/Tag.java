@@ -5,16 +5,16 @@ import android.support.annotation.StringRes;
 import ca.uqac.sosdoit.R;
 
 /**
- * The list of all the skills possible for a User
+ * The list of all the Tags possible for an Advert
  */
-public enum Skill
+public enum Tag
 {
-    SKILL_TEST(R.string.app_name);
+    TAG_TEST(R.string.app_name);
 
     @StringRes
     public int id;
 
-    Skill(@StringRes int id)
+    Tag(@StringRes int id)
     {
         this.id = id;
     }

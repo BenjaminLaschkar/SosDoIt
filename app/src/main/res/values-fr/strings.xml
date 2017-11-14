@@ -26,9 +26,8 @@
     <string name="msg_auth_failed">L\'authentification a échouée, vérifiez votre email et votre mot de passe, ou inscrivez-vous.</string>
     <string name="msg_register_failed">"L'inscription a échouée "</string>
 
-    <!-- Task Label -->
-    <string name="task_text">Test</string>
-    <string name="task_babysitting">Babysitting</string>
-    <string name="task_math_course">Cours de math</string>
-
+    <!-- Advert Tags -->
+    <string name="tag_text">Test</string>
+    <string name="tag_babysitting">Babysitting</string>
+    <string name="tag_math_course">Cours de math</string>
 </resources>
