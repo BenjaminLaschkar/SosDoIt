@@ -267,6 +267,31 @@ public class DatabaseManager implements IDatabaseManager {
         });
     }
 
+    /**
+     * Get an user with UserResult
+     * UserResult is not call once, but each time the user is modified
+     * This method search the user in the database and call the UserResult when the user is foun
+     */
+    @Override
+    public void getUserOnChange(final String uid, final UserResult result) {
+        Query query = usersRef.child(uid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user != null) {
+                    user.setUid(uid);
+                }
+                result.call(user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException();
+            }
+        });
+    }
+
     /** Add an advert in the database
      * Create a new unique ID when added, as key in the database.
      */

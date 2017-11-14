@@ -53,6 +53,13 @@ public interface IDatabaseManager {
      */
     void getUser(String uid, final UserResult result);
 
+    /** Get an user with UserResult
+     * UserResult is not call once, but each time the user is modified
+     * This method search the user in the database and call the UserResult when the user is found
+     * WARNING ! If the user is not found, the method call UserResult with null ( call(null) )
+     */
+    void getUserOnChange(String uid, final UserResult result);
+
     /** Add an advert in the database
      * Create a new unique ID when added, as key in the database.
      */
