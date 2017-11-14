@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
+import ca.uqac.sosdoit.data.LatitudeLongitude;
 import ca.uqac.sosdoit.data.Rating;
 
 public final class Util
@@ -95,11 +95,11 @@ public final class Util
      *
      * @param location1 location 1, not null
      * @param location2 location 2, not null
-     * @return the distance between the two location (in kilometers)
+     * @return the distance between the two locations (in kilometers)
      */
-    public static float distanceBetweenTowLocation(LatLng location1, LatLng location2) {
+    public static float distanceBetweenTwoLocation(LatitudeLongitude location1, LatitudeLongitude location2) {
         float[] results = new float[1];
-        Location.distanceBetween(location1.latitude, location1.longitude, location2.latitude, location2.longitude, results);
+        Location.distanceBetween(location1.getLatitude(), location1.getLongitude(), location2.getLatitude(), location2.getLongitude(), results);
         return results[0]/1000.0f;
     }
 }
