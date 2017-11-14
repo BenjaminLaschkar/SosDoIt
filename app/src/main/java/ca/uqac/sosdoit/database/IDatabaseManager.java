@@ -58,7 +58,11 @@ public interface IDatabaseManager {
      * This method search the user in the database and call the UserResult when the user is found
      * WARNING ! If the user is not found, the method call UserResult with null ( call(null) )
      */
-    void getUserOnChange(String uid, final UserResult result);
+    void AddUserListener(String uid, final UserResult result);
+
+    /** Remove a listener for a specific uid
+     */
+    void removeUserListener(String uid);
 
     /** Add an advert in the database
      * Create a new unique ID when added, as key in the database.

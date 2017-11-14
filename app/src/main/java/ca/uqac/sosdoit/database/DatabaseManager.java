@@ -10,7 +10,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.data.Advert;
@@ -47,6 +49,12 @@ public class DatabaseManager implements IDatabaseManager {
     private List<AdvertCallback> advertCallbacks;
     private List<RatingCallback> ratingCallbacks;
 
+    // Map of listeners :
+    private Map<String, ValueEventListener> userListenerMap;
+    private Map<String, ValueEventListener> advertListenerMap;
+    private Map<String, ValueEventListener> ratingListenerMap;
+
+
     /** Get the instance of the database manager
      */
     public static DatabaseManager getInstance() {
@@ -63,6 +71,10 @@ public class DatabaseManager implements IDatabaseManager {
         userCallbacks = new ArrayList<>();
         advertCallbacks = new ArrayList<>();
         ratingCallbacks = new ArrayList<>();
+
+        userListenerMap = new HashMap<>();
+        advertListenerMap = new HashMap<>();
+        ratingListenerMap = new HashMap<>();
 
         // Add the listeners for callback :
         usersRef.addChildEventListener(new ChildEventListener() {
@@ -267,15 +279,15 @@ public class DatabaseManager implements IDatabaseManager {
         });
     }
 
-    /**
-     * Get an user with UserResult
+    /** Get an user with UserResult
      * UserResult is not call once, but each time the user is modified
-     * This method search the user in the database and call the UserResult when the user is foun
+     * This method search the user in the database and call the UserResult when the user is found
+     * WARNING ! If the user is not found, the method call UserResult with null ( call(null) )
      */
     @Override
-    public void getUserOnChange(final String uid, final UserResult result) {
+    public void AddUserListener(final String uid, final UserResult result) {
         Query query = usersRef.child(uid);
-        query.addValueEventListener(new ValueEventListener() {
+        ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
@@ -289,9 +301,23 @@ public class DatabaseManager implements IDatabaseManager {
             public void onCancelled(DatabaseError databaseError) {
                 throw databaseError.toException();
             }
-        });
+        };
+        if (!userListenerMap.containsKey(uid)) {
+            userListenerMap.put(uid, listener);
+        }
+        query.addValueEventListener(listener);
     }
 
+    /** Remove a listener for a specific uid
+     */
+    @Override
+    public void removeUserListener(String uid) {
+        if (userListenerMap.containsKey(uid)) {
+            ValueEventListener listener = userListenerMap.get(uid);
+            usersRef.child(uid).removeEventListener(listener);
+            userListenerMap.remove(uid);
+        }
+    }
     /** Add an advert in the database
      * Create a new unique ID when added, as key in the database.
      */
