@@ -16,7 +16,6 @@ import java.util.Map;
 
 import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.data.Advert;
-import ca.uqac.sosdoit.data.AdvertStatus;
 import ca.uqac.sosdoit.data.LatitudeLongitude;
 import ca.uqac.sosdoit.data.Skill;
 import ca.uqac.sosdoit.data.Rating;
@@ -324,8 +323,8 @@ public class DatabaseManager implements IDatabaseManager {
     @Override
     public void addAdvert(Advert advert) {
         // Date the advert, if not did before
-        if (advert.getCreationDate() == null) {
-            advert.setCreationDate(new Date());
+        if (advert.getPostingDate() == null) {
+            advert.setPostingDate(new Date());
         }
         advertsRefs.push().setValue(advert);
     }
@@ -337,8 +336,8 @@ public class DatabaseManager implements IDatabaseManager {
     @Override
     public void editAdvert(String aid, Advert advert) {
         // Date the advert, if not did before
-        if (advert.getCreationDate() == null) {
-            advert.setCreationDate(new Date());
+        if (advert.getPostingDate() == null) {
+            advert.setPostingDate(new Date());
         }
         advertsRefs.child(aid).setValue(advert);
     }
@@ -364,7 +363,7 @@ public class DatabaseManager implements IDatabaseManager {
                 super.onDataChange(dataSnapshot);
                 Advert advert = dataSnapshot.getValue(Advert.class);
                 if (advert != null) {
-                    advert.setIdAdvert(aid);
+                    advert.setAid(aid);
                 }
                 result.call(advert);
             }
@@ -385,7 +384,7 @@ public class DatabaseManager implements IDatabaseManager {
      */
     @Override
     public void getAdvertsAvailableWithFilter(final AdvertFilter filter, final LatitudeLongitude currentLocation, final AdvertListResult result) {
-        Query query = advertsRefs.orderByChild("status").equalTo(AdvertStatus.AVAILABLE.name());
+        Query query = advertsRefs.orderByChild("status").equalTo(Advert.Status.AVAILABLE.name());
         query.addValueEventListener(new AutoRemovedValueEventListener(query) {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -395,7 +394,7 @@ public class DatabaseManager implements IDatabaseManager {
                 for (DataSnapshot data: dataSnapshot.getChildren()) {
                     Advert advert = data.getValue(Advert.class);
                     if (advert != null && isAdvertCompatibleWithFilter(advert, filter, currentLocation)) {
-                        advert.setIdAdvert(data.getKey());
+                        advert.setAid(data.getKey());
                         adverts.add(advert);
                     }
                 }
@@ -408,22 +407,22 @@ public class DatabaseManager implements IDatabaseManager {
      */
     private boolean isAdvertCompatibleWithFilter(Advert advert, AdvertFilter filter, LatitudeLongitude currentLocation) {
         // First filter tasks
-        if (filter.hasFilterOnTasks() && !filter.getTasks().contains(advert.getTask())) {
+        if (filter.hasFilterOnTasks() && !filter.getTags().contains(advert.getTag())) {
             return false;
         }
         // Filter price
-        if ((filter.hasFilterOnMinPrice() && filter.getMinPrice() > advert.getPrice()) || (filter.hasFilterOnMaxPrice() && filter.getMaxPrice() < advert.getPrice())) {
+        if ((filter.hasFilterOnMinPrice() && filter.getMinPrice() > advert.getBudget()) || (filter.hasFilterOnMaxPrice() && filter.getMaxPrice() < advert.getBudget())) {
             return  false;
         }
         // Filter distance
-        return currentLocation == null || advert.getWorkAddress().getLatitudeLongitude() == null || !filter.hasFilterOnDistanceMax() || Util.distanceBetweenTwoLocation(currentLocation, advert.getWorkAddress().getLatitudeLongitude()) <= filter.getDistanceMax();
+        return currentLocation == null || advert.getAddress().getLatitudeLongitude() == null || !filter.hasFilterOnDistanceMax() || Util.distanceBetweenTwoLocation(currentLocation, advert.getAddress().getLatitudeLongitude()) <= filter.getDistanceMax();
     }
 
     /** Get all the adverts available, i.e. not chose or finished by a worker
      * WARNING ! May produce lag and surcharge memory
      */
     public void getAllAdvertsAvailable(AdvertListResult result) {
-        Query query = advertsRefs.orderByChild("status").equalTo(AdvertStatus.AVAILABLE.name());
+        Query query = advertsRefs.orderByChild("status").equalTo(Advert.Status.AVAILABLE.name());
         this.getAdvertsWithQuery(query, result, false, null);
     }
 
@@ -440,40 +439,32 @@ public class DatabaseManager implements IDatabaseManager {
      * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
     @Override
-    public void getAllAdvertsPublishedAvailable(String uidAdvertiser, AdvertListResult result) {
-        Query query = advertsRefs.orderByChild("idAdvertiser").equalTo(uidAdvertiser);
-        this.getAdvertsWithQuery(query, result, true, AdvertStatus.AVAILABLE);
-    }
-
-    /** Get all the adverts available published by an advertiser, i.e. not chose or finished by a worker
-     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
-     */
-    @Override
-    public void getAllAdvertsChosen(String uidAdvertiser, final AdvertListResult result) {
-        // TODO
+    public void getAllAdvertsPublishedAvailable(String idAdvertiser, AdvertListResult result) {
+        Query query = advertsRefs.orderByChild("idAdvertiser").equalTo(idAdvertiser);
+        this.getAdvertsWithQuery(query, result, true, Advert.Status.AVAILABLE);
     }
 
     /** Get all the adverts accepted by a worker, accepted and not finished yet
      * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
     @Override
-    public void getAllAdvertsAccepted(String uidWorker, final AdvertListResult result) {
-        Query query = advertsRefs.orderByChild("idWorker").equalTo(uidWorker);
-        this.getAdvertsWithQuery(query, result, true, AdvertStatus.ACCEPTED);
+    public void getAllAdvertsAccepted(String idWorker, final AdvertListResult result) {
+        Query query = advertsRefs.orderByChild("idWorker").equalTo(idWorker);
+        this.getAdvertsWithQuery(query, result, true, Advert.Status.ACCEPTED);
     }
 
     /** Get all the advertsFinished by a worker
      * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
     @Override
-    public void getAllAdvertsFinished(String uidAdvertiser, final AdvertListResult result) {
-        Query query = advertsRefs.orderByChild("idAdvertiser").equalTo(uidAdvertiser);
-        this.getAdvertsWithQuery(query, result, true, AdvertStatus.FINISHED);
+    public void getAllAdvertsCompleted(String idAdvertiser, final AdvertListResult result) {
+        Query query = advertsRefs.orderByChild("idAdvertiser").equalTo(idAdvertiser);
+        this.getAdvertsWithQuery(query, result, true, Advert.Status.COMPLETED);
     }
 
     /** Private method to filter the adverts
      */
-    private void getAdvertsWithQuery(Query query, final AdvertListResult result, final boolean filterStatus, final AdvertStatus status) {
+    private void getAdvertsWithQuery(Query query, final AdvertListResult result, final boolean filterStatus, final Advert.Status status) {
         query.addValueEventListener(new AutoRemovedValueEventListener(query) {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -484,7 +475,7 @@ public class DatabaseManager implements IDatabaseManager {
                 for (DataSnapshot data: dataSnapshot.getChildren()) {
                     Advert advert = data.getValue(Advert.class);
                     if (advert != null && (!filterStatus ||advert.getStatus().equals(status))) {
-                        advert.setIdAdvert(data.getKey());
+                        advert.setAid(data.getKey());
                         adverts.add(advert);
                     }
                 }
@@ -660,5 +651,4 @@ public class DatabaseManager implements IDatabaseManager {
             throw databaseError.toException();
         }
     }
-
 }

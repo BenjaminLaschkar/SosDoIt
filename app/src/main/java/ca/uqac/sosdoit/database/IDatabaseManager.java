@@ -110,21 +110,15 @@ public interface IDatabaseManager {
      * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
     void getAllAdvertsPublishedAvailable(String uidAdvertiser, final AdvertListResult result);
-
-    /** Get all the adverts published by an advertiser and chosen by a worker, but not accepted yet
-     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
-     */
-    void getAllAdvertsChosen(String uidAdvertiser, final AdvertListResult result);
-
     /** Get all the adverts accepted by a worker, accepted and not finished yet
      * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
     void getAllAdvertsAccepted(String uidWorker, final AdvertListResult result);
 
-    /** Get all the advertsFinished by a worker
+    /** Get all the advertsCompleted
      * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
      */
-    void getAllAdvertsFinished(String uidAdvertiser, final AdvertListResult result);
+    void getAllAdvertsCompleted(String idAdvertiser, final AdvertListResult result);
 
 
     /** Add an rating in the database

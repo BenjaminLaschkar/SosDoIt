@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Data structure for a user
+ * Data structure for a User
  */
 @IgnoreExtraProperties
 public class User
@@ -168,5 +168,11 @@ public class User
     {
         this.skills = skills;
         return this;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "(" + (hasUsername() ? username : " ") + ", " + (hasFirstName() ? firstName : " ") + ", " + (hasLastName() ? lastName : " " ) + ", " + (hasAddress() ? address : " ") + ")";
     }
 }
