@@ -124,7 +124,7 @@ public class RegisterAddressActivity extends AppCompatActivity
 
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
-            db.editAddressUser(user.getUid(), new Address(houseNumber, street, city, postalCode, country).setAdditionalAddressWithCheck(additionalAddress));
+            db.editAddressUser(user.getUid(), new Address(street, city, postalCode, country).setHouseNumberWithCheck(houseNumber).setAdditionalAddressWithCheck(additionalAddress));
             progressBar.setVisibility(View.GONE);
             setResult(RESULT_OK);
         }

@@ -30,12 +30,6 @@ public class Address
         this.country = country.toUpperCase();
     }
 
-    public Address(String houseNumber, String street, String city, String postalCode, String country)
-    {
-        this(street, city, postalCode, country);
-        this.houseNumber = houseNumber;
-    }
-
     public boolean hasHouseNumber()
     {
         return houseNumber != null;
@@ -114,6 +108,14 @@ public class Address
     public Address setHouseNumber(String houseNumber)
     {
         this.houseNumber = houseNumber;
+        return this;
+    }
+
+    public Address setHouseNumberWithCheck(String houseNumber)
+    {
+        if (!TextUtils.isEmpty(houseNumber)) {
+            this.houseNumber = houseNumber;
+        }
         return this;
     }
 
