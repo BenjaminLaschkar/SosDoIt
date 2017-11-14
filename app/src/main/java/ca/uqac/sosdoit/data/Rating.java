@@ -15,47 +15,55 @@ public class Rating {
     public static double MAX_RATE = 5.0;
 
     @Exclude
-    private String idRating;
-    private String idUserRated;
-    private String idGiver;
-    private String idAdvert;
+    private String rid;
+    private String uidRated;
+    private String uidRater;
+    private String aid;
     private double rate;
     private String commentary;
     private Date date;
 
     public Rating(){}
 
-    public Rating(String idUserRated, String idGiver, String idAdvert, double rate, String commentary) {
-        this.idUserRated = idUserRated;
-        this.idGiver = idGiver;
-        this.idAdvert = idAdvert;
+    public Rating(String uidRated, String uidRater, String aid, double rate, String commentary) {
+        this.uidRated = uidRated;
+        this.uidRater = uidRater;
+        this.aid = aid;
         this.rate = rate;
         this.commentary = commentary;
     }
 
     @Exclude
-    public String getIdRating() {
-        return idRating;
+    public String getRid() {
+        return rid;
     }
 
-    public void setIdRating(String idRating) {
-        this.idRating = idRating;
+    public void setRid(String rid) {
+        this.rid = rid;
     }
 
-    public String getIdUserRated() {
-        return idUserRated;
+    public String getUidRated() {
+        return uidRated;
     }
 
-    public void setIdUserRated(String idUserRated) {
-        this.idUserRated = idUserRated;
+    public void setUidRated(String uidRated) {
+        this.uidRated = uidRated;
     }
 
-    public String getIdGiver() {
-        return idGiver;
+    public String getUidRater() {
+        return uidRater;
     }
 
-    public void setIdGiver(String idGiver) {
-        this.idGiver = idGiver;
+    public void setUidRater(String uidRater) {
+        this.uidRater = uidRater;
+    }
+
+    public String getAid() {
+        return aid;
+    }
+
+    public void setAid(String aid) {
+        this.aid = aid;
     }
 
     public double getRate() {
@@ -80,13 +88,5 @@ public class Rating {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public String getIdAdvert() {
-        return idAdvert;
-    }
-
-    public void setIdAdvert(String idAdvert) {
-        this.idAdvert = idAdvert;
     }
 }
