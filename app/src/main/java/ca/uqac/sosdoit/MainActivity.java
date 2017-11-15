@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
     private ProgressBar progressBar;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
-    private FirebaseUser user;
     private DatabaseManager db;
 
     @Override
@@ -37,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
         setContentView(R.layout.activity_main);
 
         toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
+        setSupportActionBar(toolbar);
+
         btnProfile = findViewById(R.id.btn_profile);
         btnSettings = findViewById(R.id.btn_settings);
         btnMyAdverts = findViewById(R.id.btn_my_adverts);
@@ -44,16 +46,13 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
         btnMyJobs = findViewById(R.id.btn_my_jobs);
         progressBar = findViewById(R.id.progress_bar);
 
-        toolbar.setTitle(R.string.app_name);
-        setSupportActionBar(toolbar);
-
         auth = FirebaseAuth.getInstance();
         db = DatabaseManager.getInstance();
 
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
+                FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     finish();

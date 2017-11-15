@@ -23,86 +23,154 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:paddingTop="@dimen/activity_padding"
                 android:paddingLeft="@dimen/activity_padding"
                 android:paddingRight="@dimen/activity_padding"
-                android:paddingBottom="@dimen/element_margin_small"
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/TextViewTheme.Description.First"
-                    android:text="@string/username" />
-
-                <TextView
-                    android:id="@+id/username"
-                    style="@style/TextViewTheme.Element" />
-
-                <View style="@style/Line" />
-
-                <TextView
-                    style="@style/TextViewTheme.Description"
-                    android:text="@string/first_name" />
-
-                <TextView
-                    android:id="@+id/first_name"
-                    style="@style/TextViewTheme.Element" />
-
-                <View style="@style/Line" />
-
-                <TextView
-                    style="@style/TextViewTheme.Description"
-                    android:text="@string/last_name" />
-
-                <TextView
-                    android:id="@+id/last_name"
-                    style="@style/TextViewTheme.Element" />
-
-                <View style="@style/Line" />
-
-                <TextView
-                    style="@style/TextViewTheme.Description"
+                    style="@style/TextView.Description.First"
                     android:text="@string/email" />
 
-                <TextView
+                <EditText
+                    style="@style/EditText.NotEditable"
                     android:id="@+id/email"
-                    style="@style/TextViewTheme.Element" />
-
-                <View style="@style/Line" />
+                    android:imeOptions="actionDone"
+                    android:inputType="textEmailAddress" />
 
                 <TextView
-                    style="@style/TextViewTheme.Description"
+                    style="@style/TextView.Description"
+                    android:id="@+id/password_description"
+                    android:text="@string/password"
+                    android:visibility="gone" />
+
+                <EditText
+                    style="@style/EditText.NotEditable"
+                    android:id="@+id/password"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:visibility="gone" />
+
+                <TextView
+                    style="@style/TextView.Description"
+                    android:text="@string/username" />
+
+                <EditText
+                    style="@style/EditText.NotEditable"
+                    android:id="@+id/username"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPersonName|textNoSuggestions" />
+
+                <TextView
+                    style="@style/TextView.Description"
+                    android:text="@string/first_name" />
+
+                <EditText
+                    style="@style/EditText.NotEditable"
+                    android:id="@+id/first_name"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName|textNoSuggestions" />
+
+                <TextView
+                    style="@style/TextView.Description"
+                    android:text="@string/last_name" />
+
+                <EditText
+                    style="@style/EditText.NotEditable"
+                    android:id="@+id/last_name"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPersonName|textNoSuggestions" />
+
+                <TextView
+                    style="@style/TextView.Description"
                     android:text="@string/address" />
 
-                <TextView
-                    android:id="@+id/city"
-                    style="@style/TextViewTheme.Element" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <View style="@style/Line" />
+                    <EditText
+                        style="@style/EditText.NotEditable"
+                        android:id="@+id/house_number"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPostalAddress"
+                        android:visibility="gone" />
+
+                    <EditText
+                        style="@style/EditText.NotEditable"
+                        android:id="@+id/street"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPostalAddress" />
+                </LinearLayout>
+
+                <EditText
+                    style="@style/EditText.NotEditable"
+                    android:id="@+id/additional_address"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPostalAddress"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        style="@style/EditText.NotEditable"
+                        android:id="@+id/city"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPostalAddress" />
+
+                    <EditText
+                        style="@style/EditText.NotEditable"
+                        android:id="@+id/postal_code"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPostalAddress|textCapCharacters"/>
+                </LinearLayout>
+
+                <EditText
+                    style="@style/EditText.NotEditable"
+                    android:id="@+id/country"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPostalAddress|textCapCharacters"/>
             </LinearLayout>
         </ScrollView>
 
         <LinearLayout
+            android:id="@+id/buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/element_margin_small"
+            android:layout_marginTop="@dimen/element_margin_large"
             android:paddingLeft="@dimen/activity_padding"
             android:paddingRight="@dimen/activity_padding"
-            android:paddingBottom="@dimen/activity_padding"
-            android:orientation="vertical">
+            android:visibility="gone" >
 
             <Button
-                android:id="@+id/btn_edit_profile"
-                android:layout_width="match_parent"
+                android:id="@+id/cancel"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_edit_profile" />
+                android:layout_marginRight="@dimen/element_margin_xsmall"
+                android:layout_marginBottom="@dimen/element_margin_small"
+                android:layout_weight="1"
+                android:background="@drawable/button_secondary"
+                android:text="Cancel" />
 
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="@dimen/progress_bar_size"
-                android:layout_height="@dimen/progress_bar_size"
-                android:layout_marginTop="@dimen/element_margin"
-                android:layout_marginBottom="@dimen/element_margin"
-                android:visibility="gone" />
+            <Button
+                android:id="@+id/save"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/element_margin_xsmall"
+                android:layout_marginBottom="@dimen/element_margin_small"
+                android:layout_weight="1"
+                android:text="Save" />
         </LinearLayout>
+
+        <include layout="@layout/element_progress_bar_visible" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

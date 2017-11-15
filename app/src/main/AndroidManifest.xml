@@ -54,7 +54,7 @@
             android:name=".ProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".EditProfileActivity"
             android:screenOrientation="portrait"

@@ -77,9 +77,7 @@ public class User
         if (!hasSkills()) {
             skills = new TreeSet<>();
         }
-        for (Skill skill : skills) {
-            skills.add(skill);
-        }
+        this.skills.addAll(skills);
         return this;
     }
 

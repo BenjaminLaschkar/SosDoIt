@@ -1,15 +1,17 @@
 package ca.uqac.sosdoit.util;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-
 
 import java.util.List;
 
@@ -23,12 +25,20 @@ public final class Util
 
     private Util() {}
 
+    public static void toggleKeyboard(Activity activity)
+    {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        }
+    }
+
     public static void showKeyboard(Activity activity, View view)
     {
         if (view.requestFocus()) {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
-                imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+                imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
             }
         }
     }

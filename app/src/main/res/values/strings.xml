@@ -68,6 +68,7 @@
     <string name="btn_logout">Log out</string>
 
     <string name="btn_edit_profile">Edit</string>
+    <string name="btn_delete_account">Delete account</string>
 
     <!-- Strings used by the demo : -->
     <string name="change_email">Change Email</string>
