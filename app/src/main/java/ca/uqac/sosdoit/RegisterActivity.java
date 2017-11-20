@@ -43,9 +43,9 @@ public class RegisterActivity extends AppCompatActivity
         setContentView(R.layout.activity_register);
 
         inputEmail = findViewById(R.id.email);
-        inputPassword = findViewById(R.id.password);
+        inputPassword = findViewById(R.id.new_password);
         passwordContainer = findViewById(R.id.password_container);
-        btnRegister = findViewById(R.id.btn_register_name);
+        btnRegister = findViewById(R.id.btn_register_profile);
         btnLogIn = findViewById(R.id.btn_login);
         progressBar = findViewById(R.id.progress_bar);
 
@@ -60,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                register(v);
+                register();
             }
         });
 
@@ -79,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
             {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    register(v);
+                    register();
                     return true;
                 }
                 return false;
@@ -87,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity
         });
     }
 
-    private void register(View v)
+    private void register()
     {
         final String email = inputEmail.getText().toString().trim();
         final String password = inputPassword.getText().toString().trim();
@@ -120,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity
             return;
         }
 
-        Util.hideKeyboard(RegisterActivity.this, v);
+        Util.toggleKeyboard(RegisterActivity.this);
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -144,7 +144,8 @@ public class RegisterActivity extends AppCompatActivity
                     } catch (Exception e) {
                         Toast.makeText(RegisterActivity.this, getString(R.string.msg_register_failed) + ": " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
-                    Util.showKeyboard(RegisterActivity.this, inputEmail);
+                    inputEmail.requestFocus();
+                    Util.toggleKeyboard(RegisterActivity.this);
                 } else {
                     pref.edit().putString(getString(R.string.pref_email), email).apply();
                     setResult(RESULT_OK);

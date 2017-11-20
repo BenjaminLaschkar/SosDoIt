@@ -36,7 +36,7 @@
                     android:hint="@string/password">
 
                     <EditText
-                        android:id="@+id/password"
+                        android:id="@+id/new_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
@@ -47,28 +47,23 @@
                     android:id="@+id/btn_reset_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
                     android:layout_gravity="end"
                     android:minHeight="0dp"
                     android:padding="0dp"
                     android:background="@null"
                     android:text="@string/btn_forgot_password"
-                    android:textSize="@dimen/text_small"
-                    android:textColor="@color/button" />
+                    android:textSize="@dimen/text_small" />
 
                 <Button
+                    style="@style/Button.Primary"
                     android:id="@+id/btn_login"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/element_margin_large"
-                    android:layout_marginBottom="@dimen/element_margin_small"
                     android:text="@string/btn_login" />
 
                 <Button
-                    android:id="@+id/btn_register_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/element_margin_small"
-                    android:background="@drawable/button_secondary"
+                    style="@style/Button.Secondary"
+                    android:id="@+id/btn_register_profile"
                     android:text="@string/btn_link_to_register" />
             </LinearLayout>
         </ScrollView>

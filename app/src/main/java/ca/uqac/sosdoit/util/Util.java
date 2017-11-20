@@ -1,21 +1,17 @@
 package ca.uqac.sosdoit.util;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import java.util.List;
 
-import ca.uqac.sosdoit.data.LatitudeLongitude;
+import ca.uqac.sosdoit.data.Coordinates;
 import ca.uqac.sosdoit.data.Rating;
 
 public final class Util
@@ -33,22 +29,9 @@ public final class Util
         }
     }
 
-    public static void showKeyboard(Activity activity, View view)
+    public static boolean equals(String s1, String s2)
     {
-        if (view.requestFocus()) {
-            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
-            }
-        }
-    }
-
-    public static void hideKeyboard(Activity activity, View view)
-    {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+        return (s1 == null && s2 == null) || (s1 != null && s1.equals(s2));
     }
 
     public static class AdvancedTextWatcher implements TextWatcher
@@ -107,7 +90,7 @@ public final class Util
      * @param location2 location 2, not null
      * @return the distance between the two locations (in kilometers)
      */
-    public static float distanceBetweenTwoLocation(LatitudeLongitude location1, LatitudeLongitude location2) {
+    public static float distanceBetweenTwoLocation(Coordinates location1, Coordinates location2) {
         float[] results = new float[1];
         Location.distanceBetween(location1.getLatitude(), location1.getLongitude(), location2.getLatitude(), location2.getLongitude(), results);
         return results[0]/1000.0f;

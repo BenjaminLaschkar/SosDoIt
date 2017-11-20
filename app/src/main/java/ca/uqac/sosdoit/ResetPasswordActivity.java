@@ -51,7 +51,7 @@ public class ResetPasswordActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                reset_password(v);
+                reset_password();
             }
         });
 
@@ -70,7 +70,7 @@ public class ResetPasswordActivity extends AppCompatActivity
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
             {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    reset_password(v);
+                    reset_password();
                     return true;
                 }
                 return false;
@@ -78,7 +78,7 @@ public class ResetPasswordActivity extends AppCompatActivity
         });
     }
 
-    private void reset_password(View v)
+    private void reset_password()
     {
         final String email = inputEmail.getText().toString().trim();
 
@@ -87,7 +87,7 @@ public class ResetPasswordActivity extends AppCompatActivity
             return;
         }
 
-        Util.hideKeyboard(ResetPasswordActivity.this, v);
+        Util.toggleKeyboard(ResetPasswordActivity.this);
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -111,7 +111,8 @@ public class ResetPasswordActivity extends AppCompatActivity
                     } catch (Exception e) {
                         Toast.makeText(ResetPasswordActivity.this, getString(R.string.msg_reset_password_failed) + ": " + getString(R.string.msg_unknown_error), Toast.LENGTH_LONG).show();
                     }
-                    Util.showKeyboard(ResetPasswordActivity.this, inputEmail);
+                    inputEmail.requestFocus();
+                    Util.toggleKeyboard(ResetPasswordActivity.this);
                 } else {
                     pref.edit().putString(getString(R.string.pref_email), email).apply();
                     setResult(RESULT_OK);

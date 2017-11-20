@@ -29,13 +29,32 @@
 
                 <TextView
                     style="@style/TextView.Description.First"
+                    android:text="@string/registration_date" />
+
+                <EditText
+                    style="@style/EditText.NotEditable"
+                    android:id="@+id/registration"
+                    android:hint="@string/registration_date"
+                    android:imeOptions="actionNext" />
+
+                <TextView
+                    style="@style/TextView.Description.First"
                     android:text="@string/email" />
 
                 <EditText
                     style="@style/EditText.NotEditable"
                     android:id="@+id/email"
-                    android:imeOptions="actionDone"
+                    android:hint="@string/email"
+                    android:imeOptions="actionNext"
                     android:inputType="textEmailAddress" />
+
+                <EditText
+                    style="@style/EditText"
+                    android:id="@+id/password"
+                    android:hint="@string/password"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:visibility="gone" />
 
                 <TextView
                     style="@style/TextView.Description"
@@ -44,9 +63,18 @@
                     android:visibility="gone" />
 
                 <EditText
-                    style="@style/EditText.NotEditable"
-                    android:id="@+id/password"
-                    android:imeOptions="actionDone"
+                    style="@style/EditText"
+                    android:id="@+id/new_password"
+                    android:hint="@string/new_password"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:visibility="gone" />
+
+                <EditText
+                    style="@style/EditText"
+                    android:id="@+id/old_password"
+                    android:hint="@string/old_password"
+                    android:imeOptions="actionNext"
                     android:inputType="textPassword"
                     android:visibility="gone" />
 
@@ -57,28 +85,50 @@
                 <EditText
                     style="@style/EditText.NotEditable"
                     android:id="@+id/username"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPersonName|textNoSuggestions" />
-
-                <TextView
-                    style="@style/TextView.Description"
-                    android:text="@string/first_name" />
-
-                <EditText
-                    style="@style/EditText.NotEditable"
-                    android:id="@+id/first_name"
+                    android:hint="@string/username"
                     android:imeOptions="actionNext"
                     android:inputType="textPersonName|textNoSuggestions" />
 
-                <TextView
-                    style="@style/TextView.Description"
-                    android:text="@string/last_name" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <EditText
-                    style="@style/EditText.NotEditable"
-                    android:id="@+id/last_name"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPersonName|textNoSuggestions" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextView.Description"
+                            android:text="@string/first_name" />
+
+                        <EditText
+                            style="@style/EditText.NotEditable"
+                            android:id="@+id/first_name"
+                            android:hint="@string/first_name"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPersonName|textNoSuggestions" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextView.Description"
+                            android:text="@string/last_name" />
+
+                        <EditText
+                            style="@style/EditText.NotEditable"
+                            android:id="@+id/last_name"
+                            android:hint="@string/last_name"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPersonName|textNoSuggestions|textCapCharacters" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <TextView
                     style="@style/TextView.Description"
@@ -93,6 +143,7 @@
                         android:id="@+id/house_number"
                         android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:hint="@string/house_number"
                         android:imeOptions="actionNext"
                         android:inputType="textPostalAddress"
                         android:visibility="gone" />
@@ -101,7 +152,8 @@
                         style="@style/EditText.NotEditable"
                         android:id="@+id/street"
                         android:layout_width="0dp"
-                        android:layout_weight="3"
+                        android:layout_weight="2"
+                        android:hint="@string/street"
                         android:imeOptions="actionNext"
                         android:inputType="textPostalAddress" />
                 </LinearLayout>
@@ -109,6 +161,7 @@
                 <EditText
                     style="@style/EditText.NotEditable"
                     android:id="@+id/additional_address"
+                    android:hint="@string/additional_address"
                     android:imeOptions="actionNext"
                     android:inputType="textPostalAddress"
                     android:visibility="gone" />
@@ -121,24 +174,44 @@
                         style="@style/EditText.NotEditable"
                         android:id="@+id/city"
                         android:layout_width="0dp"
-                        android:layout_weight="2"
+                        android:layout_weight="1"
+                        android:hint="@string/city"
                         android:imeOptions="actionNext"
                         android:inputType="textPostalAddress" />
+
+                    <EditText
+                        style="@style/EditText.NotEditable"
+                        android:id="@+id/state"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:hint="@string/state"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPostalAddress|textCapCharacters"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <EditText
                         style="@style/EditText.NotEditable"
                         android:id="@+id/postal_code"
                         android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:hint="@string/postal_code"
                         android:imeOptions="actionNext"
-                        android:inputType="textPostalAddress|textCapCharacters"/>
-                </LinearLayout>
+                        android:inputType="textPostalAddress|textCapCharacters" />
 
-                <EditText
-                    style="@style/EditText.NotEditable"
-                    android:id="@+id/country"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPostalAddress|textCapCharacters"/>
+                    <EditText
+                        style="@style/EditText.NotEditable"
+                        android:id="@+id/country"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:hint="@string/country"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPostalAddress|textCapCharacters" />
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
 
@@ -152,23 +225,20 @@
             android:visibility="gone" >
 
             <Button
+                style="@style/Button.Secondary"
                 android:id="@+id/cancel"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/element_margin_xsmall"
-                android:layout_marginBottom="@dimen/element_margin_small"
                 android:layout_weight="1"
-                android:background="@drawable/button_secondary"
-                android:text="Cancel" />
+                android:layout_marginRight="@dimen/element_margin_xsmall"
+                android:text="@string/btn_cancel" />
 
             <Button
-                android:id="@+id/save"
+                style="@style/Button.Primary"
+                android:id="@+id/update"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/element_margin_xsmall"
-                android:layout_marginBottom="@dimen/element_margin_small"
                 android:layout_weight="1"
-                android:text="Save" />
+                android:layout_marginLeft="@dimen/element_margin_xsmall"
+                android:text="@string/btn_save" />
         </LinearLayout>
 
         <include layout="@layout/element_progress_bar_visible" />

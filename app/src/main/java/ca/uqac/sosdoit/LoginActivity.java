@@ -46,9 +46,9 @@ public class LoginActivity extends AppCompatActivity
         setContentView(R.layout.activity_login);
 
         inputEmail = findViewById(R.id.email);
-        inputPassword = findViewById(R.id.password);
+        inputPassword = findViewById(R.id.new_password);
         btnLogIn = findViewById(R.id.btn_login);
-        btnRegister = findViewById(R.id.btn_register_name);
+        btnRegister = findViewById(R.id.btn_register_profile);
         btnResetPassword = findViewById(R.id.btn_reset_password);
         progressBar = findViewById(R.id.progress_bar);
 
@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                login(v);
+                login();
             }
         });
 
@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
             {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    login(v);
+                    login();
                     return true;
                 }
                 return false;
@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity
                     break;
                 case Util.RESET_PASSWORD_REQUEST:
                     inputEmail.setText(pref.getString(getString(R.string.pref_email), ""));
-                    Toast.makeText(LoginActivity.this, getString(R.string.msg_login_after_reset_password), Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, R.string.msg_login_after_reset_password, Toast.LENGTH_LONG).show();
                     break;
                 default:
                     break;
@@ -120,7 +120,7 @@ public class LoginActivity extends AppCompatActivity
         }
     }
 
-    private void login(View v)
+    private void login()
     {
         final String email = inputEmail.getText().toString().trim();
         final String password = inputPassword.getText().toString();
@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity
             return;
         }
 
-        Util.hideKeyboard(LoginActivity.this, v);
+        Util.toggleKeyboard(LoginActivity.this);
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -158,13 +158,18 @@ public class LoginActivity extends AppCompatActivity
             {
                 if (!task.isSuccessful()) {
                     progressBar.setVisibility(View.GONE);
-                    Util.showKeyboard(LoginActivity.this, inputEmail);
-                    Toast.makeText(LoginActivity.this, getString(R.string.msg_auth_failed), Toast.LENGTH_LONG).show();
+                    if (pref.getString(getString(R.string.pref_email), "").equals(email)) {
+                        inputPassword.requestFocus();
+                    } else {
+                        inputEmail.requestFocus();
+                    }
+                    Util.toggleKeyboard(LoginActivity.this);
+                    Toast.makeText(LoginActivity.this, R.string.msg_auth_failed, Toast.LENGTH_LONG).show();
                 } else {
                     pref.edit().putString(getString(R.string.pref_email), email).apply();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
-                }
+            }
             }
         });
     }

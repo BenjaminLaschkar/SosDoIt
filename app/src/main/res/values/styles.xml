@@ -10,26 +10,30 @@
         <item name="android:clickable">false</item>
         <item name="android:longClickable">false</item>
         <item name="android:cursorVisible">false</item>
-        <!--
-        <item name="android:enabled">false</item>
-        -->
     </style>
 
     <style name="TextView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">left</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
     </style>
 
     <style name="TextView.Description">
         <item name="android:layout_marginTop">@dimen/element_margin_small</item>
         <item name="android:textSize">@dimen/text_small</item>
         <item name="android:textColor">@color/red</item>
-        <item name="android:paddingLeft">4dp</item>
     </style>
 
     <style name="TextView.Description.First">
         <item name="android:layout_marginTop">@dimen/activity_padding</item>
+    </style>
+
+    <style name="TextView.Info">
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:gravity">right</item>
     </style>
 
     <style name="Line">
@@ -39,7 +43,23 @@
     </style>
 
     <style name="Button" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/element_margin_small</item>
+    </style>
+
+    <style name="Button.Primary">
         <item name="android:background">@drawable/button_primary</item>
+    </style>
+
+    <style name="Button.Secondary">
+        <item name="android:background">@drawable/button_secondary</item>
+    </style>
+
+    <style name="Button.Primary.Fill">
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/text_large</item>
     </style>
 
     <style name="NegativeButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
@@ -76,7 +96,6 @@
 
         <item name="android:colorBackground">@color/dark_grey</item>
 
-        <item name="android:buttonStyle">@style/Button</item>
         <item name="alertDialogTheme">@style/AlertDialog</item>
     </style>
 </resources>

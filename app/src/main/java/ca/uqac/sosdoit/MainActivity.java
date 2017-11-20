@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,11 +18,11 @@ import com.google.firebase.auth.FirebaseUser;
 
 import ca.uqac.sosdoit.data.User;
 import ca.uqac.sosdoit.database.DatabaseManager;
-import ca.uqac.sosdoit.database.IDatabaseManager;
 
-public class MainActivity extends AppCompatActivity implements IDatabaseManager.UserResult
+public class MainActivity extends AppCompatActivity
 {
     private Toolbar toolbar;
+    private LinearLayout activityLayout;
     private ImageButton btnProfile, btnSettings;
     private Button btnMyAdverts, btnFindJob, btnMyJobs;
     private ProgressBar progressBar;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
         toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
 
+        activityLayout = findViewById(R.id.activity_layout);
         btnProfile = findViewById(R.id.btn_profile);
         btnSettings = findViewById(R.id.btn_settings);
         btnMyAdverts = findViewById(R.id.btn_my_adverts);
@@ -57,7 +59,25 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     finish();
                 } else {
-                    db.getUser(user.getUid(), MainActivity.this);
+                    db.getUser(user.getUid(), new DatabaseManager.Result<User>()
+                    {
+                        @Override
+                        public void onSuccess(User user)
+                        {
+                            if (!user.hasUsername()) {
+                                startActivity(new Intent(MainActivity.this, ChooseUsernameActivity.class));
+                            } else {
+                                progressBar.setVisibility(View.GONE);
+                                activityLayout.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure()
+                        {
+                            startActivity(new Intent(MainActivity.this, ChooseUsernameActivity.class));
+                        }
+                    });
                 }
             }
         };
@@ -143,17 +163,5 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
         }
 
         return true;
-    }
-
-    @Override
-    public void call(User user)
-    {
-        if (user == null || !user.hasUsername()) {
-            startActivity(new Intent(MainActivity.this, RegisterNameActivity.class));
-        } else if (!user.hasAddress()) {
-            startActivity(new Intent(MainActivity.this, RegisterAddressActivity.class));
-        }
-
-        //progressBar.setVisibility(View.GONE);
     }
 }

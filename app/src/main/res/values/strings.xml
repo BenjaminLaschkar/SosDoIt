@@ -3,26 +3,36 @@
     <string name="activity_settings">Settings</string>
     <string name="activity_profile">Profile</string>
 
-    <string name="username">Username</string>
+    <string name="registration_date">Registration date</string>
+
     <string name="email">Email address</string>
     <string name="password">Password</string>
+    <string name="new_password">New password</string>
+    <string name="old_password">Old password</string>
+
+    <string name="username">Username</string>
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
+
     <string name="address">Address</string>
     <string name="house_number">Number</string>
     <string name="street">Street</string>
     <string name="additional_address">Additional address information</string>
     <string name="city">City</string>
+    <string name="state">State</string>
     <string name="postal_code">Postal code</string>
     <string name="country">Country</string>
 
     <!-- Messages -->
+    <string name="msg_description_advertiser">Need help? Post a request!</string>
+    <string name="msg_description_worker">Get money by helping people around you!</string>
+
     <string name="msg_empty_email">Enter your email address!</string>
     <string name="msg_empty_password">Enter your password!</string>
+    <string name="msg_empty_old_password">Enter your current password!</string>
     <string name="msg_empty_username">Enter your username!</string>
     <string name="msg_empty_first_name">Enter your first name!</string>
     <string name="msg_empty_last_name">Enter your last name!</string>
-    <string name="msg_empty_house_number">Enter your house number!</string>
     <string name="msg_empty_street">Enter your street!</string>
     <string name="msg_empty_city">Enter your city!</string>
     <string name="msg_empty_postal_code">Enter your postal code!</string>
@@ -36,17 +46,18 @@
     <string name="msg_reset_password_failed">Password reset failed</string>
     <string name="msg_unknown_error">An unknown error occurred.</string>
     <string name="msg_invalid_email">Invalid email address!</string>
-    <string name="msg_email_already_used">Email address already used.</string>
+    <string name="msg_email_already_used">Email address already used!</string>
     <string name="msg_email_not_found">Email address not found!</string>
     <string name="msg_login_after_reset_password">We have sent you instructions to reset your password. Please check your email and log in!</string>
 
-    <string name="msg_description_caller">Need help? Post a request!</string>
-    <string name="msg_description_worker">Get money by helping people around you!</string>
+    <string name="msg_choose_username">Please choose your username.</string>
+    <string name="msg_username_already_used">Username already used!</string>
+    <string name="msg_choose_username_failed">Username registration failed</string>
 
-    <string name="msg_fill_profile">Please fill out your profile information below first.</string>
-    <string name="msg_fill_profile_last_step">Only one more step and you\'re done.</string>
+    <string name="msg_edit_profile_failed">Profile modification failed</string>
 
-    <!-- Hints -->
+    <string name="msg_delete_account">Delete account?</string>
+    <string name="msg_delete_account_warning">(This operation can\'t be undone!)</string>
 
     <!-- Buttons -->
     <string name="btn_login">Log in</string>
@@ -59,8 +70,7 @@
     <string name="btn_forgot_password">Forgot your password?</string>
     <string name="btn_reset_password">Reset password</string>
 
-    <string name="btn_next">Next</string>
-    <string name="btn_done">Done</string>
+    <string name="btn_choose_username">Choose</string>
 
     <string name="btn_my_adverts">My adverts</string>
     <string name="btn_find_job">Find a job</string>
@@ -70,18 +80,9 @@
     <string name="btn_edit_profile">Edit</string>
     <string name="btn_delete_account">Delete account</string>
 
-    <!-- Strings used by the demo : -->
-    <string name="change_email">Change Email</string>
-    <string name="change_password">Change Password</string>
-    <string name="send_password_reset_email">Send Password reset email</string>
-    <string name="remove_user">Remove user</string>
-    <string name="new_pass">New Password</string>
-    <string name="hint_new_email">New Email</string>
-    <string name="btn_change">Change</string>
-    <string name="btn_send">Send</string>
-    <string name="btn_remove">Remove</string>
-    <string name="btn_sign_out">Sign Out</string>
-    <string name="prompt_password">coucou</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_delete">DELETE</string>
 
     <!-- Advert Tags -->
     <string name="tag_test">Test</string>
