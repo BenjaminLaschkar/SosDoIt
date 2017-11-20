@@ -7,21 +7,12 @@
     android:fitsSystemWindows="true"
     tools:context="ca.uqac.sosdoit.FindJobActivity">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:orientation="vertical">
-
         <include layout="@layout/element_advanced_toolbar" />
+    </android.support.design.widget.AppBarLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/activity_padding"
-            android:paddingRight="@dimen/activity_padding"
-            android:orientation="vertical">
-
-
-        </LinearLayout>
-    </LinearLayout>
+    <include layout="@layout/content_find_job"/>
 </android.support.design.widget.CoordinatorLayout>
