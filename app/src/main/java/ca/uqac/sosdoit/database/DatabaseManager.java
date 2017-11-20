@@ -1,5 +1,7 @@
 package ca.uqac.sosdoit.database;
 
+import android.util.Log;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,13 +34,15 @@ public class DatabaseManager implements IDatabaseManager {
     private static String USERS = "users";
     private static String ADVERTS = "adverts";
     private static String RATINGS = "ratings";
-    private static String USER_RATINGS_LINKS = "users-ratings-links";
+    private static String RATINGS_GIVEN_INDEX = "ratings-given-index";
+    private static String ADVERTS_PUBLISHED_INDEX = "adverts-published-index";
 
     // References:
     private DatabaseReference usersRef;
     private DatabaseReference advertsRefs;
     private DatabaseReference ratingsRefs;
-    private DatabaseReference userRatingLinksRef;
+    private DatabaseReference ratingsGivenIndexRefs;
+    private DatabaseReference advertsPublishedIndexRefs;
 
     // DatabaseManager instance :
     private static DatabaseManager INSTANCE = new DatabaseManager();
@@ -65,7 +69,8 @@ public class DatabaseManager implements IDatabaseManager {
         usersRef = database.child(USERS);
         advertsRefs = database.child(ADVERTS);
         ratingsRefs = database.child(RATINGS);
-        userRatingLinksRef = database.child(USER_RATINGS_LINKS);
+        ratingsGivenIndexRefs = database.child(RATINGS_GIVEN_INDEX);
+        advertsPublishedIndexRefs = database.child(ADVERTS_PUBLISHED_INDEX);
 
         userCallbacks = new ArrayList<>();
         advertCallbacks = new ArrayList<>();
@@ -326,7 +331,17 @@ public class DatabaseManager implements IDatabaseManager {
         if (advert.getPostingDate() == null) {
             advert.setPostingDate(new Date());
         }
-        advertsRefs.push().setValue(advert);
+        DatabaseReference newRef = advertsRefs.push();
+        newRef.setValue(advert);
+        // Add a link in the adverts published index
+        addAdvertPublishedInIndex(advert.getAdvertiserUid(), newRef.getKey());
+    }
+
+
+    /** Update the advert published index when a advert is added in the database
+     */
+    private void addAdvertPublishedInIndex(String uidAdvertiser, String aid) {
+        advertsPublishedIndexRefs.child(uidAdvertiser).child(aid).setValue("true");
     }
 
     /** Edit the information of an advert
@@ -346,9 +361,24 @@ public class DatabaseManager implements IDatabaseManager {
      * Do nothing if the advert is not in the database (in this case, onAdvertRemoved is not called)
      */
     @Override
-    public void removeAdvert(String aid) {
-        advertsRefs.child(aid).removeValue();
+    public void removeAdvert(final String aid) {
+        getAdvert(aid, new AdvertResult() {
+            @Override
+            public void call(Advert advert) {
+                if (advert != null) {
+                    removeAdvertPublishedInIndex(advert.getAdvertiserUid(), aid); // remove link
+                }
+                advertsRefs.child(aid).removeValue(); // Remove advert
+            }
+        });
     }
+
+    /** Update the rating index when a rating is removed in the database
+     */
+    private void removeAdvertPublishedInIndex(String uidAdvertiser, String aid) {
+        advertsPublishedIndexRefs.child(uidAdvertiser).child(aid).removeValue();
+    }
+
 
     /** Get an Advert with AdvertResult
      * This method search the advert in the database and call the AdvertResult when the advert is found
@@ -493,12 +523,19 @@ public class DatabaseManager implements IDatabaseManager {
         if (rating.getDate() == null) {
             rating.setDate(new Date());
         }
-        // Add the rating TODO
-//        ratingsRefs.push().setValue(rating);
-//        // Add the id of the rating in the User-Rating links list
-//        if (rating.getUidRated() != null) {
-//            userRatingLinksRef.child(rating.getUidRated()).child(rating.getRid()).setValue(true);
-//        }
+        // Add the rating
+        DatabaseReference newRef = ratingsRefs.push();
+        newRef.setValue(rating);
+        // Add the id of the rating in the User-Rating links list
+        addRatingInIndex(rating.getUidRater(), newRef.getKey());
+    }
+
+    /** Update the rating index when a rating is added in the database
+     */
+    private void addRatingInIndex(String uidRater, String rid) {
+        if (rid != null) {
+            ratingsGivenIndexRefs.child(uidRater).child(rid).setValue(true);
+        }
     }
 
     /** Edit the information of an rating
@@ -512,18 +549,30 @@ public class DatabaseManager implements IDatabaseManager {
             rating.setDate(new Date());
         }
         ratingsRefs.child(rid).setValue(rating);
-        // TODO move the ref of the user
     }
+
 
     /** Remove an rating
      * Do nothing if the rating is not in the database (in this case, onRatingRemoved is not called)
      */
     @Override
-    public void removeRating(String rid) {
-        // remove the rating
-        ratingsRefs.child(rid).removeValue();
-        // Remove the link
-        // TODO remove the links
+    public void removeRating(final String rid) {
+        getRating(rid, new DatabaseManager.RatingResult() {
+            @Override
+            public void call(Rating rating) {
+                if (rating != null) {
+                    removeRatingInIndex(rating.getUidRater(), rid); // Remove the rating in the index
+                }
+                ratingsRefs.child(rid).removeValue(); // remove the rating
+
+            }
+        });
+    }
+
+    /** Update the RatingIndex when the rating is removed
+     */
+    private void removeRatingInIndex(String uidRater, String rid) {
+        ratingsGivenIndexRefs.child(uidRater).child(rid).removeValue();
     }
 
     /** Get an Rating with AdvertResult
