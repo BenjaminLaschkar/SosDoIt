@@ -461,8 +461,52 @@ public class DatabaseManager implements IDatabaseManager {
      */
     @Override
     public void getAllAdvertsPublished(String uidAdvertiser, final AdvertListResult result) {
-        Query query = advertsRefs.orderByChild("idAdvertiser").equalTo(uidAdvertiser);
-        this.getAdvertsWithQuery(query, result, false, null);
+        // Get all the aid in the adverts published index
+        advertsPublishedIndexRefs.child(uidAdvertiser).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get all the aid
+                List<String> aidList = new ArrayList<>();
+                for (DataSnapshot data: dataSnapshot.getChildren()) {
+                    aidList.add(data.getKey());
+                }
+                if (aidList.isEmpty()) {
+                    // No AID found : call the result with empty list :
+                    result.call(new ArrayList<Advert>());
+                }
+                else {
+                    // Get all the Advert from the aid
+                    int nbAdverts = aidList.size();
+                    final List<Advert> adverts = new ArrayList<>();
+                    // Create the listener to get the adverts :
+                    ValueEventListenerForIndex listener = new ValueEventListenerForIndex(nbAdverts) {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            super.onDataChange(dataSnapshot);
+                            Advert advert = dataSnapshot.getValue(Advert.class);
+                            if (advert != null) {
+                                advert.setAid(dataSnapshot.getKey());
+                                adverts.add(advert);
+                            }
+                            // Call the result when all the AID had been treated
+                            if (nbCallsMax == nbCalls) {
+                                result.call(adverts);
+                            }
+                        }
+                    };
+                    // Add the listener for each aid
+                    for (final String aid : aidList) {
+                        advertsRefs.child(aid).addListenerForSingleValueEvent(listener);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException();
+            }
+        });
+
     }
 
     /** Get all the adverts available published by an advertiser, i.e. not chose or finished by a worker
@@ -635,22 +679,50 @@ public class DatabaseManager implements IDatabaseManager {
      */
     @Override
     public void getGivenUserRating(String uidRater, final RatingListResult result) {
-        Query query = ratingsRefs.orderByChild("idGiver").equalTo(uidRater);
-        query.addValueEventListener(new AutoRemovedValueEventListener(query) {
+        // Get all the rid in the ratings index
+        ratingsGivenIndexRefs.child(uidRater).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                super.onDataChange(dataSnapshot);
-
-                ArrayList<Rating> ratings = new ArrayList<>();
-
+                // Get all the rid
+                final List<String> ridList = new ArrayList<>();
                 for (DataSnapshot data: dataSnapshot.getChildren()) {
-                    Rating rating = data.getValue(Rating.class);
-                    if (rating != null) {
-                        rating.setRid(data.getKey());
-                        ratings.add(rating);
+                    ridList.add(data.getKey());
+                }
+                if (ridList.isEmpty()) {
+
+                    // No AID found : call the result with empty list :
+                    result.call(new ArrayList<Rating>());
+                }
+                else {
+                    // Get all the Rating from the rid
+                    final int nbRatings = ridList.size();
+                    final List<Rating> ratings = new ArrayList<>();
+                    // Create the listener to get the ratings :
+                    ValueEventListener listener = new ValueEventListenerForIndex(nbRatings) {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            super.onDataChange(dataSnapshot);
+                            Rating rating = dataSnapshot.getValue(Rating.class);
+                            if (rating != null) {
+                                rating.setRid(dataSnapshot.getKey());
+                                ratings.add(rating);
+                            }
+                            // Call the result when all the RID had been treated
+                            if (nbCallsMax == nbCalls) {
+                                result.call(ratings);
+                            }
+                        }
+                    };
+                    // Add the listener for each rid
+                    for (final String rid : ridList) {
+                        ratingsRefs.child(rid).addListenerForSingleValueEvent(listener);
                     }
                 }
-                result.call(ratings);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException();
             }
         });
     }
@@ -693,6 +765,31 @@ public class DatabaseManager implements IDatabaseManager {
         public void onDataChange(DataSnapshot dataSnapshot) {
             query.removeEventListener(this);
             query = null;
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            throw databaseError.toException();
+        }
+    }
+
+
+    /** A private class to get data from index in the database
+     * Count the calls of onDataChange
+     * Allow to use this listener to a lot of queries and count them, to synchronized the return function
+     */
+    private abstract class ValueEventListenerForIndex implements ValueEventListener {
+
+        protected int nbCallsMax;
+        protected int nbCalls = 0;
+
+        ValueEventListenerForIndex(int nbCallsMax) {
+            this.nbCallsMax = nbCallsMax;
+        }
+
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            nbCalls++;
         }
 
         @Override
