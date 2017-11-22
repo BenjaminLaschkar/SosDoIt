@@ -4,11 +4,14 @@ import android.content.Context;
 import android.location.Geocoder;
 import android.text.TextUtils;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.List;
 
 /**
  * Data structure for user address
  */
+@IgnoreExtraProperties
 public class Address
 {
     private String houseNumber;
@@ -24,6 +27,15 @@ public class Address
 
     public Address(String street, String city, String postalCode, String country)
     {
+        this.street = street;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.country = country.toUpperCase();
+    }
+
+    public Address(String houseNumber, String street, String city, String postalCode, String country)
+    {
+        this.houseNumber = houseNumber;
         this.street = street;
         this.city = city;
         this.postalCode = postalCode;
