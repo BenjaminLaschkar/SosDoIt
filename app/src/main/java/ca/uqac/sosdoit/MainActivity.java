@@ -8,8 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,18 +16,19 @@ import com.google.firebase.auth.FirebaseUser;
 
 import ca.uqac.sosdoit.data.User;
 import ca.uqac.sosdoit.database.DatabaseManager;
-import ca.uqac.sosdoit.database.IDatabaseManager;
+import ca.uqac.sosdoit.util.Util;
 
-public class MainActivity extends AppCompatActivity implements IDatabaseManager.UserResult
+public class MainActivity extends AppCompatActivity
 {
     private Toolbar toolbar;
-    private ImageButton btnProfile, btnSettings;
-    private Button btnMyAdverts, btnFindJob, btnMyJobs;
+    private LinearLayout activityLayout;
     private ProgressBar progressBar;
+
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
-    private FirebaseUser user;
+
     private DatabaseManager db;
+    private String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,33 +37,10 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
         setContentView(R.layout.activity_main);
 
         toolbar = findViewById(R.id.toolbar);
-        btnProfile = findViewById(R.id.btn_profile);
-        btnSettings = findViewById(R.id.btn_settings);
-        btnMyAdverts = findViewById(R.id.btn_my_adverts);
-        btnFindJob = findViewById(R.id.btn_find_job);
-        btnMyJobs = findViewById(R.id.btn_my_jobs);
-        progressBar = findViewById(R.id.progress_bar);
-
         toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
 
-        auth = FirebaseAuth.getInstance();
-        db = DatabaseManager.getInstance();
-
-        authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    finish();
-                } else {
-                    db.getUser(user.getUid(), MainActivity.this);
-                }
-            }
-        };
-
-        btnProfile.setOnClickListener(new View.OnClickListener()
+        findViewById(R.id.btn_profile).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -72,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
             }
         });
 
-        btnSettings.setOnClickListener(new View.OnClickListener()
+        findViewById(R.id.btn_settings).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -81,30 +58,72 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
             }
         });
 
-        btnMyAdverts.setOnClickListener(new View.OnClickListener()
+        activityLayout = findViewById(R.id.ma_activity_layout);
+        progressBar = findViewById(R.id.progress_bar);
+
+        auth = FirebaseAuth.getInstance();
+        db = DatabaseManager.getInstance();
+
+        authListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                if (firebaseUser == null) {
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    finish();
+                } else {
+                    uid = firebaseUser.getUid();
+                    db.getUser(uid, new DatabaseManager.Result<User>()
+                    {
+                        @Override
+                        public void onSuccess(User user)
+                        {
+                            if (!user.hasUsername()) {
+                                startActivity(new Intent(MainActivity.this, ChooseUsernameActivity.class));
+                            } else {
+                                progressBar.setVisibility(View.GONE);
+                                activityLayout.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure()
+                        {
+                            startActivity(new Intent(MainActivity.this, ChooseUsernameActivity.class));
+                        }
+                    });
+                }
+            }
+        };
+
+        findViewById(R.id.ma_btn_my_adverts).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                startActivity(new Intent(MainActivity.this, MyAdvertsActivity.class));
+                if (uid != null) {
+                    startActivity(new Intent(MainActivity.this, MyAdvertsActivity.class).putExtra(Util.UID, uid));
+                }
             }
         });
 
-        btnFindJob.setOnClickListener(new View.OnClickListener()
+        findViewById(R.id.ma_btn_find_job).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                startActivity(new Intent(MainActivity.this, FindJobActivity.class));
-            }
+                if (uid != null) {
+                    startActivity(new Intent(MainActivity.this, FindJobActivity.class).putExtra(Util.UID, uid));
+                }
+                }
         });
 
-        btnMyJobs.setOnClickListener(new View.OnClickListener()
+        findViewById(R.id.ma_btn_my_jobs).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                startActivity(new Intent(MainActivity.this, MyJobsActivity.class));
+                startActivity(new Intent(MainActivity.this, MyJobsActivity.class).putExtra(Util.UID, uid));
             }
         });
     }
@@ -140,21 +159,9 @@ public class MainActivity extends AppCompatActivity implements IDatabaseManager.
                 finish();
                 break;
             default:
-                return false;
+                return super.onOptionsItemSelected(item);
         }
 
         return true;
-    }
-
-    @Override
-    public void call(User user)
-    {
-        if (user == null || !user.hasUsername()) {
-            startActivity(new Intent(MainActivity.this, RegisterNameActivity.class));
-        } else if (!user.hasAddress()) {
-            startActivity(new Intent(MainActivity.this, RegisterAddressActivity.class));
-        }
-
-        //progressBar.setVisibility(View.GONE);
     }
 }

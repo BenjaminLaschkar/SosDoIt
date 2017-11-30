@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ca.uqac.sosdoit.BidActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/element_advanced_toolbar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_padding"
+            android:paddingRight="@dimen/activity_padding"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextView.Description.First"
+                android:id="@+id/ba_description_info"
+                android:text="@string/description"
+                android:visibility="gone" />
+
+            <EditText
+                style="@style/EditText.NotEditable"
+                android:id="@+id/ba_description"
+                android:inputType="textNoSuggestions"
+                android:visibility="gone" />
+
+            <TextView
+                style="@style/TextView.Description"
+                android:text="@string/posting_date" />
+
+            <EditText
+                style="@style/EditText.NotEditable"
+                android:id="@+id/ba_posting_date" />
+
+            <TextView
+                style="@style/TextView.Description"
+                android:id="@+id/ba_bid_description"
+                android:text="@string/bid" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    style="@style/EditText.NotEditable"
+                    android:id="@+id/ba_offer_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="none" />
+
+                <EditText
+                    android:id="@+id/ba_offer_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/new_bid"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            style="@style/Button.Primary"
+            android:id="@+id/ba_btn_bid"
+            android:layout_marginLeft="@dimen/activity_padding"
+            android:layout_marginRight="@dimen/activity_padding"
+            android:layout_marginTop="@dimen/element_margin_large"
+            android:text="@string/btn_bid" />
+
+        <include layout="@layout/element_progress_bar_visible" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

@@ -10,14 +10,13 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -26,9 +25,10 @@ import ca.uqac.sosdoit.util.Util;
 public class LoginActivity extends AppCompatActivity
 {
     private EditText inputEmail, inputPassword;
-    private Button btnLogIn, btnRegister, btnResetPassword;
     private ProgressBar progressBar;
+
     private FirebaseAuth auth;
+
     private SharedPreferences pref;
 
     @Override
@@ -46,10 +46,7 @@ public class LoginActivity extends AppCompatActivity
         setContentView(R.layout.activity_login);
 
         inputEmail = findViewById(R.id.email);
-        inputPassword = findViewById(R.id.password);
-        btnLogIn = findViewById(R.id.btn_login);
-        btnRegister = findViewById(R.id.btn_register_name);
-        btnResetPassword = findViewById(R.id.btn_reset_password);
+        inputPassword = findViewById(R.id.la_password);
         progressBar = findViewById(R.id.progress_bar);
 
         pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -60,16 +57,16 @@ public class LoginActivity extends AppCompatActivity
             inputEmail.setText(email);
         }
 
-        btnLogIn.setOnClickListener(new View.OnClickListener()
+        findViewById(R.id.la_btn_login).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                login(v);
+                login();
             }
         });
 
-        btnRegister.setOnClickListener(new View.OnClickListener()
+        findViewById(R.id.la_btn_register).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -78,7 +75,7 @@ public class LoginActivity extends AppCompatActivity
             }
         });
 
-        btnResetPassword.setOnClickListener(new View.OnClickListener()
+        findViewById(R.id.la_btn_reset_password).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -93,7 +90,7 @@ public class LoginActivity extends AppCompatActivity
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
             {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    login(v);
+                    login();
                     return true;
                 }
                 return false;
@@ -112,7 +109,7 @@ public class LoginActivity extends AppCompatActivity
                     break;
                 case Util.RESET_PASSWORD_REQUEST:
                     inputEmail.setText(pref.getString(getString(R.string.pref_email), ""));
-                    Toast.makeText(LoginActivity.this, getString(R.string.msg_login_after_reset_password), Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, R.string.msg_login_after_reset_password, Toast.LENGTH_LONG).show();
                     break;
                 default:
                     break;
@@ -120,7 +117,7 @@ public class LoginActivity extends AppCompatActivity
         }
     }
 
-    private void login(View v)
+    private void login()
     {
         final String email = inputEmail.getText().toString().trim();
         final String password = inputPassword.getText().toString();
@@ -147,25 +144,34 @@ public class LoginActivity extends AppCompatActivity
             return;
         }
 
-        Util.hideKeyboard(LoginActivity.this, v);
-
+        Util.toggleKeyboard(LoginActivity.this);
         progressBar.setVisibility(View.VISIBLE);
 
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>()
-        {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task)
-            {
-                if (!task.isSuccessful()) {
-                    progressBar.setVisibility(View.GONE);
-                    Util.showKeyboard(LoginActivity.this, inputEmail);
-                    Toast.makeText(LoginActivity.this, getString(R.string.msg_auth_failed), Toast.LENGTH_LONG).show();
-                } else {
-                    pref.edit().putString(getString(R.string.pref_email), email).apply();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
-                }
-            }
-        });
+        auth.signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>()
+                {
+                    @Override
+                    public void onSuccess(AuthResult authResult)
+                    {
+                        pref.edit().putString(getString(R.string.pref_email), email).apply();
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener()
+                {
+                    @Override
+                    public void onFailure(@NonNull Exception e)
+                    {
+                        progressBar.setVisibility(View.GONE);
+                        if (pref.getString(getString(R.string.pref_email), "").equals(email) && !TextUtils.isEmpty(email)) {
+                            inputPassword.requestFocus();
+                        } else {
+                            inputEmail.requestFocus();
+                        }
+                        Util.toggleKeyboard(LoginActivity.this);
+                        Toast.makeText(LoginActivity.this, R.string.msg_auth_failed, Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }

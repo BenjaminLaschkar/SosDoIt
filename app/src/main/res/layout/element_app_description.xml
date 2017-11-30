@@ -4,7 +4,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/element_margin_small"
-        android:text="@string/msg_description_caller"
+        android:text="@string/msg_description_advertiser"
         android:textSize="@dimen/text_small" />
 
     <TextView

@@ -4,7 +4,7 @@ import java.util.List;
 
 import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.data.Advert;
-import ca.uqac.sosdoit.data.LatitudeLongitude;
+import ca.uqac.sosdoit.data.Coordinates;
 import ca.uqac.sosdoit.data.Skill;
 import ca.uqac.sosdoit.data.Rating;
 import ca.uqac.sosdoit.data.User;
@@ -48,15 +48,15 @@ public interface IDatabaseManager {
     void removeUser(String uid);
 
     /** Get an user with UserResult
-     * This method search the user in the database and call the UserResult when the user is found
-     * WARNING ! If the user is not found, the method call UserResult with null ( call(null) )
+     * This method search the user in the database and showProfile the UserResult when the user is found
+     * WARNING ! If the user is not found, the method showProfile UserResult with null ( showProfile(null) )
      */
     void getUser(String uid, final UserResult result);
 
     /** Get an user with UserResult
-     * UserResult is not call once, but each time the user is modified
-     * This method search the user in the database and call the UserResult when the user is found
-     * WARNING ! If the user is not found, the method call UserResult with null ( call(null) )
+     * UserResult is not showProfile once, but each time the user is modified
+     * This method search the user in the database and showProfile the UserResult when the user is found
+     * WARNING ! If the user is not found, the method showProfile UserResult with null ( showProfile(null) )
      */
     void AddUserListener(String uid, final UserResult result);
 
@@ -81,8 +81,8 @@ public interface IDatabaseManager {
     void removeAdvert(String aid);
 
     /** Get an Advert with AdvertResult
-     * This method search the advert in the database and call the AdvertResult when the advert is found
-     * WARNING ! If the advert is not found, the method call UserResult with null ( call(null) )
+     * This method search the advert in the database and showProfile the AdvertResult when the advert is found
+     * WARNING ! If the advert is not found, the method showProfile UserResult with null ( showProfile(null) )
      */
     void getAdvert(String aid, final AdvertResult result);
 
@@ -94,7 +94,7 @@ public interface IDatabaseManager {
     /** Get adverts available in the database, with filtering parameters.
      * It use the current location of the user, if this information is unavailable, use null as currentLocation
      */
-    void getAdvertsAvailableWithFilter(AdvertFilter filter, LatitudeLongitude currentLocation, final AdvertListResult result);
+    void getAdvertsAvailableWithFilter(AdvertFilter filter, Coordinates currentLocation, final AdvertListResult result);
 
     /** Get all the adverts available, i.e. not chose or finished by a worker
      * WARNING ! May produce lag and surcharge memory
@@ -102,21 +102,21 @@ public interface IDatabaseManager {
     void getAllAdvertsAvailable(final AdvertListResult result);
 
     /** Get all the adverts published by an advertiser
-     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
+     * This method search the adverts in the database and showProfile the AdvertListResult once all the adverts are found
      */
     void getAllAdvertsPublished(String uidAdvertiser, final AdvertListResult result);
 
     /** Get all the adverts available published by an advertiser, i.e. not chose or finished by a worker
-     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
+     * This method search the adverts in the database and showProfile the AdvertListResult once all the adverts are found
      */
     void getAllAdvertsPublishedAvailable(String uidAdvertiser, final AdvertListResult result);
     /** Get all the adverts accepted by a worker, accepted and not finished yet
-     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
+     * This method search the adverts in the database and showProfile the AdvertListResult once all the adverts are found
      */
     void getAllAdvertsAccepted(String uidWorker, final AdvertListResult result);
 
     /** Get all the advertsCompleted
-     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
+     * This method search the adverts in the database and showProfile the AdvertListResult once all the adverts are found
      */
     void getAllAdvertsCompleted(String idAdvertiser, final AdvertListResult result);
 
@@ -139,18 +139,18 @@ public interface IDatabaseManager {
     void removeRating(String rid);
 
     /** Get an Rating with AdvertResult
-     * This method search the rating in the database and call the RatingResult when the rating is found
-     * WARNING ! If the rating is not found, the method call RatingResult with null ( call(null) )
+     * This method search the rating in the database and showProfile the RatingResult when the rating is found
+     * WARNING ! If the rating is not found, the method showProfile RatingResult with null ( showProfile(null) )
      */
     void getRating(String rid, final RatingResult result);
 
     /** Get all the ratings of an user, i.e. all the rating given to an user
-     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
+     * This method search the adverts in the database and showProfile the AdvertListResult once all the adverts are found
      */
     void getUserRatings(String uidRated, final RatingListResult result);
 
     /** Get all the ratings given by a user
-     * This method search the adverts in the database and call the AdvertListResult once all the adverts are found
+     * This method search the adverts in the database and showProfile the AdvertListResult once all the adverts are found
      */
     void getGivenUserRating(String uidRater, final  RatingListResult result);
 

@@ -1,27 +1,21 @@
 package ca.uqac.sosdoit.data;
 
+import android.text.TextUtils;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.database.ServerValue;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Data structure for an Advert
+ * Advert data structure
  */
+
 @IgnoreExtraProperties
 public class Advert
 {
-    public enum Status
-    {
-        AVAILABLE,
-        ACCEPTED,
-        COMPLETED,
-        RATED,
-        CANCELED,
-        DELETED
-    }
-
     @Exclude
     private String aid;
 
@@ -32,68 +26,27 @@ public class Advert
 
     private String title;
     private String description;
-    private double budget;
     private Tag tag;
-
-    @Exclude
-    private Address address;
 
     private Date postingDate;
     private Date completionDate;
 
-    private ArrayList<Bidder> bidders;
+    private Bid bid;
 
-    public Advert()
-    {
-        this.status = Status.AVAILABLE;
-        this.budget = -1.0;
-        this.bidders = new ArrayList<Bidder>();
-    }
+    public Advert() {}
 
-    public Advert(String aid, String idAdvertiser, String title)
+    public Advert(String idAdvertiser, String title)
     {
-        this();
         this.aid = aid;
+        this.status = Status.AVAILABLE;
         this.advertiserUid = idAdvertiser;
         this.title = title;
     }
 
-    public boolean hasWorkerUid()
+    public boolean hasAid()
     {
-        return workerUid != null;
+        return aid != null;
     }
-
-    public boolean hasDescription()
-    {
-        return description != null;
-    }
-
-    public boolean hasBudget()
-    {
-        return budget > 0.0;
-    }
-
-    public boolean hasTag()
-    {
-        return tag != null;
-    }
-
-    public boolean hasAddress()
-    {
-        return address != null;
-    }
-
-    public boolean hasPostingDate()
-    {
-        return postingDate != null;
-    }
-
-    public boolean hasCompletionDate()
-    {
-        return completionDate != null;
-    }
-
-    // ----- GETTER ----- //
 
     @Exclude
     public String getAid()
@@ -101,68 +54,15 @@ public class Advert
         return aid;
     }
 
-    public Status getStatus()
-    {
-        return status;
-    }
-
-    public String getAdvertiserUid()
-    {
-        return advertiserUid;
-    }
-
-    public String getWorkerUid()
-    {
-        return workerUid;
-    }
-
-    public String getTitle()
-    {
-        return title;
-    }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public double getBudget()
-    {
-        return budget;
-    }
-
-    public Tag getTag()
-    {
-        return tag;
-    }
-
-    @Exclude
-    public Address getAddress()
-    {
-        return address;
-    }
-
-    public Date getPostingDate()
-    {
-        return postingDate;
-    }
-
-    public Date getCompletionDate()
-    {
-        return completionDate;
-    }
-
-    public ArrayList<Bidder> getBidders()
-    {
-        return bidders;
-    }
-
-    // ----- SETTER ----- //
-
     public Advert setAid(String aid)
     {
         this.aid = aid;
         return this;
+    }
+
+    public Status getStatus()
+    {
+        return status;
     }
 
     public Advert setStatus(Status status)
@@ -171,10 +71,25 @@ public class Advert
         return this;
     }
 
+    public String getAdvertiserUid()
+    {
+        return advertiserUid;
+    }
+
     public Advert setAdvertiserUid(String advertiserUid)
     {
         this.advertiserUid = advertiserUid;
         return this;
+    }
+
+    public boolean hasWorkerUid()
+    {
+        return workerUid != null;
+    }
+
+    public String getWorkerUid()
+    {
+        return workerUid;
     }
 
     public Advert setWorkerUid(String workerUid)
@@ -183,10 +98,25 @@ public class Advert
         return this;
     }
 
+    public String getTitle()
+    {
+        return title;
+    }
+
     public Advert setTitle(String title)
     {
         this.title = title;
         return this;
+    }
+
+    public boolean hasDescription()
+    {
+        return description != null;
+    }
+
+    public String getDescription()
+    {
+        return description;
     }
 
     public Advert setDescription(String description)
@@ -195,10 +125,20 @@ public class Advert
         return this;
     }
 
-    public Advert setBudget(double budget)
+    public Advert setDescriptionWithCheck(String description)
     {
-        this.budget = budget;
+        this.description = TextUtils.isEmpty(description) ? null : description;
         return this;
+    }
+
+    public boolean hasTag()
+    {
+        return tag != null;
+    }
+
+    public Tag getTag()
+    {
+        return tag;
     }
 
     public Advert setTag(Tag tag)
@@ -207,19 +147,29 @@ public class Advert
         return this;
     }
 
-    public Advert setAddress(Address workAddress)
+    public boolean hasPostingDate()
     {
-        this.address = address;
-        return this;
+        return postingDate != null;
     }
 
-    public Advert setPostingDate()
+    public Object getPostingTimestamp()
     {
-        if (!hasPostingDate())
-        {
-            postingDate = new Date();
+        if (!hasPostingDate()) {
+            return ServerValue.TIMESTAMP;
+        } else {
+            return postingDate.getTime();
         }
-        return this;
+    }
+
+    public void setPostingTimestamp(long postingTimestamp)
+    {
+        postingDate = new Date(postingTimestamp);
+    }
+
+    @Exclude
+    public Date getPostingDate()
+    {
+        return postingDate;
     }
 
     public Advert setPostingDate(Date postingDate)
@@ -228,12 +178,31 @@ public class Advert
         return this;
     }
 
-    public Advert setCompletionDate()
+    public boolean hasCompletionDate()
     {
-        if (!hasCompletionDate()) {
-            this.completionDate = new Date();
+        return completionDate != null;
+    }
+
+    public Object getCompletionTimestamp()
+    {
+        if (status == Status.COMPLETED && !hasCompletionDate()) {
+            return ServerValue.TIMESTAMP;
+        } else if (hasCompletionDate()) {
+            return completionDate.getTime();
+        } else {
+            return null;
         }
-        return this;
+    }
+
+    public void setCompletionTimestamp(long completionTimestamp)
+    {
+        completionDate = new Date(completionTimestamp);
+    }
+
+    @Exclude
+    public Date getCompletionDate()
+    {
+        return completionDate;
     }
 
     public Advert setCompletionDate(Date completionDate)
@@ -242,9 +211,36 @@ public class Advert
         return this;
     }
 
-    public Advert setBidders(ArrayList<Bidder> bidders)
+    public boolean hasBid()
     {
-        this.bidders = bidders;
+        return bid != null;
+    }
+
+    @Exclude
+    public Bid getBid()
+    {
+        return bid;
+    }
+
+    public Advert setBid(Bid bid)
+    {
+        this.bid = bid;
         return this;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("Advert: {%n  aid: %s,%n  status: %s,%n  advertiser: %s,%n  title: %s,%n  description: %s%n}", aid, status, advertiserUid, title, hasDescription() ? description : "");
+    }
+
+    public enum Status
+    {
+        AVAILABLE,
+        ACCEPTED,
+        COMPLETED,
+        RATED,
+        CANCELED,
+        DELETED
     }
 }

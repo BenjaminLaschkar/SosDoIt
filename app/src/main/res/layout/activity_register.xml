@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     tools:context="ca.uqac.sosdoit.RegisterActivity">
 
@@ -28,22 +28,32 @@
 
                 <include layout="@layout/element_app_description" />
 
-                <include layout="@layout/element_input_email_password" />
+                <include layout="@layout/element_input_email" />
 
-                <Button
-                    android:id="@+id/btn_register_name"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/ra_password_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/password"
+                    app:passwordToggleEnabled="true">
+
+                    <EditText
+                        android:id="@+id/ra_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword" />
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    style="@style/Button.Primary"
+                    android:id="@+id/ra_btn_register"
                     android:layout_marginTop="@dimen/element_margin_large"
-                    android:layout_marginBottom="@dimen/element_margin_small"
                     android:text="@string/btn_register" />
 
                 <Button
-                    android:id="@+id/btn_login"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/element_margin_small"
-                    android:background="@drawable/button_secondary"
+                    style="@style/Button.Secondary"
+                    android:id="@+id/ra_btn_login"
                     android:text="@string/btn_register_link_to_login" />
             </LinearLayout>
         </ScrollView>

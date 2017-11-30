@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +22,7 @@
             android:windowSoftInputMode="stateAlwaysVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -29,22 +30,17 @@
             android:name=".RegisterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
         <activity
-            android:name=".RegisterNameActivity"
+            android:name=".ChooseUsernameActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity
-            android:name=".RegisterAddressActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
         <activity
             android:name=".ResetPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
@@ -54,26 +50,49 @@
             android:name=".ProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".EditProfileActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".MyAdvertsActivity"
+        <activity
+            android:name=".MyAdvertsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".FindJobActivity"
+        <activity
+            android:name=".FindJobActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".MyJobsActivity"
+        <activity
+            android:name=".MyJobsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".NewAdvertActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
+        <activity
+            android:name=".AdvertActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+        <activity
+            android:name=".EditAdvertActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
+        <activity
+            android:name=".BidActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+        <activity
+            android:name=".JobActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />

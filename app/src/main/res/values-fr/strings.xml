@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">SOS Do It</string>
+    <string name="activity_settings">Paramètres</string>
+    <string name="activity_profile">Profil</string>
+    <string name="activity_my_adverts">Mes annonces</string>
+    <string name="activity_find_job">Trouver un job</string>
+    <string name="activity_my_jobs">Mes jobs</string>
+
+
+
+
     <string name="username">Nom d\'utilisateur</string>
     <string name="email">Adresse email</string>
     <string name="password">Mot de passe</string>
     <string name="first_name">Prénom</string>
     <string name="last_name">Nom</string>
 
-    <string name="msg_description_caller">Besoin d\'un service ? Poster une demande !</string>
+    <string name="msg_description_advertiser">Besoin d\'un service ? Poster une demande !</string>
     <string name="msg_description_worker">Gagnez de l\'argent en aidant les personnes autour de vous !</string>
 
     <!-- Boutons -->
@@ -23,11 +33,75 @@
     <string name="msg_empty_email">Entrez une adresse email !</string>
     <string name="msg_empty_password">Entrez votre mot de passe !</string>
     <string name="msg_minimum_password">Mot de passe trop court, il doit contenir au moins 6 caractères !</string>
-    <string name="msg_auth_failed">L\'authentification a échouée, vérifiez votre email et votre mot de passe, ou inscrivez-vous.</string>
-    <string name="msg_register_failed">"L'inscription a échouée "</string>
+    <string name="msg_auth_failed">L\'authentification a échoué, vérifiez votre email et votre mot de passe, ou inscrivez-vous.</string>
+    <string name="msg_register_failed">"L'inscription a échoué "</string>
 
     <!-- Advert Tags -->
     <string name="tag_text">Test</string>
     <string name="tag_babysitting">Babysitting</string>
     <string name="tag_math_course">Cours de math</string>
+    <string name="btn_delete">SUPPRIMER</string>
+    <string name="btn_save">Enregistrer</string>
+    <string name="btn_cancel">Annuler</string>
+    <string name="btn_delete_account">Supprimer compte</string>
+    <string name="btn_edit_profile">Modifier</string>
+    <string name="btn_logout">Déconnexion</string>
+    <string name="btn_my_jobs">Mes jobs</string>
+    <string name="btn_find_job">Trouver un job</string>
+    <string name="btn_my_adverts">Mes annonces</string>
+    <string name="btn_choose_username">Choisir</string>
+    <string name="msg_delete_account_warning">(Cette opération ne peut pas être annulée !)</string>
+    <string name="msg_delete_account">Supprimer votre compte ?</string>
+    <string name="msg_edit_profile_failed">"Modification de votre profil impossible "</string>
+    <string name="registration_date">Inscrit le</string>
+    <string name="new_password">Nouveau mot de passe</string>
+    <string name="old_password">Ancien mot de passe</string>
+    <string name="address">Adresse</string>
+    <string name="house_number">Numéro</string>
+    <string name="street">Rue</string>
+    <string name="additional_address">Information additionnelle</string>
+    <string name="city">Ville</string>
+    <string name="state">Province</string>
+    <string name="postal_code">Code postal</string>
+    <string name="country">Pays</string>
+    <string name="msg_empty_old_password">Entrez votre mot de passe actuel !</string>
+    <string name="msg_empty_username">Entrez votre nom d\'utilisateur !</string>
+    <string name="msg_empty_first_name">Entrez votre prénom !</string>
+    <string name="msg_empty_last_name">Entrez votre nom !</string>
+    <string name="msg_empty_street">Entrez le nom de la rue !</string>
+    <string name="msg_empty_city">Entrez le nom de la ville !</string>
+    <string name="msg_empty_postal_code">Entrez le code postal !</string>
+    <string name="msg_empty_country">Entrez le nom du pays !</string>
+    <string name="msg_reset_password_failed">"Échec de la réinitialisation de votre mot de passe "</string>
+    <string name="msg_unknown_error">Une erreur inconnue est survene.</string>
+    <string name="msg_email_invalid">Adresse email invalide !</string>
+    <string name="msg_email_already_used">Adresse email déjà utilisée !</string>
+    <string name="msg_email_not_found">Adresse email introuvable !</string>
+    <string name="msg_login_after_reset_password">Nous vous avons envoyé les instructions pour réinitialiser votre mot de passe. Consultez vos emails et connectez-vous !</string>
+    <string name="msg_choose_username">Veuillez choisir votre nom d\'utilisateur.</string>
+    <string name="msg_username_already_used">Nom d\'utilisateur déjà utilisé !</string>
+    <string name="msg_choose_username_failed">"Enregistrement du nom d'utilisateur impossible "</string>
+    <string name="title">Titre</string>
+    <string name="description">Description</string>
+    <string name="status">Status</string>
+    <string name="posting_date">Posté le</string>
+    <string name="completion_date">Complété le</string>
+    <string name="bids">Offres</string>
+    <string name="bid">Votre offre</string>
+    <string name="msg_password_updated">Mot de passe mis à jour.</string>
+    <string name="msg_accept_bid">Accepter cette offre ?</string>
+    <string name="msg_bid_not_number">Entrez un nombre !</string>
+    <string name="msg_empty_title">Entrez le titre de l\'annonce !</string>
+    <string name="msg_empty_bid">Entrez votre offre !</string>
+    <string name="btn_new_advert">Poster une annonce</string>
+    <string name="btn_post">Poster</string>
+    <string name="btn_bid">Offre</string>
+    <string name="btn_edit_advert">Modifier</string>
+    <string name="btn_cancel_advert">Annuler</string>
+    <string name="btn_accept_bid">Accepter</string>
+    <string name="activity_new_advert">Nouvelle annonce</string>
+    <string name="msg_new_advert_failed">"La création de l'annonce a échoué "</string>
+    <string name="msg_reject_bid">Rejeter cette offre ?</string>
+    <string name="btn_reject_bid">Rejeter</string>
+    <string name="btn_new_bid">Nouvelle offre</string>
 </resources>
