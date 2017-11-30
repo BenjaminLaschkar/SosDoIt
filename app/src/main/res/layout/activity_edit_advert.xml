@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="ca.uqac.sosdoit.EditAdvertActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/element_advanced_toolbar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/activity_padding"
+            android:paddingRight="@dimen/activity_padding"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextView.Description.First"
+                android:text="@string/title" />
+
+            <EditText
+                android:id="@+id/eaa_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title"
+                android:imeOptions="actionNext"
+                android:inputType="text" />
+
+            <TextView
+                style="@style/TextView.Description.First"
+                android:text="@string/description" />
+
+            <EditText
+                style="@style/EditText"
+                android:id="@+id/eaa_description"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:hint="@string/description"
+                android:inputType="textMultiLine" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_margin_large"
+            android:paddingLeft="@dimen/activity_padding"
+            android:paddingRight="@dimen/activity_padding" >
+
+            <Button
+                style="@style/Button.Secondary"
+                android:id="@+id/eaa_btn_cancel"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/element_margin_xsmall"
+                android:text="@string/btn_cancel" />
+
+            <Button
+                style="@style/Button.Primary"
+                android:id="@+id/eaa_btn_save"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/element_margin_xsmall"
+                android:text="@string/btn_save" />
+        </LinearLayout>
+
+        <include layout="@layout/element_progress_bar_visible" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

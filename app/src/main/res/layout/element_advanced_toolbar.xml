@@ -19,7 +19,7 @@
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
             android:src="@drawable/icon_account_circle_light_grey_24dp"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
+            android:background="?attr/selectableItemBackgroundBorderless" />
 
         <ImageButton
             android:id="@+id/btn_settings"
@@ -29,6 +29,6 @@
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
             android:src="@drawable/icon_settings_light_grey_24dp"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
+            android:background="?attr/selectableItemBackgroundBorderless" />
     </LinearLayout>
 </android.support.v7.widget.Toolbar>

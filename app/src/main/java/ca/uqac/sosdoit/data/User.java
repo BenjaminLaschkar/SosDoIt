@@ -3,6 +3,7 @@ package ca.uqac.sosdoit.data;
 import android.text.TextUtils;
 
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.Date;
 
@@ -12,6 +13,7 @@ import ca.uqac.sosdoit.util.Util;
  * User data structure
  */
 
+@IgnoreExtraProperties
 public class User
 {
     private String uid;

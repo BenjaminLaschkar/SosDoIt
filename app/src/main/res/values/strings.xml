@@ -1,7 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SOS Do It</string>
     <string name="activity_settings">Settings</string>
     <string name="activity_profile">Profile</string>
+    <string name="activity_my_adverts">My adverts</string>
+    <string name="activity_new_advert">New advert</string>
+    <string name="activity_find_job">Find a job</string>
+    <string name="activity_my_jobs">My jobs</string>
 
     <string name="registration_date">Registration date</string>
 
@@ -23,10 +28,33 @@
     <string name="postal_code">Postal code</string>
     <string name="country">Country</string>
 
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="status">Status</string>
+    <string name="posting_date">Posting date</string>
+    <string name="completion_date">Completion date</string>
+    <string name="bids">Bids</string>
+    <string name="bid">Your bid</string>
+    <string name="new_bid">New bid</string>
+
     <!-- Messages -->
     <string name="msg_description_advertiser">Need help? Post a request!</string>
     <string name="msg_description_worker">Get money by helping people around you!</string>
 
+    <string name="msg_choose_username">Please choose your username.</string>
+    <string name="msg_password_updated">Password updated.</string>
+
+    <string name="msg_delete_account">Delete account?</string>
+    <string name="msg_delete_account_warning">(This operation can\'t be undone!)</string>
+
+    <string name="msg_accept_bid">Accept this bid?</string>
+    <string name="msg_reject_bid">Reject this bid?</string>
+    <string name="msg_bid_not_number">Please enter a number!</string>
+
+    <string name="msg_forgot_password">We just need your registered email address to send you password reset instructions.</string>
+    <string name="msg_login_after_reset_password">We have sent you instructions to reset your password. Please check your email and log in!</string>
+
+    <!-- Error messages -->
     <string name="msg_empty_email">Enter your email address!</string>
     <string name="msg_empty_password">Enter your password!</string>
     <string name="msg_empty_old_password">Enter your current password!</string>
@@ -37,27 +65,26 @@
     <string name="msg_empty_city">Enter your city!</string>
     <string name="msg_empty_postal_code">Enter your postal code!</string>
     <string name="msg_empty_country">Enter your country!</string>
+    <string name="msg_empty_title">Please enter the advert\'s title!</string>
+    <string name="msg_empty_bid">Please enter your bid!</string>
 
-    <string name="msg_minimum_password">Password is too short, enter at least 6 characters!</string>
-    <string name="msg_forgot_password">We just need your registered email address to send you password reset instructions.</string>
-
-    <string name="msg_auth_failed">Authentication failed, check your email and password or register.</string>
-    <string name="msg_register_failed">Registration failed</string>
-    <string name="msg_reset_password_failed">Password reset failed</string>
-    <string name="msg_unknown_error">An unknown error occurred.</string>
-    <string name="msg_invalid_email">Invalid email address!</string>
     <string name="msg_email_already_used">Email address already used!</string>
     <string name="msg_email_not_found">Email address not found!</string>
-    <string name="msg_login_after_reset_password">We have sent you instructions to reset your password. Please check your email and log in!</string>
+    <string name="msg_email_invalid">Invalid email address!</string>
 
-    <string name="msg_choose_username">Please choose your username.</string>
+    <string name="msg_minimum_password">Password is too short, enter at least 6 characters!</string>
+
     <string name="msg_username_already_used">Username already used!</string>
+
+    <string name="msg_register_failed">Registration failed</string>
+    <string name="msg_auth_failed">Authentication failed, check your email and password or register.</string>
+    <string name="msg_reset_password_failed">Password reset failed</string>
     <string name="msg_choose_username_failed">Username registration failed</string>
+    <string name="msg_edit_profile_failed">Profile change failed</string>
+    <string name="msg_new_advert_failed">Advert creation failed</string>
+    <string name="msg_edit_advert_failed">Advert change failed</string>
 
-    <string name="msg_edit_profile_failed">Profile modification failed</string>
-
-    <string name="msg_delete_account">Delete account?</string>
-    <string name="msg_delete_account_warning">(This operation can\'t be undone!)</string>
+    <string name="msg_unknown_error">An unknown error occurred.</string>
 
     <!-- Buttons -->
     <string name="btn_login">Log in</string>
@@ -84,6 +111,15 @@
     <string name="btn_save">Save</string>
     <string name="btn_delete">DELETE</string>
 
+    <string name="btn_new_advert">Post an advert</string>
+    <string name="btn_post">Post</string>
+    <string name="btn_bid">Bid</string>
+    <string name="btn_edit_advert">Edit</string>
+    <string name="btn_cancel_advert">Cancel</string>
+
+    <string name="btn_accept_bid">Accept</string>
+    <string name="btn_reject_bid">Reject</string>
+
     <!-- Advert Tags -->
     <string name="tag_test">Test</string>
     <string name="tag_babysitting">Babysitting</string>
@@ -91,5 +127,4 @@
 
     <!-- Preferences -->
     <string name="pref_email">email</string>
-
 </resources>

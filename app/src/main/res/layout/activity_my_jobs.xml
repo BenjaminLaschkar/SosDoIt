@@ -14,14 +14,14 @@
 
         <include layout="@layout/element_advanced_toolbar" />
 
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/mja_jobs_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/activity_padding"
-            android:paddingRight="@dimen/activity_padding"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="vertical"
+            android:visibility="invisible" />
 
-
-        </LinearLayout>
+        <include layout="@layout/element_progress_bar_visible" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

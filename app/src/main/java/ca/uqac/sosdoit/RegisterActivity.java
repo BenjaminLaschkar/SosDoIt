@@ -7,17 +7,17 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -28,10 +28,11 @@ import ca.uqac.sosdoit.util.Util;
 public class RegisterActivity extends AppCompatActivity
 {
     private EditText inputEmail, inputPassword;
-    private Button btnRegister, btnLogIn;
     private TextInputLayout passwordContainer;
     private ProgressBar progressBar;
+
     private FirebaseAuth auth;
+
     private SharedPreferences pref;
 
     private Util.AdvancedTextWatcher textWatcher;
@@ -43,10 +44,8 @@ public class RegisterActivity extends AppCompatActivity
         setContentView(R.layout.activity_register);
 
         inputEmail = findViewById(R.id.email);
-        inputPassword = findViewById(R.id.new_password);
-        passwordContainer = findViewById(R.id.password_container);
-        btnRegister = findViewById(R.id.btn_register_profile);
-        btnLogIn = findViewById(R.id.btn_login);
+        inputPassword = findViewById(R.id.ra_password);
+        passwordContainer = findViewById(R.id.ra_password_container);
         progressBar = findViewById(R.id.progress_bar);
 
         pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -55,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity
 
         auth = FirebaseAuth.getInstance();
 
-        btnRegister.setOnClickListener(new View.OnClickListener()
+        findViewById(R.id.ra_btn_register).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -64,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity
             }
         });
 
-        btnLogIn.setOnClickListener(new View.OnClickListener()
+        findViewById(R.id.ra_btn_login).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -123,35 +122,36 @@ public class RegisterActivity extends AppCompatActivity
         Util.toggleKeyboard(RegisterActivity.this);
 
         progressBar.setVisibility(View.VISIBLE);
-
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>()
-        {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task)
-            {
-                if (!task.isSuccessful()) {
-                    progressBar.setVisibility(View.GONE);
-                    try {
-                        if (task.getException() != null) {
-                            throw task.getException();
-                        } else {
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>()
+                {
+                    @Override
+                    public void onSuccess(AuthResult authResult)
+                    {
+                        pref.edit().putString(getString(R.string.pref_email), email).apply();
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener()
+                {
+                    @Override
+                    public void onFailure(@NonNull Exception e)
+                    {
+                        progressBar.setVisibility(View.GONE);
+                        Log.d("SOS DO IT", e.getMessage());
+                        try {
+                            throw e;
+                        } catch (FirebaseAuthInvalidCredentialsException ex) {
+                            inputEmail.setError(getString(R.string.msg_email_invalid));
+                        } catch (FirebaseAuthUserCollisionException ex) {
+                            inputEmail.setError(getString(R.string.msg_email_already_used));
+                        } catch (Exception ex) {
                             Toast.makeText(RegisterActivity.this, getString(R.string.msg_register_failed) + ": " + getString(R.string.msg_unknown_error), Toast.LENGTH_LONG).show();
                         }
-                    } catch (FirebaseAuthInvalidCredentialsException e) {
-                        inputEmail.setError(getString(R.string.msg_invalid_email));
-                    } catch (FirebaseAuthUserCollisionException e) {
-                        inputEmail.setError(getString(R.string.msg_email_already_used));
-                    } catch (Exception e) {
-                        Toast.makeText(RegisterActivity.this, getString(R.string.msg_register_failed) + ": " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        inputEmail.requestFocus();
+                        Util.toggleKeyboard(RegisterActivity.this);
                     }
-                    inputEmail.requestFocus();
-                    Util.toggleKeyboard(RegisterActivity.this);
-                } else {
-                    pref.edit().putString(getString(R.string.pref_email), email).apply();
-                    setResult(RESULT_OK);
-                    finish();
-                }
-            }
-        });
+                });
     }
 }

@@ -1,20 +1,21 @@
 package ca.uqac.sosdoit;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,11 +27,12 @@ import ca.uqac.sosdoit.util.Util;
 public class ChooseUsernameActivity extends AppCompatActivity
 {
     private EditText inputUsername;
-    private Button btnChoose;
     private ProgressBar progressBar;
+
     private FirebaseAuth auth;
-    private FirebaseUser user;
+    private FirebaseUser firebaseUser;
     private FirebaseAuth.AuthStateListener authListener;
+
     private DatabaseManager db;
 
     @Override
@@ -39,9 +41,30 @@ public class ChooseUsernameActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_username);
 
-        inputUsername = findViewById(R.id.username);
-        btnChoose = findViewById(R.id.choose);
+        inputUsername = findViewById(R.id.cua_username);
         progressBar = findViewById(R.id.progress_bar);
+
+        inputUsername.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+            {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    choose();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        findViewById(R.id.cua_btn_choose).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                choose();
+            }
+        });
 
         auth = FirebaseAuth.getInstance();
         db = DatabaseManager.getInstance();
@@ -51,35 +74,12 @@ public class ChooseUsernameActivity extends AppCompatActivity
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth)
             {
-                user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                firebaseUser = firebaseAuth.getCurrentUser();
+                if (firebaseUser == null) {
                     finish();
                 }
             }
         };
-
-        btnChoose.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                choose();
-            }
-        });
-
-        inputUsername.setOnEditorActionListener(new TextView.OnEditorActionListener()
-    {
-        @Override
-        public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
-        {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                choose();
-                return true;
-            }
-            return false;
-        }
-    });
     }
 
     @Override
@@ -106,57 +106,70 @@ public class ChooseUsernameActivity extends AppCompatActivity
         }
 
         Util.toggleKeyboard(ChooseUsernameActivity.this);
-
         progressBar.setVisibility(View.VISIBLE);
 
-        db.isUsernameUnique(username, new DatabaseManager.Result<Void>()
-        {
-            @Override
-            public void onSuccess(Void aVoid)
+        if (firebaseUser != null) {
+            db.isUsernameUnique(username, new DatabaseManager.Result<Void>()
             {
-                db.setUsername(username, user.getUid(), new OnCompleteListener<Void>()
+                @Override
+                public void onSuccess(Void aVoid)
                 {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task)
-                    {
-                        if (!task.isSuccessful()) {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(ChooseUsernameActivity.this, getString(R.string.msg_choose_username_failed) + ": " + getString(R.string.msg_unknown_error), Toast.LENGTH_LONG).show();
-                        } else {
-                            db.setUser(new User(user.getUid(), username), new OnCompleteListener<Void>()
+                    db.setUsername(username, firebaseUser.getUid())
+                            .addOnSuccessListener(new OnSuccessListener<Void>()
                             {
                                 @Override
-                                public void onComplete(@NonNull Task task)
+                                public void onSuccess(Void aVoid)
                                 {
-                                    if (!task.isSuccessful()) {
-                                        Toast.makeText(ChooseUsernameActivity.this, getString(R.string.msg_choose_username_failed) + ": " + getString(R.string.msg_unknown_error), Toast.LENGTH_LONG).show();
-                                        db.removeUsername(username, new OnCompleteListener<Void>()
-                                        {
-                                            @Override
-                                            public void onComplete(@NonNull Task task)
+                                    db.setUser(new User(firebaseUser.getUid(), username))
+                                            .addOnSuccessListener(new OnSuccessListener<Void>()
                                             {
-                                                progressBar.setVisibility(View.GONE);
-                                                Util.toggleKeyboard(ChooseUsernameActivity.this);
-                                            }
-                                        });
-                                    } else {
-                                        finish();
-                                    }
+                                                @Override
+                                                public void onSuccess(Void aVoid)
+                                                {
+                                                    finish();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener()
+                                            {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e)
+                                                {
+                                                    Log.d("SOS DO IT", e.getMessage());
+                                                    Toast.makeText(ChooseUsernameActivity.this, getString(R.string.msg_choose_username_failed) + ": " + getString(R.string.msg_unknown_error), Toast.LENGTH_LONG).show();
+                                                    db.removeUsername(username).addOnCompleteListener(new OnCompleteListener<Void>()
+                                                    {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task)
+                                                        {
+                                                            progressBar.setVisibility(View.GONE);
+                                                            Util.toggleKeyboard(ChooseUsernameActivity.this);
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener()
+                            {
+                                @Override
+                                public void onFailure(@NonNull Exception e)
+                                {
+                                    progressBar.setVisibility(View.GONE);
+                                    Log.d("SOS DO IT", e.getMessage());
+                                    Toast.makeText(ChooseUsernameActivity.this, getString(R.string.msg_choose_username_failed) + ": " + getString(R.string.msg_unknown_error), Toast.LENGTH_LONG).show();
                                 }
                             });
-                        }
-                    }
-                });
-            }
+                }
 
-            @Override
-            public void onFailure()
-            {
-                progressBar.setVisibility(View.GONE);
-                inputUsername.setError(getString(R.string.msg_username_already_used));
-                inputUsername.requestFocus();
-                Util.toggleKeyboard(ChooseUsernameActivity.this);
-            }
-        });
+                @Override
+                public void onFailure()
+                {
+                    progressBar.setVisibility(View.GONE);
+                    inputUsername.setError(getString(R.string.msg_username_already_used));
+                    inputUsername.requestFocus();
+                    Util.toggleKeyboard(ChooseUsernameActivity.this);
+                }
+            });
+        }
     }
 }

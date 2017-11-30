@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,27 +14,24 @@
 
         <include layout="@layout/element_advanced_toolbar" />
 
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/maa_adverts_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/activity_padding"
-            android:paddingRight="@dimen/activity_padding">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="vertical" />
 
-
-            <include
-                layout="@layout/content_find_job"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"></include>
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/button_add_advert"
-                android:layout_width="72dp"
-                android:layout_height="141dp"
-                android:layout_marginTop="450dp"
-                android:layout_weight="1"
-                android:clickable="true"
-                app:srcCompat="@android:drawable/ic_input_add" />
-        </LinearLayout>
+        <include layout="@layout/element_progress_bar_visible" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
+
+<!--
+<android.support.design.widget.FloatingActionButton
+    android:id="@+id/button_add_advert"
+    android:layout_width="72dp"
+    android:layout_height="141dp"
+    android:layout_marginTop="450dp"
+    android:layout_weight="1"
+    android:clickable="true"
+    app:srcCompat="@android:drawable/ic_input_add" />
+-->

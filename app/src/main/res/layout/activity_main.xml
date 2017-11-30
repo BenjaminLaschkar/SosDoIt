@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/activity_layout"
+            android:id="@+id/ma_activity_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -31,18 +31,18 @@
 
                 <android.support.v7.widget.AppCompatButton
                     style="@style/Button.Primary.Fill"
-                    android:id="@+id/btn_my_adverts"
+                    android:id="@+id/ma_btn_my_adverts"
                     android:layout_marginTop="@dimen/activity_padding"
                     android:text="@string/btn_my_adverts" />
 
                 <android.support.v7.widget.AppCompatButton
                     style="@style/Button.Primary.Fill"
-                    android:id="@+id/btn_find_job"
+                    android:id="@+id/ma_btn_find_job"
                     android:text="@string/btn_find_job" />
 
                 <android.support.v7.widget.AppCompatButton
                     style="@style/Button.Primary.Fill"
-                    android:id="@+id/btn_my_jobs"
+                    android:id="@+id/ma_btn_my_jobs"
                     android:text="@string/btn_my_jobs" />
             </LinearLayout>
         </LinearLayout>

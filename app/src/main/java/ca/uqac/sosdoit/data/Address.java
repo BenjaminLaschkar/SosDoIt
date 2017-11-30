@@ -5,6 +5,7 @@ import android.location.Geocoder;
 import android.text.TextUtils;
 
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import ca.uqac.sosdoit.util.Util;
  * Data structure for user address
  */
 
+@IgnoreExtraProperties
 public class Address
 {
     private String houseNumber;

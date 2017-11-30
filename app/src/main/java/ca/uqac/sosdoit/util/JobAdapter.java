@@ -11,15 +11,16 @@ import java.util.List;
 
 import ca.uqac.sosdoit.R;
 import ca.uqac.sosdoit.data.Advert;
+import ca.uqac.sosdoit.data.Bid;
 
-public class AdvertAdapter extends RecyclerView.Adapter<AdvertAdapter.ViewHolder>
+public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ViewHolder>
 {
-    private List<Advert> adverts;
+    private List<Advert> jobs;
     private ColorStatus colorStatus;
 
-    public AdvertAdapter(List<Advert> adverts, ColorStatus colorStatus)
+    public JobAdapter(List<Advert> adverts, ColorStatus colorStatus)
     {
-        this.adverts = adverts;
+        this.jobs = adverts;
         this.colorStatus = colorStatus;
     }
 
@@ -33,7 +34,7 @@ public class AdvertAdapter extends RecyclerView.Adapter<AdvertAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position)
     {
-        Advert advert = adverts.get(position);
+        Advert advert = jobs.get(position);
         holder.title.setText(advert.getTitle());
         if (advert.hasDescription()) {
             holder.description.setText(advert.getDescription());
@@ -47,13 +48,13 @@ public class AdvertAdapter extends RecyclerView.Adapter<AdvertAdapter.ViewHolder
         } else {
             holder.completionDate.setVisibility(View.GONE);
         }
-        holder.statusBar.setBackgroundColor(colorStatus.getColor(advert.getStatus()));
+        holder.statusBar.setBackgroundColor(colorStatus.getColor(advert.getBid().getStatus()));
     }
 
     @Override
     public int getItemCount()
     {
-        return adverts.size();
+        return jobs.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -74,68 +75,48 @@ public class AdvertAdapter extends RecyclerView.Adapter<AdvertAdapter.ViewHolder
 
     public static class ColorStatus
     {
-        private int available;
         private int accepted;
-        private int completed;
-        private int rated;
-        private int canceled;
-        private int deleted;
+        private int pending;
+        private int rejected;
 
         public ColorStatus() {}
 
-        public int getColor(Advert.Status status)
+        public ColorStatus(int accepted, int pending, int rejected)
+        {
+            this.accepted = accepted;
+            this.pending = pending;
+            this.rejected = rejected;
+        }
+
+        public int getColor(Bid.Status status)
         {
             switch (status) {
-                case AVAILABLE:
-                    return available;
                 case ACCEPTED:
                     return accepted;
-                case COMPLETED:
-                    return completed;
-                case RATED:
-                    return rated;
-                case CANCELED:
-                    return canceled;
-                case DELETED:
-                    return deleted;
+                case PENDING:
+                    return pending;
+                case REJECTED:
+                    return rejected;
                 default:
                     return Color.TRANSPARENT;
             }
         }
 
-        public ColorStatus setAvailable(int available)
-        {
-            this.available = available;
-            return this;
-        }
-
-        public ColorStatus setAccepted(int accepted)
+        public JobAdapter.ColorStatus setAccepted(int accepted)
         {
             this.accepted = accepted;
             return this;
         }
 
-        public ColorStatus setCompleted(int completed)
+        public JobAdapter.ColorStatus setPending(int pending)
         {
-            this.completed = completed;
+            this.pending = pending;
             return this;
         }
 
-        public ColorStatus setRated(int rated)
+        public JobAdapter.ColorStatus setRejected(int rejected)
         {
-            this.rated = rated;
-            return this;
-        }
-
-        public ColorStatus setCanceled(int canceled)
-        {
-            this.canceled = canceled;
-            return this;
-        }
-
-        public ColorStatus setDeleted(int deleted)
-        {
-            this.deleted = deleted;
+            this.rejected = rejected;
             return this;
         }
     }

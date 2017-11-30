@@ -22,7 +22,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
                 android:paddingLeft="@dimen/activity_padding"
                 android:paddingRight="@dimen/activity_padding"
                 android:orientation="vertical">
@@ -33,7 +32,7 @@
 
                 <EditText
                     style="@style/EditText.NotEditable"
-                    android:id="@+id/registration"
+                    android:id="@+id/pa_registration"
                     android:hint="@string/registration_date"
                     android:imeOptions="actionNext" />
 
@@ -43,14 +42,14 @@
 
                 <EditText
                     style="@style/EditText.NotEditable"
-                    android:id="@+id/email"
+                    android:id="@+id/pa_email"
                     android:hint="@string/email"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress" />
 
                 <EditText
                     style="@style/EditText"
-                    android:id="@+id/password"
+                    android:id="@+id/pa_password"
                     android:hint="@string/password"
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
@@ -58,13 +57,13 @@
 
                 <TextView
                     style="@style/TextView.Description"
-                    android:id="@+id/password_description"
+                    android:id="@+id/pa_password_info"
                     android:text="@string/password"
                     android:visibility="gone" />
 
                 <EditText
                     style="@style/EditText"
-                    android:id="@+id/new_password"
+                    android:id="@+id/pa_new_password"
                     android:hint="@string/new_password"
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
@@ -72,7 +71,7 @@
 
                 <EditText
                     style="@style/EditText"
-                    android:id="@+id/old_password"
+                    android:id="@+id/pa_old_password"
                     android:hint="@string/old_password"
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
@@ -84,7 +83,7 @@
 
                 <EditText
                     style="@style/EditText.NotEditable"
-                    android:id="@+id/username"
+                    android:id="@+id/pa_username"
                     android:hint="@string/username"
                     android:imeOptions="actionNext"
                     android:inputType="textPersonName|textNoSuggestions" />
@@ -105,7 +104,7 @@
 
                         <EditText
                             style="@style/EditText.NotEditable"
-                            android:id="@+id/first_name"
+                            android:id="@+id/pa_first_name"
                             android:hint="@string/first_name"
                             android:imeOptions="actionNext"
                             android:inputType="textPersonName|textNoSuggestions" />
@@ -123,7 +122,7 @@
 
                         <EditText
                             style="@style/EditText.NotEditable"
-                            android:id="@+id/last_name"
+                            android:id="@+id/pa_last_name"
                             android:hint="@string/last_name"
                             android:imeOptions="actionNext"
                             android:inputType="textPersonName|textNoSuggestions|textCapCharacters" />
@@ -140,7 +139,7 @@
 
                     <EditText
                         style="@style/EditText.NotEditable"
-                        android:id="@+id/house_number"
+                        android:id="@+id/pa_house_number"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:hint="@string/house_number"
@@ -150,7 +149,7 @@
 
                     <EditText
                         style="@style/EditText.NotEditable"
-                        android:id="@+id/street"
+                        android:id="@+id/pa_street"
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:hint="@string/street"
@@ -160,7 +159,7 @@
 
                 <EditText
                     style="@style/EditText.NotEditable"
-                    android:id="@+id/additional_address"
+                    android:id="@+id/pa_additional_address"
                     android:hint="@string/additional_address"
                     android:imeOptions="actionNext"
                     android:inputType="textPostalAddress"
@@ -172,7 +171,7 @@
 
                     <EditText
                         style="@style/EditText.NotEditable"
-                        android:id="@+id/city"
+                        android:id="@+id/pa_city"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:hint="@string/city"
@@ -181,7 +180,7 @@
 
                     <EditText
                         style="@style/EditText.NotEditable"
-                        android:id="@+id/state"
+                        android:id="@+id/pa_state"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:hint="@string/state"
@@ -196,7 +195,7 @@
 
                     <EditText
                         style="@style/EditText.NotEditable"
-                        android:id="@+id/postal_code"
+                        android:id="@+id/pa_postal_code"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:hint="@string/postal_code"
@@ -205,7 +204,7 @@
 
                     <EditText
                         style="@style/EditText.NotEditable"
-                        android:id="@+id/country"
+                        android:id="@+id/pa_country"
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:hint="@string/country"
@@ -216,7 +215,7 @@
         </ScrollView>
 
         <LinearLayout
-            android:id="@+id/buttons"
+            android:id="@+id/pa_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/element_margin_large"
@@ -226,7 +225,7 @@
 
             <Button
                 style="@style/Button.Secondary"
-                android:id="@+id/cancel"
+                android:id="@+id/pa_btn_cancel"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_marginRight="@dimen/element_margin_xsmall"
@@ -234,7 +233,7 @@
 
             <Button
                 style="@style/Button.Primary"
-                android:id="@+id/update"
+                android:id="@+id/pa_btn_update"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_marginLeft="@dimen/element_margin_xsmall"

@@ -27,7 +27,7 @@
             android:layout_marginTop="@dimen/element_margin_large">
 
             <EditText
-                android:id="@+id/username"
+                android:id="@+id/cua_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/username"
@@ -37,7 +37,7 @@
 
         <Button
             style="@style/Button.Primary"
-            android:id="@+id/choose"
+            android:id="@+id/cua_btn_choose"
             android:layout_marginTop="@dimen/element_margin_large"
             android:text="@string/btn_choose_username" />
 

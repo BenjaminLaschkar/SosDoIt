@@ -31,14 +31,14 @@
                 <include layout="@layout/element_input_email" />
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/password_container"
+                    android:id="@+id/ra_password_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
                     app:passwordToggleEnabled="true">
 
                     <EditText
-                        android:id="@+id/new_password"
+                        android:id="@+id/ra_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
@@ -47,13 +47,13 @@
 
                 <Button
                     style="@style/Button.Primary"
-                    android:id="@+id/btn_register_profile"
+                    android:id="@+id/ra_btn_register"
                     android:layout_marginTop="@dimen/element_margin_large"
                     android:text="@string/btn_register" />
 
                 <Button
                     style="@style/Button.Secondary"
-                    android:id="@+id/btn_login"
+                    android:id="@+id/ra_btn_login"
                     android:text="@string/btn_register_link_to_login" />
             </LinearLayout>
         </ScrollView>

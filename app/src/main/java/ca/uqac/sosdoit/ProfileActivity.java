@@ -14,12 +14,12 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -27,14 +27,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.text.DateFormat;
 
 import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.data.User;
@@ -49,11 +49,11 @@ public class ProfileActivity extends AppCompatActivity
     private EditText inputHouseNumber, inputStreet, inputAdditionalAddress, inputCity, inputState, inputPostalCode, inputCountry;
     private TextView passwordDescription;
     private LinearLayout buttons;
-    private Button btnCancel, btnUpdate;
     private ProgressBar progressBar;
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
+    private FirebaseUser firebaseUser;
 
     private DatabaseManager db;
     private DatabaseManager.ResultListener<User> userListener;
@@ -79,28 +79,26 @@ public class ProfileActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        inputEmail = findViewById(R.id.email);
-        inputPassword = findViewById(R.id.password);
-        inputNewPassword = findViewById(R.id.new_password);
-        inputOldPassword = findViewById(R.id.old_password);
-        passwordDescription = findViewById(R.id.password_description);
+        inputEmail = findViewById(R.id.pa_email);
+        inputPassword = findViewById(R.id.pa_password);
+        inputNewPassword = findViewById(R.id.pa_new_password);
+        inputOldPassword = findViewById(R.id.pa_old_password);
+        passwordDescription = findViewById(R.id.pa_password_info);
 
-        inputRegistration = findViewById(R.id.registration);
-        inputUsername = findViewById(R.id.username);
-        inputFirstName = findViewById(R.id.first_name);
-        inputLastName = findViewById(R.id.last_name);
+        inputRegistration = findViewById(R.id.pa_registration);
+        inputUsername = findViewById(R.id.pa_username);
+        inputFirstName = findViewById(R.id.pa_first_name);
+        inputLastName = findViewById(R.id.pa_last_name);
 
-        inputHouseNumber = findViewById(R.id.house_number);
-        inputStreet = findViewById(R.id.street);
-        inputAdditionalAddress = findViewById(R.id.additional_address);
-        inputCity = findViewById(R.id.city);
-        inputState = findViewById(R.id.state);
-        inputPostalCode = findViewById(R.id.postal_code);
-        inputCountry = findViewById(R.id.country);
+        inputHouseNumber = findViewById(R.id.pa_house_number);
+        inputStreet = findViewById(R.id.pa_street);
+        inputAdditionalAddress = findViewById(R.id.pa_additional_address);
+        inputCity = findViewById(R.id.pa_city);
+        inputState = findViewById(R.id.pa_state);
+        inputPostalCode = findViewById(R.id.pa_postal_code);
+        inputCountry = findViewById(R.id.pa_country);
 
-        buttons = findViewById(R.id.buttons);
-        btnCancel = findViewById(R.id.cancel);
-        btnUpdate = findViewById(R.id.update);
+        buttons = findViewById(R.id.pa_buttons);
 
         progressBar = findViewById(R.id.progress_bar);
 
@@ -112,19 +110,15 @@ public class ProfileActivity extends AppCompatActivity
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull final FirebaseAuth firebaseAuth) {
-                final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                firebaseUser = firebaseAuth.getCurrentUser();
                 if (firebaseUser == null) {
                     finish();
-                } else if (user == null) {
-                    db.getUser(firebaseUser.getUid(), new DatabaseManager.Result<User>()
-                    {
-                        @Override
-                        public void onSuccess(User result)
-                        {
-                            user = result.setEmail(firebaseUser.getEmail());
-                            db.addUserEventListener(user.getUid(), userListener);
-                        }
-                    });
+                } else {
+                    if (user == null) {
+                        user = new User();
+                    }
+                    user.setUid(firebaseUser.getUid()).setEmail(firebaseUser.getEmail());
+                    db.addUserEventListener(user.getUid(), userListener);
                 }
             }
         };
@@ -207,7 +201,7 @@ public class ProfileActivity extends AppCompatActivity
             }
         });
 
-        btnCancel.setOnClickListener(new View.OnClickListener()
+        findViewById(R.id.pa_btn_cancel).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -224,7 +218,7 @@ public class ProfileActivity extends AppCompatActivity
             }
         });
 
-        btnUpdate.setOnClickListener(new View.OnClickListener()
+        findViewById(R.id.pa_btn_update).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -317,7 +311,7 @@ public class ProfileActivity extends AppCompatActivity
 
     public void showProfile()
     {
-        inputRegistration.setText(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(user.getRegistrationDate()));
+        inputRegistration.setText(Util.formatDate(user.getRegistrationDate()));
 
         inputFirstName.setText(user.hasFirstName() ? user.getFirstName() : "");
         inputLastName.setText(user.hasLastName() ? user.getLastName() : "");
@@ -377,17 +371,17 @@ public class ProfileActivity extends AppCompatActivity
     {
         editMode = !editMode;
 
-        setEditTextEditable(inputEmail, editMode);
-        setEditTextEditable(inputUsername, editMode);
-        setEditTextEditable(inputFirstName, editMode);
-        setEditTextEditable(inputLastName, editMode);
-        setEditTextEditable(inputHouseNumber, editMode);
-        setEditTextEditable(inputStreet, editMode);
-        setEditTextEditable(inputAdditionalAddress, editMode);
-        setEditTextEditable(inputState, editMode);
-        setEditTextEditable(inputCity, editMode);
-        setEditTextEditable(inputPostalCode, editMode);
-        setEditTextEditable(inputCountry, editMode);
+        Util.setEditTextEditable(inputEmail, editMode);
+        Util.setEditTextEditable(inputUsername, editMode);
+        Util.setEditTextEditable(inputFirstName, editMode);
+        Util.setEditTextEditable(inputLastName, editMode);
+        Util.setEditTextEditable(inputHouseNumber, editMode);
+        Util.setEditTextEditable(inputStreet, editMode);
+        Util.setEditTextEditable(inputAdditionalAddress, editMode);
+        Util.setEditTextEditable(inputState, editMode);
+        Util.setEditTextEditable(inputCity, editMode);
+        Util.setEditTextEditable(inputPostalCode, editMode);
+        Util.setEditTextEditable(inputCountry, editMode);
 
         if (editMode) {
             passwordDescription.setVisibility(View.VISIBLE);
@@ -410,15 +404,6 @@ public class ProfileActivity extends AppCompatActivity
         }
 
         showProfile();
-    }
-
-    public void setEditTextEditable(EditText editText, boolean editable)
-    {
-        editText.setFocusable(editable);
-        editText.setFocusableInTouchMode(editable);
-        editText.setClickable(editable);
-        editText.setLongClickable(editable);
-        editText.setCursorVisible(editable);
     }
 
     public void save()
@@ -492,56 +477,88 @@ public class ProfileActivity extends AppCompatActivity
             Util.toggleKeyboard(ProfileActivity.this);
             progressBar.setVisibility(View.VISIBLE);
 
-            if (updateEmail || updatePassword) {
-                final FirebaseUser firebaseUser = auth.getCurrentUser();
-                if (firebaseUser == null) {
-                    finish();
-                    return;
-                }
-                firebaseUser.reauthenticate(EmailAuthProvider.getCredential(user.getEmail(), password)).addOnCompleteListener(new OnCompleteListener<Void>()
-                {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task)
-                    {
-                        if (updateEmail) {
-                            firebaseUser.updateEmail(email).addOnCompleteListener(new OnCompleteListener<Void>()
+            if (firebaseUser != null && (updateEmail || updatePassword)) {
+                firebaseUser.reauthenticate(EmailAuthProvider.getCredential(user.getEmail(), password))
+                        .addOnSuccessListener(new OnSuccessListener<Void>()
+                        {
+                            @Override
+                            public void onSuccess(Void aVoid)
                             {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task)
-                                {
-                                    if (!task.isSuccessful()) {
-                                        progressBar.setVisibility(View.GONE);
-                                        try {
-                                            if (task.getException() != null) {
-                                                throw task.getException();
-                                            } else {
-                                                Toast.makeText(ProfileActivity.this, getString(R.string.msg_edit_profile_failed) + ": " + getString(R.string.msg_unknown_error), Toast.LENGTH_LONG).show();
-                                            }
-                                        } catch (FirebaseAuthInvalidCredentialsException e) {
-                                            inputEmail.setError(getString(R.string.msg_invalid_email));
-                                        } catch (FirebaseAuthUserCollisionException e) {
-                                            inputEmail.setError(getString(R.string.msg_email_already_used));
-                                        } catch (Exception e) {
-                                            Toast.makeText(ProfileActivity.this, getString(R.string.msg_edit_profile_failed) + ": " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                        }
-                                        if (!editMode) {
-                                            switchMode();
-                                            inputEmail.setText(email);
-                                            Util.toggleKeyboard(ProfileActivity.this);
-                                        }
-                                    } else {
-                                        user.setEmail(email);
-                                        showProfile();
-                                        pref.edit().putString(getString(R.string.pref_email), email).apply();
-                                    }
+                                if (updateEmail) {
+                                    firebaseUser.updateEmail(email)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>()
+                                            {
+                                                @Override
+                                                public void onSuccess(Void aVoid)
+                                                {
+                                                    user.setEmail(email);
+                                                    showProfile();
+                                                    pref.edit().putString(getString(R.string.pref_email), email).apply();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener()
+                                            {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e)
+                                                {
+                                                    progressBar.setVisibility(View.GONE);
+                                                    Log.d("SOS DO IT", e.getMessage());
+                                                    try {
+                                                        throw e;
+                                                    } catch (FirebaseAuthInvalidCredentialsException ex) {
+                                                        inputEmail.setError(getString(R.string.msg_email_invalid));
+                                                    } catch (FirebaseAuthUserCollisionException ex) {
+                                                        inputEmail.setError(getString(R.string.msg_email_already_used));
+                                                    } catch (Exception ex) {
+                                                        Toast.makeText(ProfileActivity.this, getString(R.string.msg_edit_profile_failed) + ": " + getString(R.string.msg_unknown_error), Toast.LENGTH_LONG).show();
+                                                    }
+                                                    if (!editMode) {
+                                                        switchMode();
+                                                        inputEmail.setText(email);
+                                                        Util.toggleKeyboard(ProfileActivity.this);
+                                                    }
+                                                }
+                                            });
                                 }
-                            });
-                        }
-                        if (updatePassword) {
-                            firebaseUser.updatePassword(newPassword);
-                        }
-                    }
-                });
+                                if (updatePassword) {
+                                    firebaseUser.updatePassword(newPassword)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>()
+                                            {
+                                                @Override
+                                                public void onSuccess(Void aVoid)
+                                                {
+                                                    Toast.makeText(ProfileActivity.this, getString(R.string.msg_password_updated), Toast.LENGTH_LONG).show();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener()
+                                            {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e)
+                                                {
+                                                    progressBar.setVisibility(View.GONE);
+                                                    Log.d("SOS DO IT", e.getMessage());
+                                                    if (!editMode) {
+                                                        switchMode();
+                                                        Util.toggleKeyboard(ProfileActivity.this);
+                                                    }
+                                                }
+                                            });
+                                }
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener()
+                        {
+                            @Override
+                            public void onFailure(@NonNull Exception e)
+                            {
+                                progressBar.setVisibility(View.GONE);
+                                Log.d("SOS DO IT", e.getMessage());
+                                if (!editMode) {
+                                    switchMode();
+                                    Util.toggleKeyboard(ProfileActivity.this);
+                                }
+                            }
+                        });
             }
             if (!newUser.equals(user)) {
                 if (updateUsername) {
@@ -550,19 +567,59 @@ public class ProfileActivity extends AppCompatActivity
                         @Override
                         public void onSuccess(Void aVoid)
                         {
-                            db.setUsername(username, user.getUid(), new OnCompleteListener<Void>()
-                            {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task)
-                                {
-                                    if (task.isSuccessful()) {
-                                        db.removeUsername(user.getUsername());
-                                        db.setUser(newUser);
-                                    }
-                                }
-                            });
+                            db.setUsername(username, user.getUid())
+                                    .addOnSuccessListener(new OnSuccessListener<Void>()
+                                    {
+                                        @Override
+                                        public void onSuccess(Void aVoid)
+                                        {
+                                            db.setUser(newUser)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>()
+                                                    {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid)
+                                                        {
+                                                            db.removeUsername(user.getUsername())
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>()
+                                                                    {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task)
+                                                                        {
+                                                                            progressBar.setVisibility(View.GONE);
+                                                                            Util.toggleKeyboard(ProfileActivity.this);
+                                                                        }
+                                                                    });
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener()
+                                                    {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e)
+                                                        {
+                                                            progressBar.setVisibility(View.GONE);
+                                                            Log.d("SOS DO IT", e.getMessage());
+                                                            if (!editMode) {
+                                                                switchMode();
+                                                                Util.toggleKeyboard(ProfileActivity.this);
+                                                            }
+                                                        }
+                                                    });
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener()
+                                    {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e)
+                                        {
+                                            progressBar.setVisibility(View.GONE);
+                                            Log.d("SOS DO IT", e.getMessage());
+                                            if (!editMode) {
+                                                switchMode();
+                                                Util.toggleKeyboard(ProfileActivity.this);
+                                            }
+                                        }
+                                    });
                         }
-
                         @Override
                         public void onFailure()
                         {
@@ -577,11 +634,24 @@ public class ProfileActivity extends AppCompatActivity
                         }
                     });
                 } else {
-                    db.setUser(newUser);
+                    db.setUser(newUser).addOnFailureListener(new OnFailureListener()
+                    {
+                        @Override
+                        public void onFailure(@NonNull Exception e)
+                        {
+                            progressBar.setVisibility(View.GONE);
+                            Log.d("SOS DO IT", e.getMessage());
+                            if (!editMode) {
+                                switchMode();
+                                Util.toggleKeyboard(ProfileActivity.this);
+                            }
+                        }
+                    });
                 }
             }
 
             switchMode();
+            Util.toggleKeyboard(ProfileActivity.this);
         }
     }
 }

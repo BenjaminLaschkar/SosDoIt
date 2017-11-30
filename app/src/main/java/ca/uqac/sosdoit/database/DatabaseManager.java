@@ -2,7 +2,6 @@ package ca.uqac.sosdoit.database;
 
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -10,6 +9,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Map;
+
+import ca.uqac.sosdoit.data.Advert;
+import ca.uqac.sosdoit.data.Bid;
 import ca.uqac.sosdoit.data.User;
 import ca.uqac.sosdoit.data.UserProfile;
 
@@ -19,13 +23,15 @@ import ca.uqac.sosdoit.data.UserProfile;
 
 public class DatabaseManager // implements IDatabaseManager
 {
-    // Database nodes
     private final static String USERS = "users";
     private final static String USERNAMES = "usernames";
-    private final static String USER_PROFILE = "profile";
+    private final static String ADVERTS = "adverts";
+    private final static String BIDS = "bids";
+    private final static String JOBS = "jobs";
 
-    //private final static String ADVERTS = "adverts";
-    //private final static String RATINGS = "ratings";
+    private final static String USER_PROFILE = "profile";
+    private final static String ADVERT_ADVERTISER = "advertiserUid";
+    private final static String ADVERT_STATUS = "status";
 
     private Reference ref;
 
@@ -41,7 +47,7 @@ public class DatabaseManager // implements IDatabaseManager
         return INSTANCE;
     }
 
-    // ----- USERS ----- //
+    // ----- USERNAMES ----- //
 
     public void isUsernameUnique(final String username, final Result<Void> result)
     {
@@ -70,20 +76,12 @@ public class DatabaseManager // implements IDatabaseManager
         return ref.usernames.child(username).setValue(uid);
     }
 
-    public void setUsername(final String username, final String uid, final OnCompleteListener<Void> listener)
-    {
-        setUsername(username, uid).addOnCompleteListener(listener);
-    }
-
     public Task<Void> removeUsername(final String username)
     {
         return ref.usernames.child(username).removeValue();
     }
 
-    public void removeUsername(final String username, final OnCompleteListener<Void> listener)
-    {
-        removeUsername(username).addOnCompleteListener(listener);
-    }
+    // ----- USERS ----- //
 
     public void getUserProfile(final String uid, final Result<UserProfile> result)
     {
@@ -136,11 +134,6 @@ public class DatabaseManager // implements IDatabaseManager
         return ref.users.child(user.getUid()).setValue(user);
     }
 
-    public void setUser(final User user, final OnCompleteListener<Void> listener)
-    {
-        setUser(user).addOnCompleteListener(listener);
-    }
-
     public void addUserEventListener(final String uid, final ResultListener<User> result)
     {
         if (result.listener == null) {
@@ -179,23 +172,336 @@ public class DatabaseManager // implements IDatabaseManager
 
     // ----- ADVERTS ----- //
 
+    public void getAdvert(final String aid, final Result<Advert> result)
+    {
+        ref.adverts.child(aid).addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                Advert advert = dataSnapshot.getValue(Advert.class);
+                if (advert != null) {
+                    result.onSuccess(advert.setAid(aid));
+                } else {
+                    result.onFailure();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {
+                result.onError(databaseError);
+            }
+        });
+    }
+
+    public Task<Void> setAdvert(final Advert advert)
+    {
+        if (advert.hasAid()) {
+            return ref.adverts.child(advert.getAid()).setValue(advert);
+        } else {
+            return ref.adverts.push().setValue(advert);
+        }
+    }
+
+    public void addAdvertEventListener(final String aid, final ResultListener<Advert> result)
+    {
+        if (result.listener == null) {
+            result.listener = new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    Advert advert = dataSnapshot.getValue(Advert.class);
+                    if (advert != null) {
+                        result.onSuccess(advert.setAid(aid));
+                    } else {
+                        result.onFailure();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError)
+                {
+                    result.onError(databaseError);
+                }
+            };
+        }
+
+        if (!result.added) {
+            ref.adverts.child(aid).addValueEventListener(result.listener);
+            result.added = true;
+        }
+    }
+
+    public void removeAdvertEventListener(final String aid, final ResultListener<Advert> result)
+    {
+        ref.adverts.child(aid).removeEventListener(result.listener);
+        result.added = false;
+    }
+
+    public void addAdvertsEventListener(final String uid, final ResultListener<ArrayList<Advert>> result)
+    {
+        if (result.listener == null) {
+                result.listener = new ValueEventListener()
+                {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    if (dataSnapshot.getValue() != null) {
+                        ArrayList<Advert> list = new ArrayList<>();
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            Advert advert = data.getValue(Advert.class);
+                            if (advert != null) {
+                                list.add(advert.setAid(data.getKey()));
+                            }
+                        }
+                        result.onSuccess(list);
+                    } else {
+                        result.onFailure();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError)
+                {
+                    result.onError(databaseError);
+                }
+            };
+        }
+
+        if (!result.added) {
+            ref.adverts.orderByChild(ADVERT_ADVERTISER).equalTo(uid).addValueEventListener(result.listener);
+            result.added = true;
+        }
+    }
+
+    public void addAdvertsEventListener(final Advert.Status status, final ResultListener<ArrayList<Advert>> result)
+    {
+        if (result.listener == null) {
+            result.listener = new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    if (dataSnapshot.getValue() != null) {
+                        ArrayList<Advert> list = new ArrayList<>();
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            Advert advert = data.getValue(Advert.class);
+                            if (advert != null) {
+                                list.add(advert.setAid(data.getKey()));
+                            }
+                        }
+                        result.onSuccess(list);
+                    } else {
+                        result.onFailure();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError)
+                {
+                    result.onError(databaseError);
+                }
+            };
+        }
+
+        if (!result.added) {
+            ref.adverts.orderByChild(ADVERT_STATUS).equalTo(status.name()).addValueEventListener(result.listener);
+            result.added = true;
+        }
+    }
+
+    public void removeAdvertsEventListener(final ResultListener<ArrayList<Advert>> result)
+    {
+        ref.adverts.removeEventListener(result.listener);
+        result.added = false;
+    }
+
+    // ----- BIDS ----- //
+
+    public void getBid(final String advertiser_uid, final String aid, final String uid, final Result<Bid> result)
+    {
+        ref.bids.child(advertiser_uid).child(aid).child(uid).addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                Bid bid = dataSnapshot.getValue(Bid.class);
+                if (bid != null) {
+                    result.onSuccess(bid);
+                } else {
+                    result.onFailure();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {
+                result.onError(databaseError);
+            }
+        });
+    }
+
+    public Task<Void> setBid(final String advertiser_uid, final String aid, final Bid bid)
+    {
+        return ref.bids.child(advertiser_uid).child(aid).child(bid.getUid()).setValue(bid);
+    }
+
+    public Task<Void> setBids(final String advertiser_uid, final String aid, final Map<String, Bid> bids)
+    {
+        return ref.bids.child(advertiser_uid).child(aid).setValue(bids);
+    }
+
+    public void addBidEventListener(final String advertiser_uid, final String aid, final String uid, final ResultListener<Bid> result)
+    {
+        if (result.listener == null) {
+            result.listener = new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    Bid bid = dataSnapshot.getValue(Bid.class);
+                    if (bid != null) {
+                        result.onSuccess(bid);
+                    } else {
+                        result.onFailure();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError)
+                {
+                    result.onError(databaseError);
+                }
+            };
+        }
+
+        if (!result.added) {
+            ref.bids.child(advertiser_uid).child(aid).child(uid).addValueEventListener(result.listener);
+            result.added = true;
+        }
+    }
+
+    public void removeBidEventListener(final String advertiser_uid, final String aid, final String uid, final ResultListener<Bid> result)
+    {
+        ref.bids.child(advertiser_uid).child(aid).child(uid).addValueEventListener(result.listener);
+        result.added = false;
+    }
+
+    public void addBidsEventListener(final String uid, final String aid, final ResultListener<ArrayList<Bid>> result)
+    {
+        if (result.listener == null) {
+            result.listener = new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    if (dataSnapshot.getValue() != null) {
+                        ArrayList<Bid> list = new ArrayList<>();
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            Bid bid = data.getValue(Bid.class);
+                            if (bid != null) {
+                                list.add(bid.setUid(data.getKey()));
+                            }
+                        }
+                        result.onSuccess(list);
+                    } else {
+                        result.onFailure();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError)
+                {
+                    result.onError(databaseError);
+                }
+            };
+        }
+
+        if (!result.added) {
+            ref.bids.child(uid).child(aid).addValueEventListener(result.listener);
+            result.added = true;
+        }
+    }
+
+    public void removeBidsEventListener(final String uid, final String aid, final ResultListener<ArrayList<Bid>> result)
+    {
+        ref.bids.child(uid).child(aid).removeEventListener(result.listener);
+        result.added = false;
+    }
+
+    // ----- JOBS ----- //
+
+    public Task<Void> setJob(final String uid, final String aid)
+    {
+        return ref.jobs.child(uid).child(aid).setValue(true);
+    }
+
+    public void addJobsEventListener(final String uid, final ResultListener<ArrayList<String>> result)
+    {
+        if (result.listener == null) {
+            result.listener = new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    if (dataSnapshot.getValue() != null) {
+                        ArrayList<String> list = new ArrayList<>();
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            list.add(data.getKey());
+                        }
+                        result.onSuccess(list);
+                    } else {
+                        result.onFailure();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError)
+                {
+                    result.onError(databaseError);
+                }
+            };
+        }
+
+        if (!result.added) {
+            ref.jobs.child(uid).addValueEventListener(result.listener);
+            result.added = true;
+        }
+    }
+
+    public void removeJobsEventListener(final String uid, final ResultListener<ArrayList<String>> result)
+    {
+        ref.jobs.child(uid).removeEventListener(result.listener);
+        result.added = false;
+    }
+
+    // ----- INNER CLASS ----- //
+
     private class Reference
     {
-        public DatabaseReference database;
+        private DatabaseReference database;
         public DatabaseReference users;
         public DatabaseReference usernames;
+        public DatabaseReference adverts;
+        public DatabaseReference bids;
+        public DatabaseReference jobs;
 
         Reference()
         {
             database = FirebaseDatabase.getInstance().getReference();
             users = database.child(USERS);
             usernames = database.child(USERNAMES);
+            adverts = database.child(ADVERTS);
+            bids = database.child(BIDS);
+            jobs = database.child(JOBS);
         }
     }
 
     public static abstract class Result<T>
     {
-        public void onSuccess() {};
+        public void onComplete() {}
 
         public abstract void onSuccess(T t);
 
