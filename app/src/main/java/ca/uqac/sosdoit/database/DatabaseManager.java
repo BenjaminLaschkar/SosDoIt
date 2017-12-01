@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -243,8 +244,8 @@ public class DatabaseManager // implements IDatabaseManager
     public void addAdvertsEventListener(final String uid, final ResultListener<ArrayList<Advert>> result)
     {
         if (result.listener == null) {
-                result.listener = new ValueEventListener()
-                {
+            result.listener = new ValueEventListener()
+            {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot)
                 {
@@ -311,6 +312,7 @@ public class DatabaseManager // implements IDatabaseManager
             result.added = true;
         }
     }
+
     public void removeAdvertsEventListener(final ResultListener<ArrayList<Advert>> result)
     {
         ref.adverts.removeEventListener(result.listener);
@@ -328,7 +330,30 @@ public class DatabaseManager // implements IDatabaseManager
             {
                 Bid bid = dataSnapshot.getValue(Bid.class);
                 if (bid != null) {
-                    result.onSuccess(bid);
+                    result.onSuccess(bid.setUid(dataSnapshot.getKey()));
+                } else {
+                    result.onFailure();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {
+                result.onError(databaseError);
+            }
+        });
+    }
+
+    public void getBid(final Advert advert, final String uid, final Result<Advert> result)
+    {
+        ref.bids.child(advert.getAdvertiserUid()).child(advert.getAid()).child(uid).addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                Bid bid = dataSnapshot.getValue(Bid.class);
+                if (bid != null) {
+                    result.onSuccess(advert.setBid(bid.setUid(dataSnapshot.getKey())));
                 } else {
                     result.onFailure();
                 }
@@ -351,6 +376,7 @@ public class DatabaseManager // implements IDatabaseManager
     {
         return ref.bids.child(advertiser_uid).child(aid).setValue(bids);
     }
+
     public void addBidEventListener(final String advertiser_uid, final String aid, final String uid, final ResultListener<Bid> result)
     {
         if (result.listener == null) {
@@ -361,7 +387,7 @@ public class DatabaseManager // implements IDatabaseManager
                 {
                     Bid bid = dataSnapshot.getValue(Bid.class);
                     if (bid != null) {
-                        result.onSuccess(bid);
+                        result.onSuccess(bid.setUid(dataSnapshot.getKey()));
                     } else {
                         result.onFailure();
                     }
@@ -430,6 +456,26 @@ public class DatabaseManager // implements IDatabaseManager
     }
 
     // ----- JOBS ----- //
+
+    public void getJobs(final ArrayList<String> aids, final String uid, final ResultSynced<Advert> result)
+    {
+        for (String aid : aids) {
+            getAdvert(aid, new Result<Advert>()
+            {
+                @Override
+                public void onSuccess(Advert advert)
+                {
+                    getBid(advert, uid, result);
+                }
+
+                @Override
+                public void onFailure()
+                {
+                    result.onFailure();
+                }
+            });
+        }
+    }
 
     public Task<Void> setJob(final String uid, final String aid)
     {
@@ -511,7 +557,9 @@ public class DatabaseManager // implements IDatabaseManager
         public void onError(DatabaseError error)
         {
             Log.d("DATABASE ERROR", error.getMessage());
-        };
+        }
+
+        ;
     }
 
     public static abstract class ResultListener<T> extends Result<T>
@@ -525,6 +573,30 @@ public class DatabaseManager // implements IDatabaseManager
             return this;
         }
     }
+
+    public static abstract class ResultSynced<T> extends Result<T>
+    {
+        private int count;
+        private int max;
+
+        public ResultSynced(int max)
+        {
+            this.max = max;
+        }
+
+        public void sync()
+        {
+            if (++count == max) {
+                onSynced();
+            }
+
+        }
+
+        public abstract void onSynced();
+    }
+}
+
+
 
 //        private DatabaseManager() {
 //            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
@@ -1485,4 +1557,3 @@ public class DatabaseManager // implements IDatabaseManager
 //            //throw databaseError.toException();
 //        }
 //    }
-}

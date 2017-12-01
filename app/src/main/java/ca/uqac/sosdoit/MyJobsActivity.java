@@ -110,58 +110,30 @@ public class MyJobsActivity extends AppCompatActivity
             {
                 progressBar.setVisibility(View.VISIBLE);
                 jobs.clear();
-                count = 0;
-                for (String aid : result) {
-                    db.getAdvert(aid, new DatabaseManager.Result<Advert>()
+
+                db.getJobs(result, uid, new DatabaseManager.ResultSynced<Advert>(result.size())
+                {
+                    @Override
+                    public void onSuccess(Advert advert)
                     {
-                        @Override
-                        public void onSuccess(final Advert advert)
-                        {
-                            db.getBid(advert.getAdvertiserUid(), advert.getAid(), uid, new DatabaseManager.Result<Bid>()
-                            {
-                                @Override
-                                public void onSuccess(Bid bid)
-                                {
-                                    jobs.add(advert.setBid(bid));
-                                    if (++count == result.size()) {
-                                        jobAdapter.notifyDataSetChanged();
-                                        jobsView.setVisibility(View.VISIBLE);
-                                        progressBar.setVisibility(View.GONE);
-                                    }
-                                }
+                        jobs.add(advert);
+                        sync();
+                    }
 
-                                @Override
-                                public void onFailure()
-                                {
-                                    if (++count == result.size()) {
-                                        jobAdapter.notifyDataSetChanged();
-                                        jobsView.setVisibility(View.VISIBLE);
-                                        progressBar.setVisibility(View.GONE);
-                                    }
-                                }
-                            });
-                        }
+                    @Override
+                    public void onFailure()
+                    {
+                        sync();
+                    }
 
-                        @Override
-                        public void onFailure()
-                        {
-                            if (++count == result.size()) {
-                                jobAdapter.notifyDataSetChanged();
-                                jobsView.setVisibility(View.VISIBLE);
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onFailure()
-            {
-                jobs.clear();
-                jobAdapter.notifyDataSetChanged();
-                jobsView.setVisibility(View.GONE);
-                progressBar.setVisibility(View.GONE);
+                    @Override
+                    public void onSynced()
+                    {
+                        jobAdapter.notifyDataSetChanged();
+                        jobsView.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
             }
         };
 
