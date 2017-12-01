@@ -4,6 +4,188 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="ca.uqac.sosdoit.JobActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/element_advanced_toolbar" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/activity_padding"
+                android:paddingRight="@dimen/activity_padding"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextView.Description.First"
+                    android:id="@+id/ja_description_info"
+                    android:text="@string/description"
+                    android:visibility="gone" />
+
+                <EditText
+                    style="@style/EditText.NotEditable"
+                    android:id="@+id/ja_description"
+                    android:inputType="textNoSuggestions"
+                    android:visibility="gone" />
+
+                <TextView
+                    style="@style/TextView.Description"
+                    android:text="@string/posting_date" />
+
+                <EditText
+                    style="@style/EditText.NotEditable"
+                    android:id="@+id/ja_posting_date"
+                    android:inputType="textNoSuggestions" />
+
+                <TextView
+                    style="@style/TextView.Description"
+                    android:id="@+id/ja_completion_date_info"
+                    android:text="@string/completion_date"
+                    android:visibility="gone" />
+
+                <EditText
+                    style="@style/EditText.NotEditable"
+                    android:id="@+id/ja_completion_date"
+                    android:inputType="textNoSuggestions"
+                    android:visibility="gone" />
+
+                <TextView
+                    style="@style/TextView.Description"
+                    android:id="@+id/ja_bid_description"
+                    android:text="@string/bid" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        style="@style/EditText.NotEditable"
+                        android:id="@+id/ja_offer_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:inputType="textNoSuggestions"
+                        android:visibility="gone" />
+
+                    <EditText
+                        android:id="@+id/ja_offer_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/new_bid"
+                        android:imeOptions="actionDone"
+                        android:inputType="numberDecimal"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/TextView.Description"
+                    android:id="@+id/ja_address_info"
+                    android:text="@string/address"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        style="@style/EditText.NotEditable"
+                        android:id="@+id/ja_house_number"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:hint="@string/house_number"
+                        android:imeOptions="actionNext"
+                        android:inputType="textNoSuggestions"
+                        android:visibility="gone" />
+
+                    <EditText
+                        style="@style/EditText.NotEditable"
+                        android:id="@+id/ja_street"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:inputType="textNoSuggestions"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <EditText
+                    style="@style/EditText.NotEditable"
+                    android:id="@+id/ja_additional_address"
+                    android:inputType="textNoSuggestions"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        style="@style/EditText.NotEditable"
+                        android:id="@+id/ja_city"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:inputType="textNoSuggestions"
+                        android:visibility="gone" />
+
+                    <EditText
+                        style="@style/EditText.NotEditable"
+                        android:id="@+id/ja_state"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:inputType="textNoSuggestions"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        style="@style/EditText.NotEditable"
+                        android:id="@+id/ja_postal_code"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:inputType="textNoSuggestions"
+                        android:visibility="gone" />
+
+                    <EditText
+                        style="@style/EditText.NotEditable"
+                        android:id="@+id/ja_country"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:inputType="textNoSuggestions"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_padding"
+            android:layout_marginRight="@dimen/activity_padding"
+            android:layout_marginTop="@dimen/element_margin_large">
+
+            <Button
+                style="@style/Button.Secondary"
+                android:id="@+id/ja_btn_delete"
+                android:layout_marginRight="@dimen/element_margin_xsmall"
+                android:text="@string/btn_bid" />
+
+            <Button
+                style="@style/Button.Primary"
+                android:id="@+id/ja_btn_bid"
+                android:layout_marginLeft="@dimen/element_margin_xsmall"
+                android:text="@string/btn_bid" />
+        </LinearLayout>
+
+        <include layout="@layout/element_progress_bar_visible" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

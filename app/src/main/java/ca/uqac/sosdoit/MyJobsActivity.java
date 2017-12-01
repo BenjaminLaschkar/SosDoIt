@@ -16,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 
 import ca.uqac.sosdoit.data.Advert;
-import ca.uqac.sosdoit.data.Bid;
 import ca.uqac.sosdoit.database.DatabaseManager;
 import ca.uqac.sosdoit.util.JobAdapter;
 import ca.uqac.sosdoit.util.RecyclerTouchListener;
