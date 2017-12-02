@@ -20,8 +20,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +48,7 @@ public class ProfileActivity extends AppCompatActivity
     private EditText inputRegistration, inputUsername, inputFirstName, inputLastName;
     private EditText inputHouseNumber, inputStreet, inputAdditionalAddress, inputCity, inputState, inputPostalCode, inputCountry;
     private TextView passwordDescription;
-    private LinearLayout buttons;
+    private Button btnCancel, btnUpdate;
     private ProgressBar progressBar;
 
     private FirebaseAuth auth;
@@ -98,7 +98,8 @@ public class ProfileActivity extends AppCompatActivity
         inputPostalCode = findViewById(R.id.pa_postal_code);
         inputCountry = findViewById(R.id.pa_country);
 
-        buttons = findViewById(R.id.pa_buttons);
+        btnCancel = findViewById(R.id.pa_btn_cancel);
+        btnUpdate = findViewById(R.id.pa_btn_update);
 
         progressBar = findViewById(R.id.progress_bar);
 
@@ -201,7 +202,7 @@ public class ProfileActivity extends AppCompatActivity
             }
         });
 
-        findViewById(R.id.pa_btn_cancel).setOnClickListener(new View.OnClickListener()
+        btnCancel.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -218,7 +219,7 @@ public class ProfileActivity extends AppCompatActivity
             }
         });
 
-        findViewById(R.id.pa_btn_update).setOnClickListener(new View.OnClickListener()
+        btnUpdate.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -391,7 +392,8 @@ public class ProfileActivity extends AppCompatActivity
             inputAdditionalAddress.setVisibility(View.VISIBLE);
             inputState.setVisibility(View.VISIBLE);
 
-            buttons.setVisibility(View.VISIBLE);
+            btnCancel.setVisibility(View.VISIBLE);
+            btnUpdate.setVisibility(View.VISIBLE);
 
             inputEmail.requestFocus();
         } else {
@@ -400,7 +402,8 @@ public class ProfileActivity extends AppCompatActivity
             inputNewPassword.setVisibility(View.GONE);
             inputOldPassword.setVisibility(View.GONE);
 
-            buttons.setVisibility(View.GONE);
+            btnCancel.setVisibility(View.GONE);
+            btnUpdate.setVisibility(View.GONE);
         }
 
         showProfile();
@@ -472,6 +475,7 @@ public class ProfileActivity extends AppCompatActivity
         newUser.setPostalCodeWithCheck(postalCode);
         newUser.setCountryWithCheck(country);
         newUser.clearAddressIfEmpty();
+        newUser.findAddressCoordinates(ProfileActivity.this);
 
         if (!error) {
             Util.toggleKeyboard(ProfileActivity.this);
