@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -28,8 +29,9 @@ import ca.uqac.sosdoit.util.Util;
 public class JobActivity extends AppCompatActivity
 {
     private Toolbar toolbar;
-    private EditText description, postingDate, completionDate, offerText, inputOffer, houseNumber, street, additionalAddress, city, state, postalCode, country;
-    private TextView descriptionInfo, completionDateInfo, addressInfo;
+    private EditText description, postingDate, completionDate, status, offerText, inputOffer, houseNumber, street, additionalAddress, city, state, postalCode, country;
+    private TextView descriptionInfo, completionDateInfo, statusInfo, addressInfo;
+    private Button btnCancelBid, btnBid;
     private ProgressBar progressBar;
 
     private FirebaseAuth auth;
@@ -85,6 +87,9 @@ public class JobActivity extends AppCompatActivity
         postingDate = findViewById(R.id.ja_posting_date);
         completionDateInfo = findViewById(R.id.ja_completion_date_info);
         completionDate = findViewById(R.id.ja_completion_date);
+
+        statusInfo = findViewById(R.id.ja_bid_status_info);
+        status = findViewById(R.id.ja_bid_status);
         offerText = findViewById(R.id.ja_offer_text);
         inputOffer = findViewById(R.id.ja_offer_value);
 
@@ -96,6 +101,9 @@ public class JobActivity extends AppCompatActivity
         state = findViewById(R.id.ja_state);
         postalCode = findViewById(R.id.ja_postal_code);
         country = findViewById(R.id.ja_country);
+
+        btnCancelBid = findViewById(R.id.ja_btn_cancel_bid);
+        btnBid = findViewById(R.id.ja_btn_bid);
 
         progressBar = findViewById(R.id.progress_bar);
 
@@ -112,7 +120,16 @@ public class JobActivity extends AppCompatActivity
             }
         });
 
-        findViewById(R.id.ja_btn_bid).setOnClickListener(new View.OnClickListener()
+        btnCancelBid.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+
+            }
+        });
+
+        btnBid.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -161,6 +178,8 @@ public class JobActivity extends AppCompatActivity
                 }
 
                 inputOffer.setVisibility(advert.getStatus() == Advert.Status.AVAILABLE ? View.VISIBLE : View.GONE);
+
+                toggleButtons();
             }
 
             @Override
@@ -176,15 +195,26 @@ public class JobActivity extends AppCompatActivity
             public void onSuccess(Bid result)
             {
                 bid = result;
+                status.setText(getString(bid.getStatus().value()));
+                statusInfo.setVisibility(View.VISIBLE);
+                status.setVisibility(View.VISIBLE);
                 offerText.setText(Util.formatCurrency(bid.getOffer()));
                 offerText.setVisibility(View.VISIBLE);
+
+                toggleButtons();
+
                 progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure()
             {
+                statusInfo.setVisibility(View.GONE);
+                status.setVisibility(View.GONE);
                 offerText.setVisibility(View.GONE);
+
+                toggleButtons();
+
                 progressBar.setVisibility(View.GONE);
                 Util.toggleKeyboard(JobActivity.this);
             }
@@ -209,7 +239,7 @@ public class JobActivity extends AppCompatActivity
     {
         super.onPause();
         auth.removeAuthStateListener(authListener);
-        db.removeAdvertEventListener(advert.getAid(), advertListener);
+        db.removeAdvertEventListener(aid, advertListener);
         db.removeBidEventListener(advertiser_uid, aid, uid, bidListener);
     }
 
@@ -225,6 +255,27 @@ public class JobActivity extends AppCompatActivity
         }
 
         return true;
+    }
+
+    public void toggleButtons()
+    {
+        if (advert != null && advert.getStatus() == Advert.Status.AVAILABLE) {
+            if (bid != null) {
+                if (bid.getStatus() == Bid.Status.ACCEPTED) {
+                    btnCancelBid.setVisibility(View.GONE);
+                    btnBid.setVisibility(View.GONE);
+                } else {
+                    btnCancelBid.setVisibility(View.VISIBLE);
+                    btnBid.setVisibility(View.VISIBLE);
+                }
+            } else {
+                btnCancelBid.setVisibility(View.GONE);
+                btnBid.setVisibility(View.VISIBLE);
+            }
+        } else {
+            btnCancelBid.setVisibility(View.GONE);
+            btnBid.setVisibility(View.GONE);
+        }
     }
 
     public void bid()

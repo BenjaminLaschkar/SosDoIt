@@ -114,11 +114,19 @@
     <string name="btn_new_advert">Post an advert</string>
     <string name="btn_post">Post</string>
     <string name="btn_bid">Bid</string>
+    <string name="btn_cancel_bid">Cancel my bid</string>
     <string name="btn_edit_advert">Edit</string>
     <string name="btn_cancel_advert">Cancel</string>
 
     <string name="btn_accept_bid">Accept</string>
     <string name="btn_reject_bid">Reject</string>
+
+    <!-- Advert Status -->
+
+    <!-- Bid Status -->
+    <string name="accepted">Accepted</string>
+    <string name="pending">Pending</string>
+    <string name="rejected">Rejected</string>
 
     <!-- Advert Tags -->
     <string name="tag_test">Test</string>

@@ -3,6 +3,8 @@ package ca.uqac.sosdoit.data;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import ca.uqac.sosdoit.R;
+
 @IgnoreExtraProperties
 public class Bid
 {
@@ -66,8 +68,20 @@ public class Bid
 
     public enum Status
     {
-        PENDING,
-        ACCEPTED,
-        REJECTED
+        PENDING (R.string.pending),
+        ACCEPTED (R.string.accepted),
+        REJECTED (R.string.rejected);
+
+        private int id;
+
+        Status(int id)
+        {
+            this.id = id;
+        }
+
+        public int value()
+        {
+            return id;
+        }
     }
 }

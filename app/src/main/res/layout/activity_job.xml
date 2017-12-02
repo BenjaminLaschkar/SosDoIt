@@ -16,7 +16,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,7 +61,17 @@
 
                 <TextView
                     style="@style/TextView.Description"
-                    android:id="@+id/ja_bid_description"
+                    android:id="@+id/ja_bid_status_info"
+                    android:text="@string/status" />
+
+                <EditText
+                    style="@style/EditText.NotEditable"
+                    android:id="@+id/ja_bid_status"
+                    android:inputType="textNoSuggestions" />
+
+                <TextView
+                    style="@style/TextView.Description"
+                    android:id="@+id/ja_bid_info"
                     android:text="@string/bid" />
 
                 <LinearLayout
@@ -169,21 +180,29 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_padding"
-            android:layout_marginRight="@dimen/activity_padding"
+            android:paddingLeft="@dimen/element_margin_xsmall"
+            android:paddingRight="@dimen/element_margin_xsmall"
             android:layout_marginTop="@dimen/element_margin_large">
 
             <Button
                 style="@style/Button.Secondary"
-                android:id="@+id/ja_btn_delete"
+                android:id="@+id/ja_btn_cancel_bid"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/element_margin_xsmall"
                 android:layout_marginRight="@dimen/element_margin_xsmall"
-                android:text="@string/btn_bid" />
+                android:text="@string/btn_cancel_bid"
+                android:visibility="gone" />
 
             <Button
                 style="@style/Button.Primary"
                 android:id="@+id/ja_btn_bid"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_marginLeft="@dimen/element_margin_xsmall"
-                android:text="@string/btn_bid" />
+                android:layout_marginRight="@dimen/element_margin_xsmall"
+                android:text="@string/btn_bid"
+                android:visibility="gone" />
         </LinearLayout>
 
         <include layout="@layout/element_progress_bar_visible" />

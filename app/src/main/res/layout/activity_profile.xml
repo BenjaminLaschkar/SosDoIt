@@ -220,8 +220,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/element_margin_large"
             android:paddingLeft="@dimen/activity_padding"
-            android:paddingRight="@dimen/activity_padding"
-            android:visibility="gone" >
+            android:paddingRight="@dimen/activity_padding">
 
             <Button
                 style="@style/Button.Secondary"
@@ -229,7 +228,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_marginRight="@dimen/element_margin_xsmall"
-                android:text="@string/btn_cancel" />
+                android:text="@string/btn_cancel"
+                android:visibility="gone" />
 
             <Button
                 style="@style/Button.Primary"
@@ -237,7 +237,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_marginLeft="@dimen/element_margin_xsmall"
-                android:text="@string/btn_save" />
+                android:text="@string/btn_save"
+                android:visibility="gone" />
         </LinearLayout>
 
         <include layout="@layout/element_progress_bar_visible" />

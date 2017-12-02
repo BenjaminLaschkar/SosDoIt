@@ -1,5 +1,6 @@
 package ca.uqac.sosdoit.data;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.google.firebase.database.Exclude;
@@ -248,6 +249,13 @@ public class User
             address = null;
         }
         return this;
+    }
+
+    public void findAddressCoordinates(Context context)
+    {
+        if (hasAddress()) {
+            address.findCoordinates(context);
+        }
     }
 
     public boolean equals(User other)
