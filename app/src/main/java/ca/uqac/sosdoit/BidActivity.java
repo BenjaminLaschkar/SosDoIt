@@ -155,12 +155,14 @@ public class BidActivity extends AppCompatActivity
             {
                 bid = result;
                 offerText.setText(Util.formatCurrency(bid.getOffer()));
+                offerText.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure()
             {
+                offerText.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
                 Util.toggleKeyboard(BidActivity.this);
             }

@@ -21,26 +21,37 @@
         <item name="android:paddingRight">4dp</item>
     </style>
 
-    <style name="TextView.Description">
+    <style name="TextView.Info">
         <item name="android:layout_marginTop">@dimen/element_margin_small</item>
         <item name="android:textSize">@dimen/text_small</item>
         <item name="android:textColor">@color/red</item>
     </style>
 
-    <style name="TextView.Description.First">
+    <style name="TextView.Info.First">
         <item name="android:layout_marginTop">@dimen/activity_padding</item>
     </style>
 
-    <style name="TextView.Info">
-        <item name="android:textSize">@dimen/text_small</item>
-        <item name="android:textColor">@color/red</item>
-        <item name="android:gravity">right</item>
+    <style name="TextView.Info.NoMargin">
+        <item name="android:layout_marginTop">0dp</item>
+    </style>
+
+    <style name="TextView.Element">
+        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:textColor">@color/light_grey</item>
     </style>
 
     <style name="Line">
+        <item name="android:background">@color/grey</item>
+    </style>
+
+    <style name="Line.Horizontal">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">2dp</item>
-        <item name="android:background">@color/grey</item>
+    </style>
+
+    <style name="Line.Vertical">
+        <item name="android:layout_width">2dp</item>
+        <item name="android:layout_height">match_parent</item>
     </style>
 
     <style name="Button" parent="Widget.AppCompat.Button">

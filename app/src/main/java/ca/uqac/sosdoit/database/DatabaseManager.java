@@ -598,12 +598,24 @@ public class DatabaseManager // implements IDatabaseManager
             this.max = max;
         }
 
-        public void sync()
+        private void sync()
         {
             if (++count == max) {
                 onSynced();
             }
 
+        }
+
+        @Override
+        public void onSuccess(T result)
+        {
+            sync();
+        }
+
+        @Override
+        public void onFailure()
+        {
+            sync();
         }
 
         public abstract void onSynced();

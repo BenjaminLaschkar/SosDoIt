@@ -27,7 +27,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/TextView.Description.First"
+                    style="@style/TextView.Info.First"
                     android:id="@+id/ja_description_info"
                     android:text="@string/description"
                     android:visibility="gone" />
@@ -39,7 +39,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:text="@string/posting_date" />
 
                 <EditText
@@ -48,7 +48,7 @@
                     android:inputType="textNoSuggestions" />
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:id="@+id/ja_completion_date_info"
                     android:text="@string/completion_date"
                     android:visibility="gone" />
@@ -60,7 +60,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:id="@+id/ja_bid_status_info"
                     android:text="@string/status" />
 
@@ -70,7 +70,7 @@
                     android:inputType="textNoSuggestions" />
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:id="@+id/ja_bid_info"
                     android:text="@string/bid" />
 
@@ -99,7 +99,7 @@
                 </LinearLayout>
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:id="@+id/ja_address_info"
                     android:text="@string/address"
                     android:visibility="gone" />
@@ -176,7 +176,7 @@
                 </LinearLayout>
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:id="@+id/ja_advertiser_rate_info"
                     android:text="Advertiser's rate"
                     android:visibility="gone" />
@@ -188,7 +188,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:id="@+id/ja_advertiser_comment_info"
                     android:text="Advertiser's comment"
                     android:visibility="gone" />
@@ -202,7 +202,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:id="@+id/ja_rate_info"
                     android:text="Rate"
                     android:visibility="gone" />
@@ -214,7 +214,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:id="@+id/ja_comment_info"
                     android:text="Comment"
                     android:visibility="gone" />

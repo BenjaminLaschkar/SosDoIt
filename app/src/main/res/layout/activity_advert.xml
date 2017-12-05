@@ -27,7 +27,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/TextView.Description.First"
+                    style="@style/TextView.Info.First"
                     android:id="@+id/aa_description_info"
                     android:text="@string/description"
                     android:visibility="gone" />
@@ -39,7 +39,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:text="@string/status" />
 
                 <EditText
@@ -48,7 +48,7 @@
                     android:inputType="textNoSuggestions" />
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:text="@string/posting_date" />
 
                 <EditText
@@ -57,7 +57,7 @@
                     android:inputType="date" />
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:id="@+id/aa_completion_date_info"
                     android:text="@string/completion_date"
                     android:visibility="gone" />
@@ -73,7 +73,7 @@
 
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:id="@+id/aa_worker_rate_info"
                     android:text="Worker's rate"
                     android:visibility="gone" />
@@ -85,7 +85,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:id="@+id/aa_worker_comment_info"
                     android:text="Worker's comment"
                     android:visibility="gone" />
@@ -99,7 +99,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:id="@+id/aa_rate_info"
                     android:text="Rate"
                     android:visibility="gone" />
@@ -111,7 +111,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:id="@+id/aa_comment_info"
                     android:text="Comment"
                     android:visibility="gone" />
@@ -134,7 +134,7 @@
             android:visibility="gone" />
 
         <TextView
-            style="@style/TextView.Description"
+            style="@style/TextView.Info"
             android:id="@+id/aa_bids_info"
             android:layout_marginLeft="@dimen/activity_padding"
             android:layout_marginRight="@dimen/activity_padding"

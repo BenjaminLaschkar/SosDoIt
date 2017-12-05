@@ -2,6 +2,7 @@ package ca.uqac.sosdoit;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -9,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -130,7 +133,7 @@ public class AdvertActivity extends AppCompatActivity
                     advert.getWorkerRating().setCommentWithCheck(inputComment.getText().toString().trim());
                     db.setAdvert(advert);
                 } else {
-                    db.setAdvert(advert.setStatus(Advert.Status.RATED).setAdvertiserRating(new Rating(rates[inputRate.getSelectedItemPosition()]).setCommentWithCheck(inputComment.getText().toString().trim())));
+                    db.setAdvert(advert.setStatus(Advert.Status.RATED).setWorkerRating(new Rating(rates[inputRate.getSelectedItemPosition()]).setCommentWithCheck(inputComment.getText().toString().trim())));
                 }
                 if (inputComment.hasFocus()) {
                     Util.toggleKeyboard(AdvertActivity.this);
@@ -142,7 +145,8 @@ public class AdvertActivity extends AppCompatActivity
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         inputRate.setAdapter(adapter);
 
-        bidsAdapter = new BidAdapter(bids, new BidAdapter.ColorStatus().setAccepted(getResources().getColor(R.color.green)).setPending(getResources().getColor(R.color.white)).setRejected(getResources().getColor(R.color.red)));
+        Resources r = getResources();
+        bidsAdapter = new BidAdapter(bids, new BidAdapter.ColorStatus().setAccepted(r.getColor(R.color.green)).setPending(r.getColor(R.color.white)).setRejected(r.getColor(R.color.red)));
         Util.initRecyclerView(AdvertActivity.this, bidsView);
         bidsView.setAdapter(bidsAdapter);
 
@@ -274,7 +278,7 @@ public class AdvertActivity extends AppCompatActivity
                     description.setVisibility(View.GONE);
                 }
 
-                status.setText(advert.getStatus().name());
+                status.setText(getString(advert.getStatus().value()));
                 postingDate.setText(Util.formatDate(advert.getPostingDate()));
 
                 if (advert.hasCompletionDate()) {
@@ -310,7 +314,7 @@ public class AdvertActivity extends AppCompatActivity
                     }
 
                     if (advert.hasWorkerRating()) {
-                        inputRate.setSelection(Arrays.asList(rates).indexOf(advert.getAdvertiserRating().getRate()));
+                        inputRate.setSelection(Arrays.asList(rates).indexOf(advert.getWorkerRating().getRate()));
                         if (advert.getWorkerRating().hasComment()) {
                             inputComment.setText(advert.getWorkerRating().getComment());
                         }
@@ -401,11 +405,33 @@ public class AdvertActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean enabled = advert != null && advert.getStatus() == Advert.Status.ACCEPTED;
+
+        MenuItem btnCompleted = menu.findItem(R.id.btn_completed_advert).setEnabled(enabled);
+
+        SpannableString s = new SpannableString(btnCompleted.getTitle());
+
+        if (!enabled) {
+            s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.grey)), 0, s.length(), 0);
+        } else {
+            s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.light_grey)), 0, s.length(), 0);
+        }
+
+        btnCompleted.setTitle(s);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch(item.getItemId()){
             case android.R.id.home:
                 finish();
+                break;
+            case R.id.btn_completed_advert:
+                db.setAdvert(advert.setStatus(Advert.Status.COMPLETED));
                 break;
             case R.id.btn_edit_advert:
                 startActivity(new Intent(AdvertActivity.this, EditAdvertActivity.class).putExtra(Util.UID, uid).putExtra(Util.AID, aid));

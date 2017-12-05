@@ -12,6 +12,7 @@
     <color name="dark_red">#FFA01200</color>
     <color name="green">#FF00FF00</color>
     <color name="orange">#FFFF6600</color>
+    <color name="yellow">#FFFFFF66</color>
 
     <color name="colorPrimary">@color/red</color>
     <color name="colorPrimaryDark">@color/dark_red</color>

@@ -27,7 +27,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/TextView.Description.First"
+                    style="@style/TextView.Info.First"
                     android:text="@string/registration_date" />
 
                 <EditText
@@ -37,7 +37,7 @@
                     android:imeOptions="actionNext" />
 
                 <TextView
-                    style="@style/TextView.Description.First"
+                    style="@style/TextView.Info.First"
                     android:text="@string/email" />
 
                 <EditText
@@ -56,7 +56,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:id="@+id/pa_password_info"
                     android:text="@string/password"
                     android:visibility="gone" />
@@ -78,7 +78,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:text="@string/username" />
 
                 <EditText
@@ -99,7 +99,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            style="@style/TextView.Description"
+                            style="@style/TextView.Info"
                             android:text="@string/first_name" />
 
                         <EditText
@@ -117,7 +117,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            style="@style/TextView.Description"
+                            style="@style/TextView.Info"
                             android:text="@string/last_name" />
 
                         <EditText
@@ -130,7 +130,7 @@
                 </LinearLayout>
 
                 <TextView
-                    style="@style/TextView.Description"
+                    style="@style/TextView.Info"
                     android:text="@string/address" />
 
                 <LinearLayout

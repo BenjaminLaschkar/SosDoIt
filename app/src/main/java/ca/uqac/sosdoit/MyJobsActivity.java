@@ -1,6 +1,7 @@
 package ca.uqac.sosdoit;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 import ca.uqac.sosdoit.data.Advert;
 import ca.uqac.sosdoit.database.DatabaseManager;
-import ca.uqac.sosdoit.util.JobAdapter;
+import ca.uqac.sosdoit.util.AdvertAdapter;
 import ca.uqac.sosdoit.util.RecyclerTouchListener;
 import ca.uqac.sosdoit.util.Util;
 
@@ -25,7 +26,7 @@ public class MyJobsActivity extends AppCompatActivity
 {
     private Toolbar toolbar;
     private RecyclerView jobsView;
-    private JobAdapter jobAdapter;
+    private AdvertAdapter jobAdapter;
     private ProgressBar progressBar;
 
     private FirebaseAuth auth;
@@ -36,8 +37,6 @@ public class MyJobsActivity extends AppCompatActivity
 
     private ArrayList<Advert> jobs = new ArrayList<>();
     private String uid;
-
-    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -76,7 +75,8 @@ public class MyJobsActivity extends AppCompatActivity
         jobsView = findViewById(R.id.mja_jobs_view);
         progressBar = findViewById(R.id.progress_bar);
 
-        jobAdapter = new JobAdapter(jobs, new JobAdapter.ColorStatus(getResources().getColor(R.color.green), getResources().getColor(R.color.orange), getResources().getColor(R.color.red)));
+        Resources r = getResources();
+        jobAdapter = new AdvertAdapter(MyJobsActivity.this, jobs, new AdvertAdapter.ColorStatus(r.getColor(R.color.white), r.getColor(R.color.yellow), r.getColor(R.color.white), r.getColor(R.color.red), r.getColor(R.color.orange), r.getColor(R.color.green), r.getColor(R.color.red), r.getColor(R.color.red)));
         Util.initRecyclerView(MyJobsActivity.this, jobsView);
         jobsView.setAdapter(jobAdapter);
 
@@ -116,13 +116,7 @@ public class MyJobsActivity extends AppCompatActivity
                     public void onSuccess(Advert advert)
                     {
                         jobs.add(advert);
-                        sync();
-                    }
-
-                    @Override
-                    public void onFailure()
-                    {
-                        sync();
+                        super.onSuccess(advert);
                     }
 
                     @Override

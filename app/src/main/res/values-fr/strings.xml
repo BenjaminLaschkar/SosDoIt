@@ -104,4 +104,19 @@
     <string name="msg_reject_bid">Rejeter cette offre ?</string>
     <string name="btn_reject_bid">Rejeter</string>
     <string name="btn_new_bid">Nouvelle offre</string>
+    <string name="worker_rating">Note du travailleur</string>
+    <string name="rejected">Rejetée</string>
+    <string name="rated">Notée</string>
+    <string name="accepted">Acceptée</string>
+    <string name="msg_edit_advert_failed">"La modification de l'annonce a échouée "</string>
+    <string name="advertiser_rating">Note de l\'annonceur</string>
+    <string name="available">Disponible</string>
+    <string name="canceled">Annulée</string>
+    <string name="btn_cancel_bid">Annuler mon offre</string>
+    <string name="comment">Commentaire</string>
+    <string name="btn_completed_advert">Complétée</string>
+    <string name="completed">Complétée</string>
+    <string name="pending">En attente</string>
+    <string name="new_bid">Nouvelle offre</string>
+    <string name="deleted">Supprimée</string>
 </resources>

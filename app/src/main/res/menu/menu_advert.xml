@@ -2,6 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/btn_completed_advert"
+        android:title="@string/btn_completed_advert" />
+    <item
         android:id="@+id/btn_edit_advert"
         android:title="@string/btn_edit_advert" />
     <item

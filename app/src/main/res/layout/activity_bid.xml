@@ -22,7 +22,7 @@
             android:orientation="vertical">
 
             <TextView
-                style="@style/TextView.Description.First"
+                style="@style/TextView.Info.First"
                 android:id="@+id/ba_description_info"
                 android:text="@string/description"
                 android:visibility="gone" />
@@ -34,7 +34,7 @@
                 android:visibility="gone" />
 
             <TextView
-                style="@style/TextView.Description"
+                style="@style/TextView.Info"
                 android:text="@string/posting_date" />
 
             <EditText
@@ -42,7 +42,7 @@
                 android:id="@+id/ba_posting_date" />
 
             <TextView
-                style="@style/TextView.Description"
+                style="@style/TextView.Info"
                 android:id="@+id/ba_bid_description"
                 android:text="@string/bid" />
 

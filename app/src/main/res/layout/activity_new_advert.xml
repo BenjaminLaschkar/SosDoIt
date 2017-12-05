@@ -23,7 +23,7 @@
             android:orientation="vertical">
 
             <TextView
-                style="@style/TextView.Description.First"
+                style="@style/TextView.Info.First"
                 android:text="@string/title" />
 
             <EditText
@@ -35,7 +35,7 @@
                 android:inputType="text" />
 
             <TextView
-                style="@style/TextView.Description.First"
+                style="@style/TextView.Info.First"
                 android:text="@string/description" />
 
             <EditText

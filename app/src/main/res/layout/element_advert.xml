@@ -15,35 +15,108 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/element_margin_xsmall"
+        android:paddingLeft="@dimen/activity_padding"
         android:paddingRight="@dimen/activity_padding"
         android:paddingTop="@dimen/element_margin_xsmall"
         android:paddingBottom="@dimen/element_margin_xsmall"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            style="@style/TextView.Info.NoMargin"
+            android:text="@string/title" />
 
         <TextView
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            style="@style/TextView.Element"
+            android:id="@+id/title" />
 
         <TextView
-            android:id="@+id/status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            style="@style/TextView.Info"
+            android:id="@+id/description_info"
+            android:text="@string/description" />
 
         <TextView
-            android:id="@+id/posting_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            style="@style/TextView.Element"
+            android:id="@+id/description" />
 
         <TextView
-            android:id="@+id/completion_date"
+            style="@style/TextView.Info"
+            android:id="@+id/status_info"
+            android:text="@string/status" />
+
+        <TextView
+            style="@style/TextView.Element"
+            android:id="@+id/status" />
+
+        <TextView
+            style="@style/TextView.Info"
+            android:text="@string/posting_date" />
+
+        <TextView
+            style="@style/TextView.Element"
+            android:id="@+id/posting_date" />
+
+        <TextView
+            style="@style/TextView.Element"
+            android:id="@+id/due_date"
+            android:visibility="gone" />
+
+        <TextView
+            style="@style/TextView.Info"
+            android:id="@+id/completion_date_info"
+            android:text="@string/completion_date" />
+
+        <TextView
+            style="@style/TextView.Element"
+            android:id="@+id/completion_date" />
+
+        <TextView
+            style="@style/TextView.Info"
+            android:id="@+id/advertiser_rating_info"
+            android:text="@string/advertiser_rating" />
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/TextView.Element"
+                android:id="@+id/advertiser_rate"
+                android:layout_width="wrap_content" />
+
+            <View
+                style="@style/Line.Vertical"
+                android:id="@+id/advertiser_line"
+                android:layout_marginLeft="@dimen/element_margin_xsmall"
+                android:layout_marginRight="@dimen/element_margin_xsmall" />
+
+            <TextView
+                style="@style/TextView.Element"
+                android:id="@+id/advertiser_comment" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/TextView.Info"
+            android:id="@+id/worker_rating_info"
+            android:text="@string/worker_rating" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/TextView.Element"
+                android:id="@+id/worker_rate"
+                android:layout_width="wrap_content" />
+
+            <View
+                style="@style/Line.Vertical"
+                android:id="@+id/worker_line"
+                android:layout_marginLeft="@dimen/element_margin_xsmall"
+                android:layout_marginRight="@dimen/element_margin_xsmall" />
+
+            <TextView
+                style="@style/TextView.Element"
+                android:id="@+id/worker_comment" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

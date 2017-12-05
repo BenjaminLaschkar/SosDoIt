@@ -1,6 +1,7 @@
 package ca.uqac.sosdoit;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -76,7 +77,8 @@ public class MyAdvertsActivity extends AppCompatActivity
         advertsView = findViewById(R.id.maa_adverts_view);
         progressBar = findViewById(R.id.progress_bar);
 
-        advertAdapter = new AdvertAdapter(adverts, new AdvertAdapter.ColorStatus().setAvailable(getResources().getColor(R.color.green)));
+        Resources r = getResources();
+        advertAdapter = new AdvertAdapter(MyAdvertsActivity.this, adverts, new AdvertAdapter.ColorStatus(r.getColor(R.color.white), r.getColor(R.color.yellow), r.getColor(R.color.orange), r.getColor(R.color.green), r.getColor(R.color.red), r.getColor(R.color.red)));
         Util.initRecyclerView(MyAdvertsActivity.this, advertsView);
         advertsView.setAdapter(advertAdapter);
 

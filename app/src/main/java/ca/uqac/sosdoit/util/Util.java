@@ -113,6 +113,7 @@ public final class Util
      * @param rating2List a list of rating of an user
      * @return the mean of the rating
      */
+    /*
     public static double getFinalRating(List<Rating2> rating2List) {
         double nbRatings = rating2List.size();
         double mean = 0.0;
@@ -121,6 +122,7 @@ public final class Util
         }
         return mean;
     }
+    */
 
     /** Get the distance between two locations (in kilometers)
      *

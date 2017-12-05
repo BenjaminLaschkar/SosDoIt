@@ -75,7 +75,7 @@ public class FindJobActivity extends AppCompatActivity
         advertsView = findViewById(R.id.fja_adverts_view);
         progressBar = findViewById(R.id.progress_bar);
 
-        advertAdapter = new AdvertAdapter(adverts, new AdvertAdapter.ColorStatus());
+        advertAdapter = new AdvertAdapter(FindJobActivity.this, adverts, new AdvertAdapter.ColorStatus(), false);
         Util.initRecyclerView(FindJobActivity.this, advertsView);
         advertsView.setAdapter(advertAdapter);
 
@@ -107,7 +107,11 @@ public class FindJobActivity extends AppCompatActivity
             public void onSuccess(ArrayList<Advert> result)
             {
                 adverts.clear();
-                adverts.addAll(result);
+                for (Advert advert : result) {
+                    if (!advert.getAdvertiserUid().equals(uid)) {
+                        adverts.add(advert);
+                    }
+                }
                 advertAdapter.notifyDataSetChanged();
                 advertsView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
