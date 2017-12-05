@@ -121,12 +121,18 @@
     <string name="btn_accept_bid">Accept</string>
     <string name="btn_reject_bid">Reject</string>
 
-    <!-- Advert Status -->
+    <!-- Status -->
+    <string name="available">Available</string>
 
-    <!-- Bid Status -->
     <string name="accepted">Accepted</string>
     <string name="pending">Pending</string>
     <string name="rejected">Rejected</string>
+
+    <string name="completed">Completed</string>
+    <string name="rated">Rated</string>
+
+    <string name="canceled">Canceled</string>
+    <string name="deleted">Deleted</string>
 
     <!-- Advert Tags -->
     <string name="tag_test">Test</string>

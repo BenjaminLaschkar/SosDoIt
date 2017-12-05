@@ -11,6 +11,7 @@ public class Bid
     private String uid;
     private Status status;
     private double offer;
+
     public Bid() {}
 
     public Bid(String uid, double offer)

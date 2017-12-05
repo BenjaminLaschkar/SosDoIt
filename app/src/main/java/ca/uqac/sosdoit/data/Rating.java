@@ -1,92 +1,82 @@
 package ca.uqac.sosdoit.data;
 
+import android.text.TextUtils;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.database.ServerValue;
 
 import java.util.Date;
 
-/**
- * Data Structure for a rating
- */
-
 @IgnoreExtraProperties
-public class Rating {
-
-    public static double MAX_RATE = 5.0;
-
-    @Exclude
-    private String rid;
-    private String uidRated;
-    private String uidRater;
-    private String aid;
-    private double rate;
-    private String commentary;
+public class Rating
+{
+    private int rate;
+    private String comment;
     private Date date;
 
-    public Rating(){}
+    public Rating() {}
 
-    public Rating(String uidRated, String uidRater, String aid, double rate, String commentary) {
-        this.uidRated = uidRated;
-        this.uidRater = uidRater;
-        this.aid = aid;
+    public Rating(int rate)
+    {
         this.rate = rate;
-        this.commentary = commentary;
     }
 
-    @Exclude
-    public String getRid() {
-        return rid;
-    }
-
-    public void setRid(String rid) {
-        this.rid = rid;
-    }
-
-    public String getUidRated() {
-        return uidRated;
-    }
-
-    public void setUidRated(String uidRated) {
-        this.uidRated = uidRated;
-    }
-
-    public String getUidRater() {
-        return uidRater;
-    }
-
-    public void setUidRater(String uidRater) {
-        this.uidRater = uidRater;
-    }
-
-    public String getAid() {
-        return aid;
-    }
-
-    public void setAid(String aid) {
-        this.aid = aid;
-    }
-
-    public double getRate() {
+    public int getRate()
+    {
         return rate;
     }
 
-    public void setRate(double rate) {
+    public Rating setRate(int rate)
+    {
         this.rate = rate;
+        return this;
     }
 
-    public String getCommentary() {
-        return commentary;
+    public boolean hasComment()
+    {
+        return comment != null;
     }
 
-    public void setCommentary(String commentary) {
-        this.commentary = commentary;
+    public String getComment()
+    {
+        return comment;
     }
 
-    public Date getDate() {
+    public Rating setComment(String comment)
+    {
+        this.comment = comment;
+        return this;
+    }
+
+    public Rating setCommentWithCheck(String comment)
+    {
+        this.comment = TextUtils.isEmpty(comment) ? null : comment;
+        return this;
+    }
+
+    public boolean hasDate()
+    {
+        return date != null;
+    }
+
+    public Object getTimestamp()
+    {
+        if (!hasDate()) {
+            return ServerValue.TIMESTAMP;
+        } else {
+            return date.getTime();
+        }
+    }
+
+    public void setTimestamp(long timestamp)
+    {
+        date = new Date(timestamp);
+    }
+
+    @Exclude
+    public Date getDate()
+    {
         return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 }

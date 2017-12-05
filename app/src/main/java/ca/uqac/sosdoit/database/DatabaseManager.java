@@ -15,6 +15,7 @@ import java.util.Map;
 
 import ca.uqac.sosdoit.data.Advert;
 import ca.uqac.sosdoit.data.Bid;
+import ca.uqac.sosdoit.data.Rating;
 import ca.uqac.sosdoit.data.User;
 import ca.uqac.sosdoit.data.UserProfile;
 
@@ -31,8 +32,9 @@ public class DatabaseManager // implements IDatabaseManager
     private final static String JOBS = "jobs";
 
     private final static String USER_PROFILE = "profile";
-    private final static String ADVERT_ADVERTISER = "advertiserUid";
     private final static String ADVERT_STATUS = "status";
+    private final static String ADVERT_ADVERTISER = "advertiserUid";
+    private final static String ADVERT_ADVERTISER_RATING = "advertiserRating";
 
     private Reference ref;
 
@@ -372,6 +374,11 @@ public class DatabaseManager // implements IDatabaseManager
         return ref.bids.child(advertiser_uid).child(aid).child(bid.getUid()).setValue(bid);
     }
 
+    public Task<Void> removeBid(final String advertiser_uid, final String aid, final String uid)
+    {
+        return ref.bids.child(advertiser_uid).child(aid).child(uid).removeValue();
+    }
+
     public Task<Void> setBids(final String advertiser_uid, final String aid, final Map<String, Bid> bids)
     {
         return ref.bids.child(advertiser_uid).child(aid).setValue(bids);
@@ -519,6 +526,13 @@ public class DatabaseManager // implements IDatabaseManager
     {
         ref.jobs.child(uid).removeEventListener(result.listener);
         result.added = false;
+    }
+
+    // ----- RATINGS ----- //
+
+    public Task<Void> setAdvertiserRating(final String aid, final Rating rating)
+    {
+        return ref.adverts.child(aid).child(ADVERT_ADVERTISER_RATING).setValue(rating);
     }
 
     // ----- INNER CLASS ----- //
@@ -721,7 +735,7 @@ public class DatabaseManager // implements IDatabaseManager
 //    // Add the rating
 //    DatabaseReference newRef = ratingsRefs.push();
 //        newRef.setValue(rating);
-//    // Add the id of the rating in the User-Rating links list
+//    // Add the id of the rating in the User-Rating2 links list
 //    addRatingInIndex(rating.getUidRater(), newRef.getKey());
 //}
 //
@@ -743,7 +757,7 @@ public class DatabaseManager // implements IDatabaseManager
 //public void removeRating(final String rid) {
 //        getRating(rid, new DatabaseManager.RatingResult() {
 //@Override
-//public void call(Rating rating) {
+//public void call(Rating2 rating) {
 //        if (rating != null) {
 //        removeRatingInIndex(rating.getUidRater(), rid); // Remove the rating in the index
 //        }
@@ -780,18 +794,18 @@ public class DatabaseManager // implements IDatabaseManager
 //                if (ridList.isEmpty()) {
 //
 //                    // No AID found : call the result with empty list :
-//                    result.call(new ArrayList<Rating>());
+//                    result.call(new ArrayList<Rating2>());
 //                }
 //                else {
-//                    // Get all the Rating from the rid
+//                    // Get all the Rating2 from the rid
 //                    final int nbRatings = ridList.size();
-//                    final List<Rating> ratings = new ArrayList<>();
+//                    final List<Rating2> ratings = new ArrayList<>();
 //                    // Create the listener to get the ratings :
 //                    ValueEventListener listener = new ValueEventListenerForIndex(nbRatings) {
 //                        @Override
 //                        public void onDataChange(DataSnapshot dataSnapshot) {
 //                            super.onDataChange(dataSnapshot);
-//                            Rating rating = dataSnapshot.getValue(Rating.class);
+//                            Rating2 rating = dataSnapshot.getValue(Rating2.class);
 //                            if (rating != null) {
 //                                rating.setRid(dataSnapshot.getKey());
 //                                ratings.add(rating);
@@ -986,7 +1000,7 @@ public class DatabaseManager // implements IDatabaseManager
 //            {
 //
 //                if (!ratingCallbacks.isEmpty()) {
-//                    Rating rating = dataSnapshot.getValue(Rating.class);
+//                    Rating2 rating = dataSnapshot.getValue(Rating2.class);
 //                    for (RatingCallback callback : ratingCallbacks) {
 //                        callback.onRatingAdded(rating);
 //                    }
@@ -998,7 +1012,7 @@ public class DatabaseManager // implements IDatabaseManager
 //            {
 //
 //                if (!ratingCallbacks.isEmpty()) {
-//                    Rating rating = dataSnapshot.getValue(Rating.class);
+//                    Rating2 rating = dataSnapshot.getValue(Rating2.class);
 //                    for (RatingCallback callback : ratingCallbacks) {
 //                        callback.onRatingChanged(rating);
 //                    }
@@ -1010,7 +1024,7 @@ public class DatabaseManager // implements IDatabaseManager
 //            {
 //
 //                if (!ratingCallbacks.isEmpty()) {
-//                    Rating rating = dataSnapshot.getValue(Rating.class);
+//                    Rating2 rating = dataSnapshot.getValue(Rating2.class);
 //                    for (RatingCallback callback : ratingCallbacks) {
 //                        callback.onRatingRemoved(rating);
 //                    }
@@ -1365,7 +1379,7 @@ public class DatabaseManager // implements IDatabaseManager
 //     * Create a new unique ID when added, as key in the database.
 //     */
 //    @Override
-//    public void addRating(Rating rating)
+//    public void addRating(Rating2 rating)
 //    {
 //        // Date the rating, if not did before
 //        if (rating.getDate() == null) {
@@ -1373,7 +1387,7 @@ public class DatabaseManager // implements IDatabaseManager
 //        }
 //        // Add the rating TODO
 ////        ratingsRefs.push().setValue(rating);
-////        // Add the id of the rating in the User-Rating links list
+////        // Add the id of the rating in the User-Rating2 links list
 ////        if (rating.getUidRated() != null) {
 ////            userRatingLinksRef.child(rating.getUidRated()).child(rating.getRid()).setValue(true);
 ////        }
@@ -1385,7 +1399,7 @@ public class DatabaseManager // implements IDatabaseManager
 //     * WARNING ! In the case of add, onRatingAdded is called instead of onRatingChanged
 //     */
 //    @Override
-//    public void editRating(String rid, Rating rating)
+//    public void editRating(String rid, Rating2 rating)
 //    {
 //        // Date the rating, if not did before
 //        if (rating.getDate() == null) {
@@ -1409,7 +1423,7 @@ public class DatabaseManager // implements IDatabaseManager
 //    }
 //
 //    /**
-//     * Get an Rating with AdvertResult
+//     * Get an Rating2 with AdvertResult
 //     * This method search the rating in the database and showProfile the RatingResult when the rating is found
 //     * WARNING ! If the rating is not found, the method showProfile RatingResult with null ( showProfile(null) )
 //     */
@@ -1424,7 +1438,7 @@ public class DatabaseManager // implements IDatabaseManager
 //            {
 //                super.onDataChange(dataSnapshot);
 //
-//                Rating rating = dataSnapshot.getValue(Rating.class);
+//                Rating2 rating = dataSnapshot.getValue(Rating2.class);
 //                if (rating != null) {
 //                    rating.setRid(rid);
 //                }
@@ -1457,10 +1471,10 @@ public class DatabaseManager // implements IDatabaseManager
 //            {
 //                super.onDataChange(dataSnapshot);
 //
-//                ArrayList<Rating> ratings = new ArrayList<>();
+//                ArrayList<Rating2> ratings = new ArrayList<>();
 //
 //                for (DataSnapshot data : dataSnapshot.getChildren()) {
-//                    Rating rating = data.getValue(Rating.class);
+//                    Rating2 rating = data.getValue(Rating2.class);
 //                    if (rating != null) {
 //                        rating.setRid(data.getKey());
 //                        ratings.add(rating);
@@ -1486,10 +1500,10 @@ public class DatabaseManager // implements IDatabaseManager
 //            {
 //                super.onDataChange(dataSnapshot);
 //
-//                ArrayList<Rating> ratings = new ArrayList<>();
+//                ArrayList<Rating2> ratings = new ArrayList<>();
 //
 //                for (DataSnapshot data : dataSnapshot.getChildren()) {
-//                    Rating rating = data.getValue(Rating.class);
+//                    Rating2 rating = data.getValue(Rating2.class);
 //                    if (rating != null) {
 //                        rating.setRid(data.getKey());
 //                        ratings.add(rating);

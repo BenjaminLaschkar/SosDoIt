@@ -1,6 +1,6 @@
 package ca.uqac.sosdoit.database;
 
-import ca.uqac.sosdoit.data.Rating;
+import ca.uqac.sosdoit.data.Rating2;
 
 /**
  * Callback to handle modification of the rating database
@@ -8,8 +8,8 @@ import ca.uqac.sosdoit.data.Rating;
 
 public interface RatingCallback {
 
-    void onRatingAdded(Rating rating);
-    void onRatingRemoved(Rating rating);
-    void onRatingChanged(Rating rating);
+    void onRatingAdded(Rating2 rating2);
+    void onRatingRemoved(Rating2 rating2);
+    void onRatingChanged(Rating2 rating2);
 
 }

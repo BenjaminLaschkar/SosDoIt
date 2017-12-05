@@ -6,8 +6,9 @@ import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ServerValue;
 
-import java.util.ArrayList;
 import java.util.Date;
+
+import ca.uqac.sosdoit.R;
 
 /**
  * Advert data structure
@@ -29,15 +30,18 @@ public class Advert
     private Tag tag;
 
     private Date postingDate;
+    private Date dueDate;
     private Date completionDate;
 
     private Bid bid;
+
+    private Rating advertiserRating;
+    private Rating workerRating;
 
     public Advert() {}
 
     public Advert(String idAdvertiser, String title)
     {
-        this.aid = aid;
         this.status = Status.AVAILABLE;
         this.advertiserUid = idAdvertiser;
         this.title = title;
@@ -172,12 +176,6 @@ public class Advert
         return postingDate;
     }
 
-    public Advert setPostingDate(Date postingDate)
-    {
-        this.postingDate = postingDate;
-        return this;
-    }
-
     public boolean hasCompletionDate()
     {
         return completionDate != null;
@@ -205,12 +203,6 @@ public class Advert
         return completionDate;
     }
 
-    public Advert setCompletionDate(Date completionDate)
-    {
-        this.completionDate = completionDate;
-        return this;
-    }
-
     public boolean hasBid()
     {
         return bid != null;
@@ -228,6 +220,38 @@ public class Advert
         return this;
     }
 
+    public boolean hasAdvertiserRating()
+    {
+        return advertiserRating != null;
+    }
+
+    public Rating getAdvertiserRating()
+    {
+        return advertiserRating;
+    }
+
+    public Advert setAdvertiserRating(Rating rating)
+    {
+        this.advertiserRating = rating;
+        return this;
+    }
+
+    public boolean hasWorkerRating()
+    {
+        return workerRating != null;
+    }
+
+    public Rating getWorkerRating()
+    {
+        return workerRating;
+    }
+
+    public Advert setWorkerRating(Rating rating)
+    {
+        this.workerRating = rating;
+        return this;
+    }
+
     @Override
     public String toString()
     {
@@ -236,11 +260,23 @@ public class Advert
 
     public enum Status
     {
-        AVAILABLE,
-        ACCEPTED,
-        COMPLETED,
-        RATED,
-        CANCELED,
-        DELETED
+        AVAILABLE (R.string.available),
+        ACCEPTED (R.string.accepted),
+        COMPLETED (R.string.completed),
+        RATED (R.string.rated),
+        CANCELED (R.string.canceled),
+        DELETED (R.string.deleted);
+
+        private int id;
+
+        Status(int id)
+        {
+            this.id = id;
+        }
+
+        public int value()
+        {
+            return id;
+        }
     }
 }

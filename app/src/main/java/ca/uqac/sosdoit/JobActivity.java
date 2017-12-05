@@ -11,9 +11,11 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,17 +23,21 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Arrays;
+
 import ca.uqac.sosdoit.data.Advert;
 import ca.uqac.sosdoit.data.Bid;
+import ca.uqac.sosdoit.data.Rating;
 import ca.uqac.sosdoit.database.DatabaseManager;
 import ca.uqac.sosdoit.util.Util;
 
 public class JobActivity extends AppCompatActivity
 {
     private Toolbar toolbar;
-    private EditText description, postingDate, completionDate, status, offerText, inputOffer, houseNumber, street, additionalAddress, city, state, postalCode, country;
-    private TextView descriptionInfo, completionDateInfo, statusInfo, addressInfo;
-    private Button btnCancelBid, btnBid;
+    private EditText description, postingDate, completionDate, status, bidValue, inputOffer, houseNumber, street, additionalAddress, city, state, postalCode, country, advertiserRate, advertiserComment, inputComment;
+    private TextView descriptionInfo, completionDateInfo, statusInfo, addressInfo, advertiserRateInfo, advertiserCommentInfo, rateInfo, commentInfo;
+    private Spinner inputRate;
+    private Button btnCancelBid, btnBid, btnRate;
     private ProgressBar progressBar;
 
     private FirebaseAuth auth;
@@ -47,6 +53,8 @@ public class JobActivity extends AppCompatActivity
     private String uid;
     private String aid;
     private String advertiser_uid;
+
+    private Integer[] rates = new Integer[]{5, 4, 3, 2, 1, 0};
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -90,8 +98,8 @@ public class JobActivity extends AppCompatActivity
 
         statusInfo = findViewById(R.id.ja_bid_status_info);
         status = findViewById(R.id.ja_bid_status);
-        offerText = findViewById(R.id.ja_offer_text);
-        inputOffer = findViewById(R.id.ja_offer_value);
+        bidValue = findViewById(R.id.ja_bid_value);
+        inputOffer = findViewById(R.id.ja_bid_offer);
 
         addressInfo = findViewById(R.id.ja_address_info);
         houseNumber = findViewById(R.id.ja_house_number);
@@ -102,8 +110,19 @@ public class JobActivity extends AppCompatActivity
         postalCode = findViewById(R.id.ja_postal_code);
         country = findViewById(R.id.ja_country);
 
+        advertiserRateInfo = findViewById(R.id.ja_advertiser_rate_info);
+        advertiserRate = findViewById(R.id.ja_advertiser_rate);
+        advertiserCommentInfo = findViewById(R.id.ja_advertiser_comment_info);
+        advertiserComment = findViewById(R.id.ja_advertiser_comment);
+
+        rateInfo = findViewById(R.id.ja_rate_info);
+        inputRate = findViewById(R.id.ja_rate);
+        commentInfo = findViewById(R.id.ja_comment_info);
+        inputComment = findViewById(R.id.ja_comment);
+
         btnCancelBid = findViewById(R.id.ja_btn_cancel_bid);
         btnBid = findViewById(R.id.ja_btn_bid);
+        btnRate = findViewById(R.id.ja_btn_rate);
 
         progressBar = findViewById(R.id.progress_bar);
 
@@ -125,7 +144,7 @@ public class JobActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-
+                db.removeBid(advertiser_uid, aid, uid);
             }
         });
 
@@ -137,6 +156,26 @@ public class JobActivity extends AppCompatActivity
                 bid();
             }
         });
+
+        btnRate.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (advert.hasAdvertiserRating()) {
+                    db.setAdvertiserRating(aid, advert.getAdvertiserRating().setRate(rates[inputRate.getSelectedItemPosition()]).setCommentWithCheck(inputComment.getText().toString().trim()));
+                } else {
+                    db.setAdvertiserRating(aid, new Rating(rates[inputRate.getSelectedItemPosition()]).setCommentWithCheck(inputComment.getText().toString().trim()));
+                }
+                if (inputComment.hasFocus()) {
+                    Util.toggleKeyboard(JobActivity.this);
+                }
+            }
+        });
+
+        final ArrayAdapter<Integer> adapter = new ArrayAdapter<>(JobActivity.this, android.R.layout.simple_spinner_item, rates);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        inputRate.setAdapter(adapter);
 
         auth = FirebaseAuth.getInstance();
         db = DatabaseManager.getInstance();
@@ -179,6 +218,55 @@ public class JobActivity extends AppCompatActivity
 
                 inputOffer.setVisibility(advert.getStatus() == Advert.Status.AVAILABLE ? View.VISIBLE : View.GONE);
 
+                if ((advert.getStatus() == Advert.Status.COMPLETED || advert.getStatus() == Advert.Status.RATED) && advert.getWorkerUid().equals(uid)) {
+                    if (advert.hasWorkerRating()) {
+                        advertiserRate.setText(String.valueOf(advert.getWorkerRating().getRate()));
+                        advertiserRateInfo.setVisibility(View.VISIBLE);
+                        advertiserRate.setVisibility(View.VISIBLE);
+                        if (advert.getWorkerRating().hasComment()) {
+                            advertiserComment.setText(advert.getWorkerRating().getComment());
+                            advertiserCommentInfo.setVisibility(View.VISIBLE);
+                            advertiserComment.setVisibility(View.VISIBLE);
+                        } else {
+                            advertiserCommentInfo.setVisibility(View.GONE);
+                            advertiserComment.setVisibility(View.GONE);
+                        }
+                    } else {
+                        advertiserRateInfo.setVisibility(View.GONE);
+                        advertiserRate.setVisibility(View.GONE);
+                        advertiserCommentInfo.setVisibility(View.GONE);
+                        advertiserComment.setVisibility(View.GONE);
+                    }
+
+                    if (advert.hasAdvertiserRating()) {
+                        inputRate.setSelection(Arrays.asList(rates).indexOf(advert.getAdvertiserRating().getRate()));
+                        if (advert.getAdvertiserRating().hasComment()) {
+                            inputComment.setText(advert.getAdvertiserRating().getComment());
+                        }
+                    } else {
+                        inputComment.requestFocus();
+                        Util.toggleKeyboard(JobActivity.this);
+                    }
+
+                    rateInfo.setVisibility(View.VISIBLE);
+                    inputRate.setVisibility(View.VISIBLE);
+                    commentInfo.setVisibility(View.VISIBLE);
+                    inputComment.setVisibility(View.VISIBLE);
+                    btnRate.setVisibility(View.VISIBLE);
+                } else {
+                    advertiserRateInfo.setVisibility(View.GONE);
+                    advertiserRate.setVisibility(View.GONE);
+                    advertiserCommentInfo.setVisibility(View.GONE);
+                    advertiserComment.setVisibility(View.GONE);
+
+                    rateInfo.setVisibility(View.GONE);
+                    inputRate.setVisibility(View.GONE);
+                    commentInfo.setVisibility(View.GONE);
+                    inputComment.setVisibility(View.GONE);
+                    btnRate.setVisibility(View.GONE);
+                }
+
+                showStatus();
                 toggleButtons();
             }
 
@@ -195,11 +283,11 @@ public class JobActivity extends AppCompatActivity
             public void onSuccess(Bid result)
             {
                 bid = result;
-                status.setText(getString(bid.getStatus().value()));
-                statusInfo.setVisibility(View.VISIBLE);
-                status.setVisibility(View.VISIBLE);
-                offerText.setText(Util.formatCurrency(bid.getOffer()));
-                offerText.setVisibility(View.VISIBLE);
+
+                showStatus();
+
+                bidValue.setText(Util.formatCurrency(bid.getOffer()));
+                bidValue.setVisibility(View.VISIBLE);
 
                 toggleButtons();
 
@@ -209,9 +297,9 @@ public class JobActivity extends AppCompatActivity
             @Override
             public void onFailure()
             {
-                statusInfo.setVisibility(View.GONE);
-                status.setVisibility(View.GONE);
-                offerText.setVisibility(View.GONE);
+                showStatus();
+
+                bidValue.setVisibility(View.GONE);
 
                 toggleButtons();
 
@@ -255,6 +343,32 @@ public class JobActivity extends AppCompatActivity
         }
 
         return true;
+    }
+
+    public void showStatus()
+    {
+        if (advert != null && bid != null) {
+            if (bid.getStatus() == Bid.Status.ACCEPTED) {
+                status.setText(getString(advert.getStatus().value()));
+                statusInfo.setVisibility(View.VISIBLE);
+                status.setVisibility(View.VISIBLE);
+            } else {
+                status.setText(getString(bid.getStatus().value()));
+                statusInfo.setVisibility(View.VISIBLE);
+                status.setVisibility(View.VISIBLE);
+            }
+        } else if (advert != null) {
+            status.setText(getString(advert.getStatus().value()));
+            statusInfo.setVisibility(View.VISIBLE);
+            status.setVisibility(View.VISIBLE);
+        } else if (bid != null) {
+            status.setText(getString(bid.getStatus().value()));
+            statusInfo.setVisibility(View.VISIBLE);
+            status.setVisibility(View.VISIBLE);
+        } else {
+            statusInfo.setVisibility(View.GONE);
+            status.setVisibility(View.GONE);
+        }
     }
 
     public void toggleButtons()

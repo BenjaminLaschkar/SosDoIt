@@ -12,8 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,10 +24,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import ca.uqac.sosdoit.data.Advert;
 import ca.uqac.sosdoit.data.Bid;
+import ca.uqac.sosdoit.data.Rating;
 import ca.uqac.sosdoit.database.DatabaseManager;
 import ca.uqac.sosdoit.util.BidAdapter;
 import ca.uqac.sosdoit.util.RecyclerTouchListener;
@@ -33,8 +38,10 @@ import ca.uqac.sosdoit.util.Util;
 public class AdvertActivity extends AppCompatActivity
 {
     private Toolbar toolbar;
-    private TextView descriptionInfo, completionDateInfo, bidsInfo;
-    private EditText description, status, postingDate, completionDate;
+    private TextView descriptionInfo, completionDateInfo, workerRateInfo, workerCommentInfo, rateInfo, commentInfo, bidsInfo;
+    private EditText description, status, postingDate, completionDate, workerRate, workerComment, inputComment;
+    private Spinner inputRate;
+    private Button btnRate;
     private RecyclerView bidsView;
     private BidAdapter bidsAdapter;
     private ProgressBar progressBar;
@@ -52,6 +59,8 @@ public class AdvertActivity extends AppCompatActivity
     private String uid;
     private String aid;
     private String advertiser_uid;
+
+    private Integer[] rates = new Integer[]{5, 4, 3, 2, 1, 0};
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -93,9 +102,45 @@ public class AdvertActivity extends AppCompatActivity
         postingDate = findViewById(R.id.aa_posting_date);
         completionDateInfo = findViewById(R.id.aa_completion_date_info);
         completionDate = findViewById(R.id.aa_completion_date);
+
+        workerRateInfo = findViewById(R.id.aa_worker_rate_info);
+        workerRate = findViewById(R.id.aa_worker_rate);
+        workerCommentInfo = findViewById(R.id.aa_worker_comment_info);
+        workerComment = findViewById(R.id.aa_worker_comment);
+
+        rateInfo = findViewById(R.id.aa_rate_info);
+        inputRate = findViewById(R.id.aa_rate);
+        commentInfo = findViewById(R.id.aa_comment_info);
+        inputComment = findViewById(R.id.aa_comment);
+
+        btnRate = findViewById(R.id.aa_btn_rate);
+
         bidsInfo = findViewById(R.id.aa_bids_info);
         bidsView = findViewById(R.id.aa_bids_view);
+
         progressBar = findViewById(R.id.progress_bar);
+
+        btnRate.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (advert.hasWorkerRating()) {
+                    advert.getWorkerRating().setRate(rates[inputRate.getSelectedItemPosition()]);
+                    advert.getWorkerRating().setCommentWithCheck(inputComment.getText().toString().trim());
+                    db.setAdvert(advert);
+                } else {
+                    db.setAdvert(advert.setStatus(Advert.Status.RATED).setAdvertiserRating(new Rating(rates[inputRate.getSelectedItemPosition()]).setCommentWithCheck(inputComment.getText().toString().trim())));
+                }
+                if (inputComment.hasFocus()) {
+                    Util.toggleKeyboard(AdvertActivity.this);
+                }
+            }
+        });
+
+        final ArrayAdapter<Integer> adapter = new ArrayAdapter<>(AdvertActivity.this, android.R.layout.simple_spinner_item, rates);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        inputRate.setAdapter(adapter);
 
         bidsAdapter = new BidAdapter(bids, new BidAdapter.ColorStatus().setAccepted(getResources().getColor(R.color.green)).setPending(getResources().getColor(R.color.white)).setRejected(getResources().getColor(R.color.red)));
         Util.initRecyclerView(AdvertActivity.this, bidsView);
@@ -240,6 +285,60 @@ public class AdvertActivity extends AppCompatActivity
                     completionDateInfo.setVisibility(View.GONE);
                     completionDate.setVisibility(View.GONE);
                 }
+
+                if ((advert.getStatus() == Advert.Status.COMPLETED || advert.getStatus() == Advert.Status.RATED)) {
+                    bidsInfo.setVisibility(View.GONE);
+                    bidsView.setVisibility(View.GONE);
+
+                    if (advert.hasAdvertiserRating()) {
+                        workerRate.setText(String.valueOf(advert.getAdvertiserRating().getRate()));
+                        workerRateInfo.setVisibility(View.VISIBLE);
+                        workerRate.setVisibility(View.VISIBLE);
+                        if (advert.getAdvertiserRating().hasComment()) {
+                            workerComment.setText(advert.getAdvertiserRating().getComment());
+                            workerCommentInfo.setVisibility(View.VISIBLE);
+                            workerComment.setVisibility(View.VISIBLE);
+                        } else {
+                            workerCommentInfo.setVisibility(View.GONE);
+                            workerComment.setVisibility(View.GONE);
+                        }
+                    } else {
+                        workerRateInfo.setVisibility(View.GONE);
+                        workerRate.setVisibility(View.GONE);
+                        workerCommentInfo.setVisibility(View.GONE);
+                        workerComment.setVisibility(View.GONE);
+                    }
+
+                    if (advert.hasWorkerRating()) {
+                        inputRate.setSelection(Arrays.asList(rates).indexOf(advert.getAdvertiserRating().getRate()));
+                        if (advert.getWorkerRating().hasComment()) {
+                            inputComment.setText(advert.getWorkerRating().getComment());
+                        }
+                    } else {
+                        inputComment.requestFocus();
+                        Util.toggleKeyboard(AdvertActivity.this);
+                    }
+
+                    rateInfo.setVisibility(View.VISIBLE);
+                    inputRate.setVisibility(View.VISIBLE);
+                    commentInfo.setVisibility(View.VISIBLE);
+                    inputComment.setVisibility(View.VISIBLE);
+                    btnRate.setVisibility(View.VISIBLE);
+                } else {
+                    bidsInfo.setVisibility(View.VISIBLE);
+                    bidsView.setVisibility(View.VISIBLE);
+
+                    workerRateInfo.setVisibility(View.GONE);
+                    workerRate.setVisibility(View.GONE);
+                    workerCommentInfo.setVisibility(View.GONE);
+                    workerComment.setVisibility(View.GONE);
+
+                    rateInfo.setVisibility(View.GONE);
+                    inputRate.setVisibility(View.GONE);
+                    commentInfo.setVisibility(View.GONE);
+                    inputComment.setVisibility(View.GONE);
+                    btnRate.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -257,8 +356,6 @@ public class AdvertActivity extends AppCompatActivity
                 bids.clear();
                 bids.addAll(result);
                 bidsAdapter.notifyDataSetChanged();
-                bidsInfo.setVisibility(View.VISIBLE);
-                bidsView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
 

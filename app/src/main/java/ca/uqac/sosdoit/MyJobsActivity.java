@@ -134,6 +134,12 @@ public class MyJobsActivity extends AppCompatActivity
                     }
                 });
             }
+
+            @Override
+            public void onFailure()
+            {
+                progressBar.setVisibility(View.GONE);
+            }
         };
 
         uid = getIntent().getStringExtra(Util.UID);

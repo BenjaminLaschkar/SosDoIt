@@ -655,7 +655,6 @@ public class ProfileActivity extends AppCompatActivity
             }
 
             switchMode();
-            Util.toggleKeyboard(ProfileActivity.this);
         }
     }
 }

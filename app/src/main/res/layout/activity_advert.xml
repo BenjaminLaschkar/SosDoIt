@@ -14,11 +14,10 @@
 
         <include layout="@layout/element_advanced_toolbar" />
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_weight="2">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,20 +68,86 @@
                     android:inputType="date"
                     android:visibility="gone"/>
 
+
+
+
+
                 <TextView
                     style="@style/TextView.Description"
-                    android:id="@+id/aa_bids_info"
-                    android:text="@string/bids" />
-            </LinearLayout>
+                    android:id="@+id/aa_worker_rate_info"
+                    android:text="Worker's rate"
+                    android:visibility="gone" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/aa_bids_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/element_margin_small"
-                android:scrollbars="vertical"
-                android:visibility="invisible" />
-        </LinearLayout>
+                <EditText
+                    style="@style/EditText.NotEditable"
+                    android:id="@+id/aa_worker_rate"
+                    android:inputType="textMultiLine|textNoSuggestions"
+                    android:visibility="gone" />
+
+                <TextView
+                    style="@style/TextView.Description"
+                    android:id="@+id/aa_worker_comment_info"
+                    android:text="Worker's comment"
+                    android:visibility="gone" />
+
+                <EditText
+                    style="@style/EditText.NotEditable"
+                    android:id="@+id/aa_worker_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine|textNoSuggestions"
+                    android:visibility="gone" />
+
+                <TextView
+                    style="@style/TextView.Description"
+                    android:id="@+id/aa_rate_info"
+                    android:text="Rate"
+                    android:visibility="gone" />
+
+                <Spinner
+                    android:id="@+id/aa_rate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <TextView
+                    style="@style/TextView.Description"
+                    android:id="@+id/aa_comment_info"
+                    android:text="Comment"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/aa_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            style="@style/Button.Primary"
+            android:id="@+id/aa_btn_rate"
+            android:layout_marginLeft="@dimen/activity_padding"
+            android:layout_marginRight="@dimen/activity_padding"
+            android:text="Rate"
+            android:visibility="gone" />
+
+        <TextView
+            style="@style/TextView.Description"
+            android:id="@+id/aa_bids_info"
+            android:layout_marginLeft="@dimen/activity_padding"
+            android:layout_marginRight="@dimen/activity_padding"
+            android:text="@string/bids" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/aa_bids_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/element_margin_small"
+            android:scrollbars="vertical"
+            android:visibility="invisible" />
 
         <include layout="@layout/element_progress_bar_visible" />
     </LinearLayout>

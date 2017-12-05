@@ -2,7 +2,6 @@ package ca.uqac.sosdoit.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.location.Location;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,14 +14,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 
-import ca.uqac.sosdoit.data.Advert;
 import ca.uqac.sosdoit.data.Coordinates;
-import ca.uqac.sosdoit.data.Rating;
+import ca.uqac.sosdoit.data.Rating2;
 
 public final class Util
 {
@@ -111,16 +108,16 @@ public final class Util
         public void afterTextChanged(Editable s) {}
     }
 
-    /** Get the mean value from a list of Rating
+    /** Get the mean value from a list of Rating2
      *
-     * @param ratingList a list of rating of an user
+     * @param rating2List a list of rating of an user
      * @return the mean of the rating
      */
-    public static double getFinalRating(List<Rating> ratingList) {
-        double nbRatings = ratingList.size();
+    public static double getFinalRating(List<Rating2> rating2List) {
+        double nbRatings = rating2List.size();
         double mean = 0.0;
-        for (Rating rating: ratingList) {
-            mean += rating.getRate();
+        for (Rating2 rating2 : rating2List) {
+            mean += rating2.getRate();
         }
         return mean;
     }

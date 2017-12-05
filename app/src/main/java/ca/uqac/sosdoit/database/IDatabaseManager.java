@@ -5,8 +5,8 @@ import java.util.List;
 import ca.uqac.sosdoit.data.Address;
 import ca.uqac.sosdoit.data.Advert;
 import ca.uqac.sosdoit.data.Coordinates;
+import ca.uqac.sosdoit.data.Rating2;
 import ca.uqac.sosdoit.data.Skill;
-import ca.uqac.sosdoit.data.Rating;
 import ca.uqac.sosdoit.data.User;
 
 /**
@@ -121,24 +121,24 @@ public interface IDatabaseManager {
     void getAllAdvertsCompleted(String idAdvertiser, final AdvertListResult result);
 
 
-    /** Add an rating in the database
+    /** Add an rating2 in the database
      * Create a new unique ID when added, as key in the database.
      *
      */
-    void addRating(Rating rating);
+    void addRating(Rating2 rating2);
 
-    /** Edit the information of an rating
-     * Add an rating if he is not in the database.
+    /** Edit the information of an rating2
+     * Add an rating2 if he is not in the database.
      * WARNING ! In the case of add, onRatingAdded is called instead of onRatingChanged
      */
-    void editRating(String rid, Rating rating);
+    void editRating(String rid, Rating2 rating2);
 
     /** Remove an rating
      * Do nothing if the rating is not in the database (in this case, onRatingRemoved is not called)
      */
     void removeRating(String rid);
 
-    /** Get an Rating with AdvertResult
+    /** Get an Rating2 with AdvertResult
      * This method search the rating in the database and showProfile the RatingResult when the rating is found
      * WARNING ! If the rating is not found, the method showProfile RatingResult with null ( showProfile(null) )
      */
@@ -181,10 +181,10 @@ public interface IDatabaseManager {
         void call(List<Advert> advertList);
     }
     interface RatingResult {
-        void call(Rating rating);
+        void call(Rating2 rating2);
     }
     interface RatingListResult {
-        void call(List<Rating> ratingList);
+        void call(List<Rating2> rating2List);
     }
 
 
