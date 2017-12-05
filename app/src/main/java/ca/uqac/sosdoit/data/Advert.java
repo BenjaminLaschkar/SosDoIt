@@ -1,5 +1,6 @@
 package ca.uqac.sosdoit.data;
 
+import android.support.annotation.StringRes;
 import android.text.TextUtils;
 
 import com.google.firebase.database.Exclude;
@@ -267,9 +268,10 @@ public class Advert
         CANCELED (R.string.canceled),
         DELETED (R.string.deleted);
 
+        @StringRes
         private int id;
 
-        Status(int id)
+        Status(@StringRes int id)
         {
             this.id = id;
         }

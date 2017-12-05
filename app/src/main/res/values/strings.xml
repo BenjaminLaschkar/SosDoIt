@@ -35,6 +35,7 @@
     <string name="completion_date">Completion date</string>
     <string name="advertiser_rating">Advertiser\'s rating</string>
     <string name="worker_rating">Worker\'s rating</string>
+    <string name="rating">Your rating</string>
     <string name="comment">Comment</string>
 
     <string name="bids">Bids</string>

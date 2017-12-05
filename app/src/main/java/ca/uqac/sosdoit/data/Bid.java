@@ -1,5 +1,7 @@
 package ca.uqac.sosdoit.data;
 
+import android.support.annotation.StringRes;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -73,9 +75,10 @@ public class Bid
         ACCEPTED (R.string.accepted),
         REJECTED (R.string.rejected);
 
+        @StringRes
         private int id;
 
-        Status(int id)
+        Status(@StringRes int id)
         {
             this.id = id;
         }

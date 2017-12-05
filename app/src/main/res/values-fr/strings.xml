@@ -7,9 +7,6 @@
     <string name="activity_find_job">Trouver un job</string>
     <string name="activity_my_jobs">Mes jobs</string>
 
-
-
-
     <string name="username">Nom d\'utilisateur</string>
     <string name="email">Adresse email</string>
     <string name="password">Mot de passe</string>
@@ -119,4 +116,5 @@
     <string name="pending">En attente</string>
     <string name="new_bid">Nouvelle offre</string>
     <string name="deleted">Supprimée</string>
+    <string name="rating">Votre note</string>
 </resources>

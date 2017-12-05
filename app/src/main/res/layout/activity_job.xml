@@ -178,7 +178,7 @@
                 <TextView
                     style="@style/TextView.Info"
                     android:id="@+id/ja_advertiser_rate_info"
-                    android:text="Advertiser's rate"
+                    android:text="@string/advertiser_rating"
                     android:visibility="gone" />
 
                 <EditText
@@ -190,7 +190,7 @@
                 <TextView
                     style="@style/TextView.Info"
                     android:id="@+id/ja_advertiser_comment_info"
-                    android:text="Advertiser's comment"
+                    android:text="@string/comment"
                     android:visibility="gone" />
 
                 <EditText
@@ -204,7 +204,7 @@
                 <TextView
                     style="@style/TextView.Info"
                     android:id="@+id/ja_rate_info"
-                    android:text="Rate"
+                    android:text="@string/rating"
                     android:visibility="gone" />
 
                 <Spinner
@@ -216,7 +216,7 @@
                 <TextView
                     style="@style/TextView.Info"
                     android:id="@+id/ja_comment_info"
-                    android:text="Comment"
+                    android:text="@string/comment"
                     android:visibility="gone" />
 
                 <EditText
